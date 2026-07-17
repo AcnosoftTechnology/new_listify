@@ -211,12 +211,19 @@ class CustomerController extends Controller{
                 ? (int) $thread->receiver
                 : (int) $thread->sender;
 
-            app(FirebaseNotificationService::class)->notifyChatMessage(
+            $pushOk = app(FirebaseNotificationService::class)->notifyChatMessage(
                 (int) $uid,
                 $receiverId,
                 (string) $messageText,
                 (string) $code
             );
+
+            Log::info('Chat push after send_message', [
+                'from' => (int) $uid,
+                'to' => $receiverId,
+                'thread' => $code,
+                'sent' => $pushOk,
+            ]);
         } catch (\Throwable $e) {
             Log::warning('Chat push failed: ' . $e->getMessage());
         }

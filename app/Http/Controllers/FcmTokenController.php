@@ -12,7 +12,7 @@ class FcmTokenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'fcm_token' => 'required|string|max:512',
+            'fcm_token' => 'required|string|max:2048',
         ]);
 
         $user = Auth::user();

@@ -86,7 +86,15 @@ class FirebaseNotificationService
             // Relative path — SW resolves with live origin (avoids wrong APP_URL → homepage)
             $click = "/{$prefix}/messages/{$senderId}/{$threadCode}";
 
-            return $this->sendToUser(
+            Log::info('FCM chat notify', [
+                'sender_id' => $senderId,
+                'receiver_id' => $receiverId,
+                'thread' => $threadCode,
+                'receiver_is_agent' => $isAgent,
+                'click' => $click,
+            ]);
+
+            $ok = $this->sendToUser(
                 $receiverId,
                 'New message from ' . $senderName,
                 $body !== '' ? $body : 'You have a new message.',
@@ -98,6 +106,14 @@ class FirebaseNotificationService
                     'click_action' => $click,
                 ]
             );
+
+            if (!$ok) {
+                Log::warning('FCM chat notify: no delivery (missing token or FCM error)', [
+                    'receiver_id' => $receiverId,
+                ]);
+            }
+
+            return $ok;
         } catch (\Throwable $e) {
             Log::warning('FCM chat notify failed: ' . $e->getMessage(), [
                 'sender_id' => $senderId,

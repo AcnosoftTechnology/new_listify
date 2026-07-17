@@ -1,17 +1,22 @@
 @if(
-    auth()->check()
-    && config('services.firebase.enabled')
+    config('services.firebase.enabled')
     && config('services.firebase.api_key')
     && config('services.firebase.vapid_key')
 )
 @php
-    $fcmPrefix = ((int) (auth()->user()->is_agent ?? 0) === 1 || (int) (auth()->user()->role ?? 0) === 2)
-        ? 'agent'
-        : 'customer';
+    $fcmLoggedIn = auth()->check();
+    $fcmPrefix = 'customer';
+    if ($fcmLoggedIn) {
+        $fcmPrefix = ((int) (auth()->user()->is_agent ?? 0) === 1 || (int) (auth()->user()->role ?? 0) === 2)
+            ? 'agent'
+            : 'customer';
+    }
 @endphp
 <script>
     window.firebaseConfig = {
         enabled: true,
+        canSaveToken: @json($fcmLoggedIn),
+        useSitePermissionModal: true,
         apiKey: @json(config('services.firebase.api_key')),
         authDomain: @json(config('services.firebase.auth_domain')),
         projectId: @json(config('services.firebase.project_id')),

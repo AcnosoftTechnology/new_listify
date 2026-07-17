@@ -8,6 +8,7 @@
     <!-- Geolocation Config -->
     <script>
         window.enableGeolocation = {{ config('services.geolocation.enabled') ? 'true' : 'false' }};
+        window.enableNotifications = {{ config('services.firebase.enabled') ? 'true' : 'false' }};
         window.showDistance = {{ config('services.geolocation.show_distance') ? 'true' : 'false' }};
         window.nearbyRadius = {{ config('services.geolocation.radius_km', 50) }};
         window.apiBaseUrl = "{{ url('/api') }}";
@@ -126,8 +127,8 @@
     @include('layouts.toaster')
     @stack('js')
     
-    @if (config('services.geolocation.enabled'))
-    <!-- Location Permission Modal -->
+    @if (config('services.geolocation.enabled') || config('services.firebase.enabled'))
+    <!-- Location + Notification Permission Modal -->
     <div class="modal fade location-permission-modal" id="locationPermissionModal" tabindex="-1" aria-labelledby="locationPermissionModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -137,10 +138,10 @@
                             <path d="M17.1833 7.04166C16.3083 3.19166 12.95 1.45833 9.99996 1.45833C7.04996 1.45833 3.68329 3.18333 2.80829 7.03333C1.83329 11.3333 4.46662 14.975 6.84996 17.2667C7.73329 18.1167 8.86662 18.5417 9.99996 18.5417C11.1333 18.5417 12.2666 18.1167 13.1416 17.2667C15.525 14.975 18.1583 11.3417 17.1833 7.04166ZM9.99996 11.2167C8.54996 11.2167 7.37496 10.0417 7.37496 8.59166C7.37496 7.14166 8.54996 5.96666 9.99996 5.96666C11.45 5.96666 12.625 7.14166 12.625 8.59166C12.625 10.0417 11.45 11.2167 9.99996 11.2167Z" fill="currentColor"/>
                         </svg>
                     </div>
-                    <h5 class="location-permission-modal__title" id="locationPermissionModalLabel">{{ get_phrase('Enable Your Location') }}</h5>
-                    <p class="location-permission-modal__text">{{ get_phrase('Allow location access to discover nearby listings, see accurate distances, and get results tailored to your area.') }}</p>
+                    <h5 class="location-permission-modal__title" id="locationPermissionModalLabel">{{ get_phrase('Enable Location & Notifications') }}</h5>
+                    <p class="location-permission-modal__text">{{ get_phrase('Allow location for nearby listings, and notifications so you never miss messages or enquiry alerts — even when this tab is closed.') }}</p>
                     <div class="location-permission-modal__actions">
-                        <button type="button" class="btn location-permission-modal__btn-allow" id="location-permission-allow">{{ get_phrase('Allow Location') }}</button>
+                        <button type="button" class="btn location-permission-modal__btn-allow" id="location-permission-allow">{{ get_phrase('Allow Access') }}</button>
                         <button type="button" class="btn location-permission-modal__btn-dismiss" id="location-permission-dismiss" data-bs-dismiss="modal">{{ get_phrase('Not Now') }}</button>
                     </div>
                 </div>

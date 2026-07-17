@@ -35,6 +35,12 @@
       .then(function (res) {
         return res.json().then(function (data) {
           console.log('[FCM] Token save', res.status, data);
+          if (data && data.skipped) {
+            console.warn('[FCM] Token NOT saved for this account:', data.skipped);
+          }
+          if (data && data.success && !data.skipped) {
+            console.log('[FCM] Token registered for user_id=', data.user_id);
+          }
           return data;
         });
       })
@@ -220,6 +226,13 @@
     if (!messagingRef || !messagingModRef) {
       return Promise.resolve();
     }
+
+    // Guests: permission only. Token is saved after login.
+    if (!cfg.canSaveToken) {
+      console.log('[FCM] Permission ready; token will save after login');
+      return Promise.resolve();
+    }
+
     return messagingModRef
       .getToken(messagingRef, {
         vapidKey: cfg.vapidKey,
@@ -260,21 +273,26 @@
 
         if (permission === 'denied') {
           console.warn('[FCM] Notifications blocked in browser settings');
-          showBlockedHint();
+          if (cfg.canSaveToken) {
+            showBlockedHint();
+          }
           return null;
         }
 
-        // permission === 'default' — must ask (best from user click)
+        // permission === 'default' — only request from a real user click
+        if (!fromUserClick) {
+          setupStarted = false;
+          return null;
+        }
+
         return Notification.requestPermission().then(function (p) {
           console.log('[FCM] Permission', p);
           if (p === 'granted') {
             removePrompt();
             return registerToken(reg);
           }
-          if (p === 'denied') {
+          if (p === 'denied' && cfg.canSaveToken) {
             showBlockedHint();
-          } else {
-            showPermissionPrompt();
           }
           return null;
         });
@@ -283,6 +301,17 @@
         console.error('[FCM] Setup failed', err);
         setupStarted = false;
       });
+  }
+
+  function onPermissionFromSiteModal(permission) {
+    console.log('[FCM] Site modal permission event:', permission);
+    if (permission === 'granted') {
+      removePrompt();
+      setupStarted = false;
+      askPermissionAndRegister(true);
+    } else if (permission === 'denied' && cfg.canSaveToken) {
+      showBlockedHint();
+    }
   }
 
   function init(firebaseApp, messagingMod) {
@@ -305,28 +334,42 @@
     messagingModRef = messagingMod;
     messagingRef = messagingMod.getMessaging();
 
-    // Foreground messages
-    messagingMod.onMessage(messagingRef, function (payload) {
-      console.log('[FCM] Foreground push received', payload);
-      if (payload && payload.notification) {
-        return;
-      }
-      var data = payload.data || {};
-      showSystemNotification(data.title || 'Listify', data.body || '', data);
-    });
-
-    // On page visit: ask / register immediately
-    if (Notification.permission === 'default') {
-      showPermissionPrompt();
-      // Also try native prompt once page is interactive (some browsers still allow it)
-      setTimeout(function () {
-        askPermissionAndRegister(false);
-      }, 800);
-    } else if (Notification.permission === 'granted') {
-      askPermissionAndRegister(false);
-    } else {
-      showBlockedHint();
+    // Foreground messages (logged-in users)
+    if (cfg.canSaveToken) {
+      messagingMod.onMessage(messagingRef, function (payload) {
+        console.log('[FCM] Foreground push received', payload);
+        if (payload && payload.notification) {
+          return;
+        }
+        var data = payload.data || {};
+        showSystemNotification(data.title || 'Listify', data.body || '', data);
+      });
     }
+
+    // Listen to location modal "Allow Access" (same click → notification allow)
+    document.addEventListener('listify-notification-permission', function (e) {
+      var p = e && e.detail && e.detail.permission;
+      if (p) {
+        onPermissionFromSiteModal(p);
+      }
+    });
+    window.listifyOnNotificationPermission = onPermissionFromSiteModal;
+
+    var hasSiteModal =
+      cfg.useSitePermissionModal &&
+      !!document.getElementById('locationPermissionModal');
+
+    if (Notification.permission === 'granted') {
+      askPermissionAndRegister(false);
+    } else if (Notification.permission === 'denied') {
+      if (cfg.canSaveToken && !hasSiteModal) {
+        showBlockedHint();
+      }
+    } else if (!hasSiteModal) {
+      // No location modal on this page — keep fallback banner
+      showPermissionPrompt();
+    }
+    // else: wait for locationPermissionModal Allow Access click
   }
 
   Promise.all([

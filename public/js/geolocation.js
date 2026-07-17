@@ -1,6 +1,6 @@
 /**
- * Geolocation Handler
- * Detects user's current location and stores it
+ * Geolocation + Notification permission handler
+ * Uses one site modal; Allow click triggers browser prompts for both.
  */
 
 (function() {
@@ -14,19 +14,21 @@
             this.locationCacheTime = 1000 * 60 * 60;
             this.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
             this.permissionModal = null;
+            this.geoOn = window.enableGeolocation !== false;
+            this.notifOn = window.enableNotifications === true;
 
             this.init();
         }
 
         init() {
-            if (window.enableGeolocation === false) {
+            if (!this.geoOn && !this.notifOn) {
                 return;
             }
 
             this.bindPermissionModalEvents();
 
             const cachedLocation = this.getCachedLocation();
-            if (cachedLocation) {
+            if (cachedLocation && this.geoOn) {
                 if (this.resolveDisplayText(cachedLocation)) {
                     this.updateLocationDisplay(cachedLocation);
                 } else if (cachedLocation.latitude && cachedLocation.longitude) {
@@ -37,6 +39,34 @@
                     this.storeLocationOnServer(cachedLocation.latitude, cachedLocation.longitude);
                     this.triggerNearbyListingsFetch(cachedLocation.latitude, cachedLocation.longitude);
                 }
+
+                // Location already known — still ask notifications via same modal if needed
+                this.maybeAskNotificationOnly();
+                return;
+            }
+
+            if (this.isPromptDismissed()) {
+                // Still register FCM if permission already granted
+                if (this.notifOn && 'Notification' in window && Notification.permission === 'granted') {
+                    this.emitNotificationPermission('granted');
+                }
+                return;
+            }
+
+            this.startPermissionFlow();
+        }
+
+        needsNotificationPrompt() {
+            return this.notifOn
+                && typeof Notification !== 'undefined'
+                && Notification.permission === 'default';
+        }
+
+        maybeAskNotificationOnly() {
+            if (!this.needsNotificationPrompt()) {
+                if (this.notifOn && 'Notification' in window && Notification.permission === 'granted') {
+                    this.emitNotificationPermission('granted');
+                }
                 return;
             }
 
@@ -44,7 +74,7 @@
                 return;
             }
 
-            this.startLocationFlow();
+            this.showLocationPermissionModal();
         }
 
         bindPermissionModalEvents() {
@@ -60,20 +90,37 @@
             }
         }
 
-        async startLocationFlow() {
-            const permission = await this.checkGeolocationPermission();
+        async startPermissionFlow() {
+            const geoPermission = this.geoOn
+                ? await this.checkGeolocationPermission()
+                : 'granted';
 
-            if (permission === 'granted') {
-                this.requestUserLocation();
+            const needsNotif = this.needsNotificationPrompt();
+
+            if (geoPermission === 'granted' && !needsNotif) {
+                if (this.geoOn) {
+                    this.requestUserLocation();
+                }
+                if (this.notifOn && 'Notification' in window && Notification.permission === 'granted') {
+                    this.emitNotificationPermission('granted');
+                }
                 return;
             }
 
-            if (permission === 'denied') {
+            if (geoPermission === 'denied' && !needsNotif) {
                 this.markPromptDismissed();
                 return;
             }
 
-            this.showLocationPermissionModal();
+            // Show our modal so user click can open browser prompts (location and/or notifications)
+            if (geoPermission === 'prompt' || needsNotif) {
+                this.showLocationPermissionModal();
+                return;
+            }
+
+            if (this.geoOn) {
+                this.requestUserLocation();
+            }
         }
 
         async checkGeolocationPermission() {
@@ -92,7 +139,8 @@
         showLocationPermissionModal() {
             const modalEl = document.getElementById('locationPermissionModal');
             if (!modalEl || typeof bootstrap === 'undefined') {
-                this.requestUserLocation();
+                // Fallback without modal UI
+                this.handlePermissionAllow();
                 return;
             }
 
@@ -106,17 +154,59 @@
             }
         }
 
+        /**
+         * Same user-gesture click must start both browser prompts.
+         */
         handlePermissionAllow() {
-            if (!navigator.geolocation) {
+            // 1) Notifications first (same click gesture — required by Chrome)
+            this.requestNotificationPermission();
+
+            // 2) Location
+            if (this.geoOn && navigator.geolocation) {
+                this.requestUserLocation();
+            } else if (this.geoOn && !navigator.geolocation) {
                 console.warn('Geolocation is not supported by this browser');
-                this.markPromptDismissed();
-                this.hideLocationPermissionModal();
+            }
+
+            this.hideLocationPermissionModal();
+        }
+
+        requestNotificationPermission() {
+            if (!this.notifOn || !('Notification' in window)) {
                 return;
             }
 
-            // Must request while the click gesture is still active.
-            this.requestUserLocation();
-            this.hideLocationPermissionModal();
+            if (Notification.permission === 'granted') {
+                this.emitNotificationPermission('granted');
+                return;
+            }
+
+            if (Notification.permission === 'denied') {
+                this.emitNotificationPermission('denied');
+                return;
+            }
+
+            // Must be called directly from the click handler
+            Notification.requestPermission()
+                .then((permission) => {
+                    console.log('[Permissions] Notification:', permission);
+                    this.emitNotificationPermission(permission);
+                })
+                .catch((err) => {
+                    console.warn('[Permissions] Notification request failed', err);
+                });
+        }
+
+        emitNotificationPermission(permission) {
+            document.dispatchEvent(new CustomEvent('listify-notification-permission', {
+                detail: { permission: permission }
+            }));
+
+            if (typeof window.listifyOnNotificationPermission === 'function') {
+                try {
+                    window.listifyOnNotificationPermission(permission);
+                } catch (e) {}
+            }
         }
 
         handlePermissionDismiss() {

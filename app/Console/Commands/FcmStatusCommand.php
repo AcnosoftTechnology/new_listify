@@ -55,7 +55,10 @@ class FcmStatusCommand extends Command
             $this->line('legacy fcm_token: ' . (empty($legacy) ? 'EMPTY' : 'SET'));
 
             if ($count === 0) {
-                $this->warn('Vendor must login on each device and Allow browser notifications once.');
+                $this->warn('No FCM token — this user must login, Allow notifications, and keep that browser open once so token can save.');
+                $this->warn('Without a saved token, chat/enquiry push cannot reach this user.');
+            } else {
+                $this->info('Push can be delivered to this user.');
             }
         }
 
