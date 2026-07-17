@@ -1,34 +1,45 @@
 <?php
 
 use App\Http\Controllers\Api\InternalUploadController;
+use App\Http\Controllers\Api\MobileAuthController;
+use App\Http\Controllers\Api\MobileFcmController;
 use App\Http\Controllers\Api\PushNotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Upload API Routes
+| API Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
-
-
 Route::post('/internal-upload', [InternalUploadController::class, 'upload']);
-
 Route::post('/custom-field-upload', [InternalUploadController::class, 'customFieldUpload']);
+Route::post('/listing-image-upload', [InternalUploadController::class, 'listingImageUpload']);
+Route::post('/inventory-image-upload', [InternalUploadController::class, 'inventoryImageUpload']);
+Route::post('/qrcode-image-upload', [InternalUploadController::class, 'qrcodeImageUpload']);
+Route::post('/blog-image-upload', [InternalUploadController::class, 'blogImageUpload']);
 
-Route::post('/listing-image-upload',[InternalUploadController::class, 'listingImageUpload']);
+/*
+|--------------------------------------------------------------------------
+| Mobile App — Auth + Push Notification APIs
+| Base URL: https://www.listify.asia/api
+|--------------------------------------------------------------------------
+*/
 
-Route::post('/inventory-image-upload',[InternalUploadController::class, 'inventoryImageUpload']);
+// Public
+Route::post('/auth/login', [MobileAuthController::class, 'login']);
 
-Route::post('/qrcode-image-upload',[InternalUploadController::class, 'qrcodeImageUpload']);
+// Protected (Authorization: Bearer {token})
+Route::middleware('auth.api')->group(function () {
+    Route::get('/auth/me', [MobileAuthController::class, 'me']);
+    Route::post('/auth/logout', [MobileAuthController::class, 'logout']);
 
-Route::post( '/blog-image-upload', [InternalUploadController::class, 'blogImageUpload'] );
+    Route::post('/fcm/register', [MobileFcmController::class, 'register']);
+    Route::delete('/fcm/unregister', [MobileFcmController::class, 'unregister']);
+    Route::post('/fcm/unregister', [MobileFcmController::class, 'unregister']); // alias for clients without DELETE
+    Route::get('/fcm/devices', [MobileFcmController::class, 'devices']);
+    Route::post('/fcm/test', [MobileFcmController::class, 'test']);
+});
 
-// Future-ready: external systems can trigger FCM push (header: X-Push-Api-Key)
+// Server-to-server test/send (header: X-Push-Api-Key = FIREBASE_PUSH_API_KEY)
 Route::post('/push/notify', [PushNotificationController::class, 'send']);
-

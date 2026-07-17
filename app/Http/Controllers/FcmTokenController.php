@@ -41,19 +41,21 @@ class FcmTokenController extends Controller
                 ->where('token', $token)
                 ->first();
 
+            $row = [
+                'device_label' => $deviceLabel,
+                'updated_at' => now(),
+            ];
+            if (Schema::hasColumn('fcm_tokens', 'platform')) {
+                $row['platform'] = 'web';
+            }
+
             if ($existing) {
-                DB::table('fcm_tokens')->where('id', $existing->id)->update([
-                    'device_label' => $deviceLabel,
-                    'updated_at' => now(),
-                ]);
+                DB::table('fcm_tokens')->where('id', $existing->id)->update($row);
             } else {
-                DB::table('fcm_tokens')->insert([
-                    'user_id' => $user->id,
-                    'token' => $token,
-                    'device_label' => $deviceLabel,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                $row['user_id'] = $user->id;
+                $row['token'] = $token;
+                $row['created_at'] = now();
+                DB::table('fcm_tokens')->insert($row);
             }
         }
 

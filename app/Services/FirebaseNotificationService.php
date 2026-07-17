@@ -29,23 +29,29 @@ class FirebaseNotificationService
                 return false;
             }
 
-            $tokens = $this->tokensForUser($userId);
-            if (empty($tokens)) {
+            $devices = $this->devicesForUser($userId);
+            if (empty($devices)) {
                 Log::info('FCM skip: no tokens for user', ['user_id' => $userId]);
 
                 return false;
             }
 
             $sent = 0;
-            foreach ($tokens as $token) {
-                if ($this->sendToToken($token, $title, $body, $data)) {
+            foreach ($devices as $device) {
+                if ($this->sendToToken(
+                    $device['token'],
+                    $title,
+                    $body,
+                    $data,
+                    $device['platform']
+                )) {
                     $sent++;
                 }
             }
 
             Log::info('FCM sendToUser summary', [
                 'user_id' => $userId,
-                'devices' => count($tokens),
+                'devices' => count($devices),
                 'sent_ok' => $sent,
             ]);
 
@@ -124,7 +130,7 @@ class FirebaseNotificationService
         }
     }
 
-    public function sendToToken(string $token, string $title, string $body, array $data = []): bool
+    public function sendToToken(string $token, string $title, string $body, array $data = [], string $platform = 'web'): bool
     {
         try {
             if (!$this->isEnabled() || $token === '') {
@@ -137,10 +143,14 @@ class FirebaseNotificationService
                 return false;
             }
 
+            $platform = strtolower($platform ?: 'web');
+            if (!in_array($platform, ['web', 'android', 'ios'], true)) {
+                $platform = 'web';
+            }
+
             $click = (string) ($data['click_action'] ?? '/agent/appointment');
             $clickPath = $this->toSitePath($click);
             $clickAbsolute = $this->toAbsoluteUrl($clickPath);
-            // Same path as SW file on live docroot (must be PNG — SVG fails silently)
             $icon = $this->toAbsoluteUrl('/fcm-notification-icon.png');
 
             $stringData = [
@@ -158,23 +168,53 @@ class FirebaseNotificationService
                     : json_encode($value);
             }
 
-            // Data-only: one notification path (SW foreground + background).
-            // webpush.notification was causing duplicate toasts with onMessage/showNotification.
-            $payload = [
-                'message' => [
-                    'token' => $token,
-                    'data' => $stringData,
-                    'webpush' => [
-                        'headers' => [
-                            'Urgency' => 'high',
-                            'TTL' => '86400',
-                        ],
-                        'fcm_options' => [
-                            'link' => $clickAbsolute,
-                        ],
-                    ],
-                ],
+            $message = [
+                'token' => $token,
+                'data' => $stringData,
             ];
+
+            if ($platform === 'web') {
+                // Data-only + webpush — browser SW shows system toast (avoids duplicate)
+                $message['webpush'] = [
+                    'headers' => [
+                        'Urgency' => 'high',
+                        'TTL' => '86400',
+                    ],
+                    'fcm_options' => [
+                        'link' => $clickAbsolute,
+                    ],
+                ];
+            } elseif ($platform === 'android') {
+                $message['android'] = [
+                    'priority' => 'high',
+                    'notification' => [
+                        'title' => $title,
+                        'body' => $body,
+                        'sound' => 'default',
+                        'click_action' => $clickPath,
+                        'channel_id' => 'listify_default',
+                    ],
+                ];
+            } else { // ios
+                $message['apns'] = [
+                    'headers' => [
+                        'apns-priority' => '10',
+                    ],
+                    'payload' => [
+                        'aps' => [
+                            'alert' => [
+                                'title' => $title,
+                                'body' => $body,
+                            ],
+                            'sound' => 'default',
+                            'badge' => 1,
+                        ],
+                        'click_action' => $clickPath,
+                    ],
+                ];
+            }
+
+            $payload = ['message' => $message];
 
             $response = Http::withToken($accessToken)
                 ->acceptJson()
@@ -187,6 +227,7 @@ class FirebaseNotificationService
             if (!$response->successful()) {
                 Log::warning('FCM API error', [
                     'status' => $response->status(),
+                    'platform' => $platform,
                     'body' => $response->body(),
                 ]);
 
@@ -211,7 +252,6 @@ class FirebaseNotificationService
 
         if (!(bool) config('services.firebase.enabled')
             || empty(config('services.firebase.project_id'))
-            || empty(config('services.firebase.vapid_key'))
             || empty($credentials)
             || !is_readable($credentials)
         ) {
@@ -226,30 +266,50 @@ class FirebaseNotificationService
             && !empty($json['private_key']);
     }
 
-    protected function tokensForUser(int $userId): array
+    /**
+     * @return array<int, array{token: string, platform: string}>
+     */
+    protected function devicesForUser(int $userId): array
     {
-        $tokens = [];
+        $devices = [];
 
         if (Schema::hasTable('fcm_tokens')) {
-            $tokens = DB::table('fcm_tokens')
-                ->where('user_id', $userId)
-                ->pluck('token')
-                ->filter()
-                ->map(fn ($t) => trim((string) $t))
-                ->unique()
-                ->values()
-                ->all();
-        }
-
-        // Legacy column only when multi-device table is empty (avoids stale duplicate sends)
-        if (empty($tokens) && Schema::hasColumn('users', 'fcm_token')) {
-            $legacy = DB::table('users')->where('id', $userId)->value('fcm_token');
-            if (!empty($legacy)) {
-                $tokens[] = trim((string) $legacy);
+            $rows = DB::table('fcm_tokens')->where('user_id', $userId)->get();
+            foreach ($rows as $row) {
+                $token = trim((string) ($row->token ?? ''));
+                if ($token === '') {
+                    continue;
+                }
+                $platform = 'web';
+                if (isset($row->platform) && $row->platform !== '') {
+                    $platform = strtolower((string) $row->platform);
+                }
+                $devices[$token] = [
+                    'token' => $token,
+                    'platform' => in_array($platform, ['web', 'android', 'ios'], true) ? $platform : 'web',
+                ];
             }
         }
 
-        return array_values(array_unique(array_filter($tokens)));
+        // Legacy column only when multi-device table has nothing
+        if (empty($devices) && Schema::hasColumn('users', 'fcm_token')) {
+            $legacy = DB::table('users')->where('id', $userId)->value('fcm_token');
+            if (!empty($legacy)) {
+                $token = trim((string) $legacy);
+                $devices[$token] = [
+                    'token' => $token,
+                    'platform' => 'web',
+                ];
+            }
+        }
+
+        return array_values($devices);
+    }
+
+    /** @deprecated use devicesForUser */
+    protected function tokensForUser(int $userId): array
+    {
+        return array_column($this->devicesForUser($userId), 'token');
     }
 
     protected function forgetToken(string $token): void
