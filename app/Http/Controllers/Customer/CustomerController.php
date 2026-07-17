@@ -341,36 +341,46 @@ public function deleteNotification(Request $request){
   
 
 
-    public function storeqrcode(Request $request){
-  
+public function storeqrcode(Request $request)
+{
     $request->validate([
-        'title' => 'required|string|max:250',  
-        'upiid' => 'required|string|max:250',
+        'title'  => 'required|string|max:250',
+        'upiid'  => 'required|string|max:250',
         'status' => 'required|in:0,1',
         'qrcode' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 
-    $mediaPath = null;
+    $qrcode = Qrcode::find(1);
+
+    $mediaPath = $qrcode ? $qrcode->qrcode : null;
 
     if ($request->hasFile('qrcode')) {
+
+        // Purani image delete
+        if ($qrcode && $qrcode->qrcode && file_exists(public_path('uploads/qrcodes/' . $qrcode->qrcode))) {
+            unlink(public_path('uploads/qrcodes/' . $qrcode->qrcode));
+        }
+
         $image = $request->file('qrcode');
         $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('uploads/qrcodes'), $imageName);
-        $mediaPath = $imageName; 
-    }
-      
-    Qrcode::create([
-        'user_id' => Auth::id(),
-        'qrcode'  => $mediaPath,
-        'title'   => $request->title,
-        'upiid'   => $request->upiid,
-        'status'  => $request->status,
-        'created_at' => now(),
-    ]);
 
-    Toastr::success('Qrcode added successfully!');
+        $mediaPath = $imageName;
+    }
+
+    Qrcode::updateOrCreate(
+        ['id' => 1],
+        [
+            'user_id' => Auth::id(),
+            'qrcode'  => $mediaPath,
+            'title'   => $request->title,
+            'upiid'   => $request->upiid,
+            'status'  => $request->status,
+        ]
+    );
+
+    Toastr::success('QR Code saved successfully!');
     return redirect()->route('customer.qrcode');
-      
 }
   
 
@@ -386,24 +396,32 @@ public function qredit($id){
 }
 
  
-  public function updateqrcode(Request $request, $id){
-    
+ public function updateqrcode(Request $request, $id)
+{
     $request->validate([
         'title'  => 'required|string|max:250',
         'upiid'  => 'required|string|max:250',
         'status' => 'required|in:0,1',
+        'qrcode' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 
     $qrcode = Qrcode::findOrFail($id);
 
     $qrcode->title = $request->title;
-     $qrcode->upiid = $request->upiid;
+    $qrcode->upiid = $request->upiid;
     $qrcode->status = $request->status;
 
     if ($request->hasFile('qrcode')) {
+
+        // Purani image delete
+        if ($qrcode->qrcode && file_exists(public_path('uploads/qrcodes/' . $qrcode->qrcode))) {
+            unlink(public_path('uploads/qrcodes/' . $qrcode->qrcode));
+        }
+
         $image = $request->file('qrcode');
-        $imageName = time().'.'.$image->getClientOriginalExtension();
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('uploads/qrcodes'), $imageName);
+
         $qrcode->qrcode = $imageName;
     }
 
@@ -412,6 +430,7 @@ public function qredit($id){
     Toastr::success('QR Code updated successfully!');
     return redirect()->route('customer.qrcode');
 }
+
 
   public function destroy($id)
 {

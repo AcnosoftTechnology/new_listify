@@ -41,17 +41,22 @@
                 <div class="col-lg-8 col-xl-9">
                   <div class="ol-card qrcode_list radius-8px">
                     <div class="ol-card-body my-2 py-20px px-20px">
+                        
+                        @if($Qrcode->isEmpty())
                       <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
                         <h4 class="title qr-title fs-16px">
                           <i class="fa fa-sliders"></i>
                           {{ get_phrase('Qrcodes') }}
                         </h4>
 
-                        <a href="{{route('customer.addqr')}}" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
-                          <i class="fa fa-plus me-1"></i> <span> {{ get_phrase('Add Qrcodes') }} </span>
-                        </a>
+                            <a href="{{ route('customer.addqr') }}" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
+                                <i class="fa fa-plus me-1"></i>
+                                <span>{{ get_phrase('Add Qrcodes') }}</span>
+                            </a>
+                        
 
                       </div>
+                      @endif
                     </div>
                     
                     <div class="ol-card radius-8px">

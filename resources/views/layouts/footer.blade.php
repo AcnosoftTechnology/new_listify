@@ -201,328 +201,444 @@
 </footer>
 
 <style>
-  #ai-chat-toggle{
-    position: fixed;
-    bottom:12%;
-    right: 7px;
-    border-radius: 50%;
-    background-color: #f5efff;
-    padding: 10px;
-    z-index:999;
-    cursor:pointer;
-  }
-  
- #ai-chat-toggle img{
-    width: 50px;
-    height: 50px;
-  }
-  
-#ai-chat-box{
-    position:fixed;
-    right:25px;
-    bottom: 25px;
-    width: 400px;
-    height: 550px;
-    background:#fff;
-    border-radius:20px;
-    overflow:hidden;
-    display:none;
-    box-shadow:0 20px 50px rgba(0,0,0,.25);
-    z-index:999999;
+:root{
+    --chat-bg:#0b1521;
+    --chat-panel:#121e2b;
+    --chat-card:#172433;
+    --chat-text:#f3f5f7;
+    --chat-muted:#9aa5b1;
+    --chat-orange:#ff7043;
 }
 
+#ai-chat-toggle{
+    position:fixed;
+    right:18px;
+    bottom:22px;
+    width:62px;
+    height:62px;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ff7a45,#e94c36);
+    box-shadow:0 10px 25px rgba(0,0,0,.32);
+    z-index:99999;
+    cursor:pointer;
+}
+#ai-chat-toggle img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+#ai-chat-box{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:400px;
+    height:min(720px,calc(100vh - 40px));
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    z-index:999999;
+    color:var(--chat-text);
+    background:var(--chat-bg);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    box-shadow:0 22px 60px rgba(0,0,0,.45);
+    font-family:Arial,sans-serif;
+}
+#ai-chat-box.active{ display:flex; }
+
 .chat-header{
-    height:80px;
-    background:linear-gradient(90deg,#6C2CF5,#7B2FF7);
-    color:#fff;
+    min-height:86px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:15px 20px;
+    padding:16px 20px;
+    background:#14202c;
+    border-bottom:1px solid rgba(255,255,255,.04);
 }
-
-.chat-header-left{
-    display:flex;
-    align-items:center;
-}
-
-.chat-header-left img{
-    width:45px;
-    height:45px;
+.chat-header-left{ display:flex; align-items:center; gap:13px; }
+.chat-avatar{
+    position:relative;
+    width:54px;
+    height:54px;
+    flex:none;
+    padding:2px;
     border-radius:50%;
-    margin-right:12px;
+    background:linear-gradient(135deg,#ff8548,#e94f37);
 }
-
-.chat-title{
-    font-size:20px;
-    font-weight:700;
+.chat-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
 }
+.chat-avatar:after{
+    content:"";
+    position:absolute;
+    right:0;
+    bottom:1px;
+    width:12px;
+    height:12px;
+    border:2px solid #14202c;
+    border-radius:50%;
+    background:#13bd78;
+}
+.chat-title{ font-size:20px; font-weight:700; }
+.chat-subtitle{ margin-top:4px; color:var(--chat-muted); font-size:13px; }
 
-.chat-subtitle{
-    font-size:13px;
-    opacity:.9;
+#closeChat{
+    border:0;
+    color:#c5ccd4;
+    background:transparent;
+    font-size:29px;
+    cursor:pointer;
 }
 
 .chat-body{
-    height: 380px;
+    flex:1;
     overflow-y:auto;
-    padding:20px;
-    background:#F8F9FC;
+    padding: 15px 10px;
+    background:var(--chat-bg);
 }
+.message-row{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:16px;
+}
+.message-row.user-row{ justify-content:flex-end; }
 
+.bot-mini-avatar{
+    width:45px;
+    height:45px;
+    flex:none;
+    border-radius:50%;
+    overflow:hidden;
+    background:var(--chat-orange);
+}
+.bot-mini-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.bot-message,
 .user-message{
-
-    max-width:80%;
-
-    margin-left:auto;
-
-    background:linear-gradient(90deg,#6C2CF5,#7B2FF7);
-
-    color:#fff;
-
-    padding:14px 18px;
-
-    border-radius:18px 18px 4px 18px;
-
-    margin-bottom:15px;
-
+    max-width:82%;
+    line-height:1.52;
     word-break:break-word;
-
+}
+.bot-message{
+    padding:20px;
+    color:#d7dde4;
+    background:var(--chat-card);
+    border-radius:20px 20px 20px 5px;
+    box-shadow:0 8px 22px rgba(0,0,0,.13);
+}
+.user-message{
+    padding:13px 16px;
+    color:#fff;
+    background:linear-gradient(135deg,#ed6840,#d94a38);
+    border-radius:18px 18px 4px 18px;
 }
 
-.bot-message{
+.welcome-title{
+    margin-bottom:14px;
+    color:#fff;
+    font-size:22px;
+    font-weight:700;
+}
+.welcome-list{
+    margin:18px 0;
+    padding:0;
+    list-style:none;
+}
+.welcome-list li{ margin:11px 0; }
+.welcome-list li:before{
+    content:"✓";
+    display:inline-grid;
+    place-items:center;
+    width:21px;
+    height:21px;
+    margin-right:12px;
+    border-radius:50%;
+    color:#172433;
+    background:var(--chat-orange);
+    font-size:14px;
+    font-weight:700;
+}
 
-    max-width:85%;
-
-    background:#fff;
-
-    border-radius:18px 18px 18px 4px;
-
-    padding:15px;
-
-    margin-bottom:15px;
-
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-
-    word-break:break-word;
-
+.suggestions{
+    display:flex;
+    gap:9px;
+    overflow-x:auto;
+    padding:10px 15px 12px;
+    background:var(--chat-bg);
+    scrollbar-width:none;
+}
+.suggestions::-webkit-scrollbar{ display:none; }
+.suggestion{
+    flex:none;
+    padding:9px 14px;
+    color:var(--chat-orange);
+    border:1px solid rgba(255,112,67,.42);
+    border-radius:24px;
+    background:transparent;
+    cursor:pointer;
+    white-space:nowrap;
 }
 
 .chat-footer{
-
-    height:80px;
-
-    border-top:1px solid #eee;
-
     display:flex;
-
     align-items:center;
-
-    padding:15px;
-
-    background:#fff;
-
+    gap:10px;
+    padding:12px 16px 8px;
+    background:var(--chat-bg);
 }
-
 .chat-footer input{
-
+    min-width:0;
     flex:1;
-
-    border:1px solid #ddd;
-
-    border-radius:50px;
-
-    padding:14px 18px;
-
-    outline:none;
-
+    height:54px;
+    padding:0 18px;
+    border:0;
+    outline:0;
+    color:var(--chat-text);
+    border-radius:30px;
+    background:#182534;
+}
+.chat-footer input::placeholder{ color:#7e8a96; }
+.chat-footer button{
+    width:50px;
+    height:50px;
+    flex:none;
+    border:0;
+    border-radius:50%;
+    color:#fff;
+    background:linear-gradient(135deg,#ff7a45,#e84f38);
+    font-size:22px;
+    cursor:pointer;
+}
+.chat-note{
+    padding:0 18px 14px;
+    color:#65717e;
+    background:var(--chat-bg);
+    font-size:11px;
+    text-align:center;
 }
 
-.chat-footer button{
-
-    margin-left:10px;
-
-    width:90px;
-
-    height:50px;
-
-    border:none;
-
-    border-radius:50px;
-
-    color:#fff;
-
-    background:linear-gradient(90deg,#6C2CF5,#7B2FF7);
-
+@media(max-width:600px){
+    #ai-chat-box{
+        top:0;
+        right:0;
+        bottom:0;
+        width:100%;
+        height:100dvh;
+        border:0;
+        border-radius:0;
+    }
+    #ai-chat-toggle{ bottom:18px; right:18px; }
+    .chat-body{ padding:24px 16px; }
 }
 </style>
 
-<div id="ai-chat-toggle">
-    <img src="{{ asset('assets/chatbot/bot-icon.png') }}">
-</div>
+<button id="ai-chat-toggle" aria-label="Open AI Concierge">
+    <img src="{{ asset('assets/chatbot/bot-icon.png') }}" alt="AI Concierge">
+</button>
 
-<div id="ai-chat-box">
-
-<div class="chat-header">
-
-    <div class="chat-header-left">
-
-        <img src="{{ asset('assets/chatbot/bot-icon.png') }}">
-
-        <div>
-
-            <div class="chat-title">
-
-                Listify AI
-
+<div id="ai-chat-box" role="dialog" aria-label="AI Concierge">
+    <div class="chat-header">
+        <div class="chat-header-left">
+            <div class="chat-avatar">
+                <img src="{{ asset('assets/chatbot/bot-icon.png') }}" alt="AI Concierge">
             </div>
-
-            <div class="chat-subtitle">
-
-                Smart Business Assistant
-
+            <div>
+                <div class="chat-title">AI Concierge ✨</div>
+                <div class="chat-subtitle">Your smart companion for Listify</div>
             </div>
-
         </div>
-
+        <button id="closeChat" aria-label="Close chat">×</button>
     </div>
-
-    <div id="closeChat" style="font-size:24px;cursor:pointer">
-
-        ×
-
-    </div>
-
-</div>
 
     <div class="chat-body" id="chatBody">
-
-        <div class="bot-message">
-
-            👋 Hello! <br>
-
-            Ask me anything.
-
+        <div class="message-row">
+            <div class="bot-mini-avatar">
+                <img src="{{ asset('assets/chatbot/bot-icon.png') }}" alt="">
+            </div>
+            <div class="bot-message">
+                <div class="welcome-title">Hello, Guest! 👋</div>
+                I'm your AI assistant for all things Listify. I can help you:
+                <ul class="welcome-list">
+                    <li>Discover the best local listings</li>
+                    <li>Find top-rated businesses &amp; services</li>
+                    <li>Ask about appointments and bookings</li>
+                    <li>Get personalized recommendations</li>
+                </ul>
+                What would you like to explore today?
+            </div>
         </div>
-
     </div>
 
-<div class="chat-footer">
+    <div class="suggestions">
+        <button class="suggestion">Restaurants 🍔</button>
+        <button class="suggestion">Hotels 🏨</button>
+        <button class="suggestion">Salons 💇</button>
+        <button class="suggestion">Gyms 🏋️</button>
+    </div>
 
-    <input
-        type="text"
-        id="chatMessage"
-        placeholder="Ask anything..."
-    >
-
-    <button id="sendMessage">
-
-        ➜
-
-    </button>
-
-</div>
-
+    <div class="chat-footer">
+        <input type="text" id="chatMessage" placeholder="Ask me anything about Listify...">
+        <button id="sendMessage" aria-label="Send message">➤</button>
+    </div>
+    <div class="chat-note">AI Concierge can make mistakes. Please verify important information.</div>
 </div>
 
 <script>
+const chatBox = document.getElementById("ai-chat-box");
+const chatBody = document.getElementById("chatBody");
+const messageInput = document.getElementById("chatMessage");
+const botIcon = "{{ asset('assets/chatbot/bot-icon.png') }}";
 
-let session_id=localStorage.getItem("chat_session");
+let selectedCategory = null;
+let waitingForCity = false;
 
-if(session_id==null){
-
-session_id="sess_"+Date.now();
-
-localStorage.setItem("chat_session",session_id);
-
+let session_id = localStorage.getItem("chat_session");
+if (!session_id) {
+    session_id = "sess_" + Date.now();
+    localStorage.setItem("chat_session", session_id);
 }
 
-document.getElementById("ai-chat-toggle").onclick=function(){
+document.getElementById("ai-chat-toggle").onclick = () => {
+    chatBox.classList.add("active");
+    messageInput.focus();
+};
 
-document.getElementById("ai-chat-box").style.display="block";
+document.getElementById("closeChat").onclick = () => {
+    chatBox.classList.remove("active");
+};
 
+function scrollChat() {
+    chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-document.getElementById("closeChat").onclick=function(){
+function addMessage(text, type) {
+    const row = document.createElement("div");
+    row.className = type === "user" ? "message-row user-row" : "message-row";
 
-document.getElementById("ai-chat-box").style.display="none";
+    const message = document.createElement("div");
+    message.className = type === "user" ? "user-message" : "bot-message";
+    message.textContent = text;
 
+    if (type === "bot") {
+        const avatar = document.createElement("div");
+        avatar.className = "bot-mini-avatar";
+
+        const image = document.createElement("img");
+        image.src = botIcon;
+        image.alt = "";
+        avatar.appendChild(image);
+        row.appendChild(avatar);
+    }
+
+    row.appendChild(message);
+    chatBody.appendChild(row);
+    scrollChat();
+
+    return message;
 }
 
-document.getElementById("sendMessage").onclick=function(){
+async function sendMessage() {
+    let inputMessage = messageInput.value.trim();
+    if (!inputMessage) return;
 
-let msg=document.getElementById("chatMessage").value;
+    /* User ne category select ki hui hai, to current message city hai */
+    if (waitingForCity && selectedCategory) {
+        const city = inputMessage;
 
-if(msg=="") return;
+        addMessage(city, "user");
+        messageInput.value = "";
+        messageInput.placeholder = "Ask me anything about Listify...";
 
-let body=document.getElementById("chatBody");
+        const apiMessage =
+            `Show me the best ${selectedCategory} in ${city}. ` +
+            `Give local listings and useful recommendations.`;
 
-body.innerHTML+=`
-<div class="user-message">
-${msg}
-</div>
-`;
+        selectedCategory = null;
+        waitingForCity = false;
 
-document.getElementById("chatMessage").value="";
+        await callChatApi(apiMessage);
+        return;
+    }
 
-body.innerHTML+=`
-<div class="bot-message" id="typing">
-Typing...
-</div>
-`;
+    /* Normal user question */
+    addMessage(inputMessage, "user");
+    messageInput.value = "";
 
-body.scrollTop=body.scrollHeight;
+    await callChatApi(inputMessage);
+}
 
-fetch("https://api.listify.asia/api/v1/chat/concierge",{
+async function callChatApi(message) {
+    const typing = addMessage("Typing...", "bot");
 
-method:"POST",
+    try {
+        const res = await fetch("https://api.listify.asia/api/v1/chat/concierge", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                message: message,
+                session_id: session_id,
+                user_name: "Guest"
+            })
+        });
 
-headers:{
+        if (!res.ok) {
+            throw new Error("API Error: " + res.status);
+        }
 
-"Content-Type":"application/json",
+        const data = await res.json();
 
-"Accept":"application/json"
+        typing.closest(".message-row").remove();
 
-},
+        addMessage(
+            data.response_text || "Sorry, I could not understand that.",
+            "bot"
+        );
+    } catch (error) {
+        typing.textContent = "Connection error. Please try again.";
+        console.error(error);
+    }
+}
 
-body:JSON.stringify({
+document.getElementById("sendMessage").onclick = () => sendMessage();
 
-message:msg,
-
-session_id:session_id,
-
-user_name:"Guest"
-
-})
-
-})
-
-.then(res=>res.json())
-
-.then(data=>{
-
-document.getElementById("typing").remove();
-
-body.innerHTML+=`
-<div class="bot-message">
-${data.response_text}
-</div>
-`;
-
-body.scrollTop=body.scrollHeight;
-
-})
-
-.catch(err=>{
-
-document.getElementById("typing").innerHTML="Connection Error";
-
-console.log(err);
-
+messageInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
 });
 
-}
+/* Restaurants / Hotels / Salons / Gyms chip click */
+document.querySelectorAll(".suggestion").forEach((button) => {
+    button.addEventListener("click", () => {
+        selectedCategory = button.textContent.trim();
+        waitingForCity = true;
 
+        addMessage(selectedCategory, "user");
+
+        addMessage(
+            `Great choice! ${selectedCategory} ke liye aap kis city mein search karna chahte hain?`,
+            "bot"
+        );
+
+        messageInput.value = "";
+        messageInput.placeholder = "Enter your city name...";
+        messageInput.focus();
+    });
+});
 </script>
 
 <!-- End Footer Area -->
