@@ -22,6 +22,15 @@
 	line-height: 23px;
 	font-size: 13px;
 }
+tr.listify-order-highlight {
+    outline: 2px solid #7c3aed;
+    background: rgba(124, 58, 237, 0.08) !important;
+    animation: listifyOrderPulse 1.2s ease-in-out 2;
+}
+@keyframes listifyOrderPulse {
+    0%, 100% { background: rgba(124, 58, 237, 0.08); }
+    50% { background: rgba(124, 58, 237, 0.18); }
+}
 </style>
 
 <!-- Start Main Area -->
@@ -96,8 +105,9 @@
                                 @foreach ($pendingOrders as $key => $order)
                                 @php
                                    $products = json_decode($order->product, true); 
+                                   $isHighlight = !empty($highlight_order_id) && (int) $highlight_order_id === (int) $order->id;
                                 @endphp
-                                <tr class="ca-tr">
+                                <tr class="ca-tr {{ $isHighlight ? 'listify-order-highlight' : '' }}" id="order-{{ $order->id }}" data-order-id="{{ $order->id }}">
                                   <td>
                                      {{++$key}}
                                   </td>
@@ -220,6 +230,20 @@
             warning('Please select a payment status');
         }
     });
+
+    (function () {
+        var orderId = @json((int) ($highlight_order_id ?? 0));
+        if (!orderId) {
+            return;
+        }
+        var row = document.getElementById('order-' + orderId);
+        if (!row) {
+            return;
+        }
+        setTimeout(function () {
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 250);
+    })();
 </script>
 
 

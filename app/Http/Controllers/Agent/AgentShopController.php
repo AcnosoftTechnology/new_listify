@@ -214,10 +214,26 @@ public function inventory_update(Request $request, $id){
 }
 
 
-    public function order_manager() {
+    public function order_manager(\Illuminate\Http\Request $request)
+    {
         $page_data['active'] = 'order_manager';
-        $page_data['pendingOrders'] = InventoryPurchase::where('listing_creator_id', auth()->user()->id)->where('delivery_status', 'pending')->orderBy('created_at', 'desc')->paginate(10);
-        return view('user.shop.order_manager',$page_data);
+        $orderId = (int) $request->query('order_id', 0);
+        $page_data['highlight_order_id'] = $orderId;
+
+        $query = InventoryPurchase::where('listing_creator_id', auth()->user()->id)
+            ->where('delivery_status', 'pending');
+
+        // Put the notified order first so notification click lands on it
+        if ($orderId > 0) {
+            $query->orderByRaw('CASE WHEN id = ? THEN 0 ELSE 1 END', [$orderId]);
+        }
+
+        $page_data['pendingOrders'] = $query
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->appends($request->query());
+
+        return view('user.shop.order_manager', $page_data);
     }
     public function order_delivery() {
         $page_data['active'] = 'order_delivery';

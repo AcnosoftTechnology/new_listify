@@ -48,7 +48,11 @@ function resolveClickTarget(data) {
   if (data.type === 'enquiry') {
     return absoluteUrl('/agent/appointment');
   }
-  return absoluteUrl('/agent/messages');
+  if (data.type === 'order') {
+    var oid = data.order_id || '';
+    return absoluteUrl('/agent/order-manager' + (oid ? '?order_id=' + oid : ''));
+  }
+  return absoluteUrl('/agent/order-manager');
 }
 
 function showSystemNotification(payload) {
@@ -61,7 +65,9 @@ function showSystemNotification(payload) {
   var tagKey =
     data.type === 'chat'
       ? 'chat-' + (data.thread_code || Date.now())
-      : 'enquiry-' + (data.appointment_id || Date.now());
+      : data.type === 'order'
+        ? 'order-' + (data.order_id || Date.now())
+        : 'enquiry-' + (data.appointment_id || Date.now());
 
   return self.registration.showNotification(title, {
     body: body,
