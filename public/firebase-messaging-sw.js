@@ -13,17 +13,22 @@ firebase.initializeApp({
 
 var messaging = firebase.messaging();
 
-/** Same folder as this SW — works on live (docroot) and local */
 function iconUrl() {
   return self.location.origin + '/fcm-notification-icon.png';
 }
 
 function absoluteUrl(path) {
   if (!path) {
-    return self.location.origin + '/agent/appointment';
+    return self.location.origin + '/agent/messages';
   }
   if (/^https?:\/\//i.test(path)) {
-    return path;
+    try {
+      var u = new URL(path);
+      // Always stay on this site's origin (fixes wrong APP_URL / localhost links)
+      return self.location.origin + u.pathname + u.search + u.hash;
+    } catch (e) {
+      return self.location.origin + '/agent/messages';
+    }
   }
   if (path.charAt(0) !== '/') {
     path = '/' + path;
@@ -31,13 +36,32 @@ function absoluteUrl(path) {
   return self.location.origin + path;
 }
 
+function resolveClickTarget(data) {
+  data = data || {};
+  if (data.click_action) {
+    return absoluteUrl(data.click_action);
+  }
+  if (data.type === 'chat' && data.sender_id && data.thread_code) {
+    var prefix = data.url_prefix || 'agent';
+    return absoluteUrl('/' + prefix + '/messages/' + data.sender_id + '/' + data.thread_code);
+  }
+  if (data.type === 'enquiry') {
+    return absoluteUrl('/agent/appointment');
+  }
+  return absoluteUrl('/agent/messages');
+}
+
 function showSystemNotification(payload) {
   var data = (payload && payload.data) || {};
   var n = (payload && payload.notification) || {};
   var title = n.title || data.title || 'Listify';
   var body = n.body || data.body || '';
-  var clickAction = absoluteUrl(data.click_action || '/agent/appointment');
+  var clickAction = resolveClickTarget(data);
   var icon = data.icon && /\.png($|\?)/i.test(data.icon) ? absoluteUrl(data.icon) : iconUrl();
+  var tagKey =
+    data.type === 'chat'
+      ? 'chat-' + (data.thread_code || Date.now())
+      : 'enquiry-' + (data.appointment_id || Date.now());
 
   return self.registration.showNotification(title, {
     body: body,
@@ -47,7 +71,7 @@ function showSystemNotification(payload) {
     requireInteraction: true,
     renotify: true,
     silent: false,
-    tag: 'listify-enquiry-' + (data.appointment_id || Date.now()),
+    tag: 'listify-' + tagKey,
     vibrate: [200, 100, 200],
   });
 }
@@ -58,21 +82,22 @@ messaging.onBackgroundMessage(function (payload) {
 
 self.addEventListener('notificationclick', function (event) {
   event.notification.close();
-  var target = absoluteUrl(
-    (event.notification.data && event.notification.data.click_action) ||
-      '/agent/appointment'
-  );
+  var data = event.notification.data || {};
+  var target = resolveClickTarget(data);
+
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clientList) {
       for (var i = 0; i < clientList.length; i++) {
         var client = clientList[i];
-        if ('focus' in client) {
-          try {
-            if (client.navigate) {
-              client.navigate(target);
+        if (client.url && client.url.indexOf(self.location.origin) === 0) {
+          return client.focus().then(function () {
+            if (typeof client.navigate === 'function') {
+              return client.navigate(target).catch(function () {
+                return clients.openWindow(target);
+              });
             }
-          } catch (e) {}
-          return client.focus();
+            return clients.openWindow(target);
+          });
         }
       }
       if (clients.openWindow) {

@@ -83,7 +83,8 @@ class FirebaseNotificationService
 
             $isAgent = (int) ($receiver->is_agent ?? 0) === 1 || (int) ($receiver->role ?? 0) === 2;
             $prefix = $isAgent ? 'agent' : 'customer';
-            $click = url("/{$prefix}/messages/{$senderId}/{$threadCode}");
+            // Relative path — SW resolves with live origin (avoids wrong APP_URL → homepage)
+            $click = "/{$prefix}/messages/{$senderId}/{$threadCode}";
 
             return $this->sendToUser(
                 $receiverId,
@@ -93,6 +94,7 @@ class FirebaseNotificationService
                     'type' => 'chat',
                     'thread_code' => $threadCode,
                     'sender_id' => (string) $senderId,
+                    'url_prefix' => $prefix,
                     'click_action' => $click,
                 ]
             );
@@ -119,17 +121,22 @@ class FirebaseNotificationService
                 return false;
             }
 
-            $click = (string) ($data['click_action'] ?? url('/agent/appointment'));
+            $click = (string) ($data['click_action'] ?? '/agent/appointment');
+            $clickPath = $this->toSitePath($click);
+            $clickAbsolute = $this->toAbsoluteUrl($clickPath);
             // Same path as SW file on live docroot (must be PNG — SVG fails silently)
-            $icon = url('/fcm-notification-icon.png');
+            $icon = $this->toAbsoluteUrl('/fcm-notification-icon.png');
 
             $stringData = [
                 'title' => $title,
                 'body' => $body,
-                'click_action' => $click,
+                'click_action' => $clickPath,
                 'icon' => $icon,
             ];
             foreach ($data as $key => $value) {
+                if ($key === 'click_action') {
+                    continue;
+                }
                 $stringData[(string) $key] = is_scalar($value) || $value === null
                     ? (string) $value
                     : json_encode($value);
@@ -147,7 +154,7 @@ class FirebaseNotificationService
                             'TTL' => '86400',
                         ],
                         'fcm_options' => [
-                            'link' => $click,
+                            'link' => $clickAbsolute,
                         ],
                     ],
                 ],
@@ -293,6 +300,47 @@ class FirebaseNotificationService
 
             return $response->json('access_token');
         });
+    }
+
+    protected function toSitePath(string $urlOrPath): string
+    {
+        $urlOrPath = trim($urlOrPath);
+        if ($urlOrPath === '') {
+            return '/agent/appointment';
+        }
+
+        if (preg_match('#^https?://#i', $urlOrPath)) {
+            $parts = parse_url($urlOrPath);
+            $path = $parts['path'] ?? '/';
+            if (!empty($parts['query'])) {
+                $path .= '?' . $parts['query'];
+            }
+
+            return $path === '' ? '/' : $path;
+        }
+
+        return str_starts_with($urlOrPath, '/') ? $urlOrPath : '/' . $urlOrPath;
+    }
+
+    protected function toAbsoluteUrl(string $path): string
+    {
+        $path = $this->toSitePath($path);
+
+        try {
+            if (!app()->runningInConsole() && request() && request()->getHttpHost()) {
+                return rtrim(request()->getSchemeAndHttpHost(), '/') . $path;
+            }
+        } catch (\Throwable $e) {
+            // fall through
+        }
+
+        $appUrl = rtrim((string) config('app.url'), '/');
+        // Prefer production host if APP_URL still points at localhost
+        if ($appUrl === '' || str_contains($appUrl, 'localhost') || str_contains($appUrl, '127.0.0.1')) {
+            $appUrl = 'https://www.listify.asia';
+        }
+
+        return $appUrl . $path;
     }
 
     protected function base64UrlEncode(string $data): string

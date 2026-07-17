@@ -50,7 +50,7 @@ class FcmTestPushCommand extends Command
             'Push system is working. You will get alerts when customers submit enquiries.',
             [
                 'type' => 'test',
-                'click_action' => url('/agent/appointment'),
+                'click_action' => '/agent/appointment',
             ]
         );
 

@@ -137,6 +137,24 @@
     document.getElementById('listify-fcm-later').addEventListener('click', removePrompt);
   }
 
+  function toAbsolute(path) {
+    if (!path) {
+      return window.location.origin + (cfg.messagesUrl || '/agent/messages');
+    }
+    if (/^https?:\/\//i.test(path)) {
+      try {
+        var u = new URL(path);
+        return window.location.origin + u.pathname + u.search + u.hash;
+      } catch (e) {
+        return window.location.origin + (cfg.messagesUrl || '/agent/messages');
+      }
+    }
+    if (path.charAt(0) !== '/') {
+      path = '/' + path;
+    }
+    return window.location.origin + path;
+  }
+
   /** Native OS/browser system notification (corner toast / mobile tray) */
   function showSystemNotification(title, body, data) {
     if (Notification.permission !== 'granted') {
@@ -144,11 +162,20 @@
       return Promise.resolve();
     }
 
-    var click =
+    var click = toAbsolute(
       (data && data.click_action) ||
-      cfg.messagesUrl ||
-      cfg.agentAppointmentsUrl ||
-      '/agent/appointment';
+        (data && data.type === 'chat'
+          ? '/' +
+            ((data && data.url_prefix) || 'agent') +
+            '/messages/' +
+            (data.sender_id || '') +
+            '/' +
+            (data.thread_code || '')
+          : null) ||
+        cfg.messagesUrl ||
+        cfg.agentAppointmentsUrl ||
+        '/agent/messages'
+    );
     var icon =
       (data && data.icon && /\.png($|\?)/i.test(data.icon) && data.icon) ||
       cfg.notificationIcon ||
@@ -162,7 +189,10 @@
       requireInteraction: true,
       renotify: true,
       silent: false,
-      tag: 'listify-enquiry-' + ((data && data.appointment_id) || Date.now()),
+      tag:
+        'listify-' +
+        ((data && data.type === 'chat' ? 'chat-' + (data.thread_code || Date.now()) : null) ||
+          'enquiry-' + ((data && data.appointment_id) || Date.now())),
       vibrate: [200, 100, 200],
     };
 

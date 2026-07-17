@@ -35,7 +35,7 @@ class AppointmentObserver
                 'appointment_id' => (string) $appointment->id,
                 'listing_id' => (string) ($appointment->listing_id ?? ''),
                 'listing_type' => (string) $listingType,
-                'click_action' => url('/agent/appointment'),
+                'click_action' => '/agent/appointment',
             ]);
 
             Log::info('Enquiry push attempted', [
