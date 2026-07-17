@@ -1,0 +1,94 @@
+/* Geolocation Features Styling */
+
+[data-location-display][data-loading="true"] {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+[data-location-display].location-loading::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    border: 2px solid #6C1CFF;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.listing-distance-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(108, 28, 255, 0.08);
+    color: #6C1CFF;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.listing-distance-tag__icon {
+    flex-shrink: 0;
+    opacity: 0.95;
+}
+
+.listing-distance-tag__text {
+    color: inherit;
+}
+
+.location.d-flex,
+.hotelgrid-location-rating .location,
+.restgrid-price-rating .location,
+.beautygrid-location-title .location {
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+.grid-slider-area .listing-distance-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 8;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #242D47;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(4px);
+}
+
+.grid-slider-area .listing-distance-overlay svg {
+    width: 13px;
+    height: 13px;
+    color: #6C1CFF;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .listing-distance-tag {
+        font-size: 10px;
+        padding: 2px 8px;
+    }
+
+    .grid-slider-area .listing-distance-overlay {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}

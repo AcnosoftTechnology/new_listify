@@ -1,0 +1,193 @@
+/* Geolocation Features Styling */
+
+[data-location-display][data-loading="true"] {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+[data-location-display].location-loading::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    border: 2px solid #6C1CFF;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Professional distance tag on listing cards */
+.listing-distance-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(108, 28, 255, 0.08);
+    color: #6C1CFF;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.listing-distance-tag__icon {
+    flex-shrink: 0;
+    opacity: 0.95;
+}
+
+.listing-distance-tag__text {
+    color: inherit;
+}
+
+.location.d-flex,
+.hotelgrid-location-rating .location,
+.restgrid-price-rating .location,
+.beautygrid-location-title .location {
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+/* Compact overlay badge on card image (optional fallback from JS) */
+.grid-slider-area .listing-distance-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 8;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #242D47;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(4px);
+}
+
+.grid-slider-area .listing-distance-overlay svg {
+    width: 13px;
+    height: 13px;
+    color: #6C1CFF;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .listing-distance-tag {
+        font-size: 10px;
+        padding: 2px 8px;
+    }
+
+    .grid-slider-area .listing-distance-overlay {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}
+
+/* Location permission modal */
+.location-permission-modal .modal-dialog {
+    max-width: 420px;
+}
+
+.location-permission-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(36, 45, 71, 0.18);
+    overflow: hidden;
+}
+
+.location-permission-modal .modal-body {
+    padding: 36px 32px 32px;
+}
+
+.location-permission-modal__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background: rgba(108, 28, 255, 0.1);
+    color: #6C1CFF;
+}
+
+.location-permission-modal__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #242D47;
+    margin-bottom: 12px;
+}
+
+.location-permission-modal__text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6B7280;
+    margin-bottom: 28px;
+}
+
+.location-permission-modal__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.location-permission-modal__btn-allow {
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #6C1CFF;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.location-permission-modal__btn-allow:hover,
+.location-permission-modal__btn-allow:focus {
+    background: #5a17d4;
+    color: #fff;
+}
+
+.location-permission-modal__btn-dismiss {
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B7280;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.location-permission-modal__btn-dismiss:hover,
+.location-permission-modal__btn-dismiss:focus {
+    background: rgba(107, 114, 128, 0.08);
+    color: #242D47;
+}
+
+@media (max-width: 480px) {
+    .location-permission-modal .modal-body {
+        padding: 28px 20px 24px;
+    }
+
+    .location-permission-modal__title {
+        font-size: 20px;
+    }
+
+    .location-permission-modal__text {
+        font-size: 14px;
+    }
+}
