@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Message_thread extends Model
 {
     use HasFactory;
+
     protected $table = 'message_thread';
+    protected $primaryKey = 'message_thread_id';
+
     protected $fillable = [
-        'message_thread_id',
         'message_thread_code',
         'sender',
         'receiver',

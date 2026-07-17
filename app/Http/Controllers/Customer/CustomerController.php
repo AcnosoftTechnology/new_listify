@@ -146,7 +146,7 @@ class CustomerController extends Controller{
             $page_data['thread_details'] = $thread;
             $page_data['code'] = $thread ? $thread->message_thread_code : '';
             $page_data['messages'] = $thread
-                ? Message::where('message_thread_code', $thread->message_thread_code)->orderBy('id')->get()
+                ? Message::where('message_thread_code', $thread->message_thread_code)->orderBy('message_id')->get()
                 : collect();
         } else {
             $page_data['code'] = '';
