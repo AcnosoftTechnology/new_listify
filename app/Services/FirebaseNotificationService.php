@@ -59,6 +59,53 @@ class FirebaseNotificationService
         }
     }
 
+    /**
+     * Notify the other party when a chat message is sent (customer ↔ vendor).
+     */
+    public function notifyChatMessage(int $senderId, int $receiverId, string $messageText, string $threadCode): bool
+    {
+        try {
+            if ($senderId <= 0 || $receiverId <= 0 || $senderId === $receiverId) {
+                return false;
+            }
+
+            $sender = DB::table('users')->where('id', $senderId)->first();
+            $receiver = DB::table('users')->where('id', $receiverId)->first();
+            if (!$receiver) {
+                return false;
+            }
+
+            $senderName = trim((string) ($sender->name ?? '')) ?: 'Someone';
+            $body = trim($messageText);
+            if (mb_strlen($body) > 120) {
+                $body = mb_substr($body, 0, 117) . '...';
+            }
+
+            $isAgent = (int) ($receiver->is_agent ?? 0) === 1 || (int) ($receiver->role ?? 0) === 2;
+            $prefix = $isAgent ? 'agent' : 'customer';
+            $click = url("/{$prefix}/messages/{$senderId}/{$threadCode}");
+
+            return $this->sendToUser(
+                $receiverId,
+                'New message from ' . $senderName,
+                $body !== '' ? $body : 'You have a new message.',
+                [
+                    'type' => 'chat',
+                    'thread_code' => $threadCode,
+                    'sender_id' => (string) $senderId,
+                    'click_action' => $click,
+                ]
+            );
+        } catch (\Throwable $e) {
+            Log::warning('FCM chat notify failed: ' . $e->getMessage(), [
+                'sender_id' => $senderId,
+                'receiver_id' => $receiverId,
+            ]);
+
+            return false;
+        }
+    }
+
     public function sendToToken(string $token, string $title, string $body, array $data = []): bool
     {
         try {

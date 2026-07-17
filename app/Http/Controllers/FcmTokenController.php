@@ -20,11 +20,7 @@ class FcmTokenController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthenticated'], 401);
         }
 
-        // Vendors / agents only — enquiry pushes target agent_id devices
-        if (!(int) ($user->is_agent ?? 0) && (int) ($user->role ?? 0) !== 2) {
-            return response()->json(['success' => true, 'skipped' => 'not_vendor']);
-        }
-
+        // All logged-in users: vendors get enquiry + chat, customers get chat replies
         $token = $request->input('fcm_token');
         $deviceLabel = substr((string) $request->userAgent(), 0, 255);
 

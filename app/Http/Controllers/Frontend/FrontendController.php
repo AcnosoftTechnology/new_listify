@@ -31,12 +31,14 @@ use App\Models\Contact;
 use App\Models\Qrcode;
 use App\Models\CustomlistingSetting;
 use App\Services\GeolocationService;
+use App\Services\FirebaseNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Pagination\LengthAwarePaginator;
 use DB;
 use Illuminate\Support\Str;
@@ -534,6 +536,18 @@ class FrontendController extends Controller{
 
         $thread->updated_at = Carbon::now();
         $thread->save();
+
+        // Notify vendor when customer messages from listing page
+        try {
+            app(FirebaseNotificationService::class)->notifyChatMessage(
+                $sender,
+                $receiver,
+                $message,
+                (string) $thread->message_thread_code
+            );
+        } catch (\Throwable $e) {
+            Log::warning('Listing chat push failed: ' . $e->getMessage());
+        }
 
         return response()->json([
             'code' => $thread->message_thread_code,

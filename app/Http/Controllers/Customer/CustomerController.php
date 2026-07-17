@@ -12,10 +12,12 @@ use App\Models\Qrcode;
 use App\Models\Notifications;
 use App\Models\Invoice;
 use App\Models\Wishlist;
+use App\Services\FirebaseNotificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller{
 
@@ -189,9 +191,11 @@ class CustomerController extends Controller{
             return redirect()->back()->with('error', get_phrase('Conversation not found'));
         }
 
+        $messageText = sanitize($request->message);
+
         Message::insert([
             'message_thread_code' => $code,
-            'message' => sanitize($request->message),
+            'message' => $messageText,
             'sender' => $uid,
             'read_status' => 0,
             'created_at' => Carbon::now(),
@@ -200,6 +204,22 @@ class CustomerController extends Controller{
 
         $thread->updated_at = Carbon::now();
         $thread->save();
+
+        // Push to the other party (vendor ↔ customer)
+        try {
+            $receiverId = ((int) $thread->sender === (int) $uid)
+                ? (int) $thread->receiver
+                : (int) $thread->sender;
+
+            app(FirebaseNotificationService::class)->notifyChatMessage(
+                (int) $uid,
+                $receiverId,
+                (string) $messageText,
+                (string) $code
+            );
+        } catch (\Throwable $e) {
+            Log::warning('Chat push failed: ' . $e->getMessage());
+        }
 
         return redirect()->back();
     }

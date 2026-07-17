@@ -85,8 +85,8 @@
     wrap.innerHTML =
       '<div class="listify-fcm-prompt__card">' +
       '<div class="listify-fcm-prompt__text">' +
-      '<strong>Enable enquiry alerts</strong>' +
-      '<span>Allow browser notifications so you never miss a new enquiry — even when this tab is closed or minimized.</span>' +
+      '<strong>Enable notifications</strong>' +
+      '<span>Allow browser alerts for new messages and enquiries — even when this tab is closed or minimized.</span>' +
       '</div>' +
       '<div class="listify-fcm-prompt__actions">' +
       '<button type="button" class="listify-fcm-prompt__allow" id="listify-fcm-allow">Allow notifications</button>' +
@@ -146,6 +146,7 @@
 
     var click =
       (data && data.click_action) ||
+      cfg.messagesUrl ||
       cfg.agentAppointmentsUrl ||
       '/agent/appointment';
     var icon =
