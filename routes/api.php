@@ -18,6 +18,7 @@ Route::post('/listing-image-upload', [InternalUploadController::class, 'listingI
 Route::post('/inventory-image-upload', [InternalUploadController::class, 'inventoryImageUpload']);
 Route::post('/qrcode-image-upload', [InternalUploadController::class, 'qrcodeImageUpload']);
 Route::post('/blog-image-upload', [InternalUploadController::class, 'blogImageUpload']);
+Route::post('/payment-image-upload', [InternalUploadController::class, 'paymentImageUpload']);
 
 /*
 |--------------------------------------------------------------------------

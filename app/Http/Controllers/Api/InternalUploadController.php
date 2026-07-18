@@ -657,7 +657,116 @@ public function blogImageUpload(Request $request){
     }
 }
 
-  
+ 
+  public function paymentImageUpload(Request $request){
+
+    try {
+
+        /*
+        |--------------------------------------------------------------------------
+        | SECRET CHECK
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->secret != env('INTERNAL_UPLOAD_SECRET')) {
+
+            return response()->json([
+
+                'status' => false,
+
+                'message' => 'Unauthorized'
+
+            ], 401);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE CHECK
+        |--------------------------------------------------------------------------
+        */
+
+        if (!$request->hasFile('file')) {
+
+            return response()->json([
+
+                'status' => false,
+
+                'message' => 'File not found'
+
+            ], 400);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE
+        |--------------------------------------------------------------------------
+        */
+
+        $file = $request->file('file');
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE NAME
+        |--------------------------------------------------------------------------
+        */
+
+        $filename =
+            time() . '.' .
+            $file->getClientOriginalExtension();
+
+        /*
+        |--------------------------------------------------------------------------
+        | DESTINATION
+        |--------------------------------------------------------------------------
+        */
+
+        $destinationPath =
+            public_path('uploads/paymentscreenshort');
+
+        if (!file_exists($destinationPath)) {
+
+            mkdir($destinationPath, 0777, true);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOVE FILE
+        |--------------------------------------------------------------------------
+        */
+
+        $file->move($destinationPath, $filename);
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESPONSE
+        |--------------------------------------------------------------------------
+        */
+
+        return response()->json([
+
+            'status' => true,
+
+            'file'   => $filename,
+
+            'url' =>
+                'https://www.listify.asia/public/uploads/paymentscreenshort/' .
+                $filename
+
+        ]);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+
+            'status'  => false,
+
+            'message' => $e->getMessage()
+
+        ], 500);
+    }
+}
+
+ 
   
   
   
