@@ -14,13 +14,12 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
 
 
 //check is it valet server or laravel inbuilt server
-if ($hostname == '127.0.0.1:8000' || str_contains($script_name, 'valet/')) {
+if ($hostname == '127.0.0.1:8000' || str_contains((string) $script_name, 'valet/')) {
     $asset_url = null;
- 
-
 } else {
-    $asset_url = str_replace("index.php", "", $script_name) . '/public';
-   
+    // Avoid "//public" (protocol-relative → https://public/...) when SCRIPT_NAME is /index.php
+    $scriptDir = rtrim(str_replace('index.php', '', (string) $script_name), '/');
+    $asset_url = ($scriptDir === '' ? '' : $scriptDir) . '/public';
 }
 
 $basePath = '';
@@ -88,7 +87,8 @@ return [
 
     'url' => env('APP_URL') ?: $app_url,
 
-    'asset_url' => $asset_url,
+    // Prefer .env ASSET_URL (e.g. /public). Falls back to auto-detected path.
+    'asset_url' => env('ASSET_URL') ?: $asset_url,
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
