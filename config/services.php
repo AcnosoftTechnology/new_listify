@@ -53,6 +53,10 @@ return [
       'redirect'      => env('FACEBOOK_REDIRECT'),
   ],
 
+  'apple' => [
+    'client_ids' => array_filter(explode(',', env('APPLE_CLIENT_IDS', ''))),
+  ],
+
   'firebase' => [
       'enabled'        => filter_var(env('FIREBASE_ENABLED', false), FILTER_VALIDATE_BOOLEAN),
       'project_id'     => env('FIREBASE_PROJECT_ID'),
@@ -67,5 +71,7 @@ return [
           : null,
       'push_api_key'   => env('FIREBASE_PUSH_API_KEY'),
   ],
+
+
 
 ];
