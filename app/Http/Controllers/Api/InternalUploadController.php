@@ -658,7 +658,7 @@ public function blogImageUpload(Request $request){
 }
 
  
-  public function paymentImageUpload(Request $request){
+public function paymentImageUpload(Request $request){
 
     try {
 
@@ -766,9 +766,6 @@ public function blogImageUpload(Request $request){
     }
 }
 
- 
-  
-  
   
     
 }
