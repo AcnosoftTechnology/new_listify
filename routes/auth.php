@@ -61,7 +61,7 @@ Route::middleware('auth','verified')->group(function () {
                 ->name('logout');
 });
 
-Route::post('/apple-login', [RegisteredUserController::class, 'applelogin']);
+
 Route::get('/google/redirect', [RegisteredUserController::class, 'redirect'])->name('google.redirect');
 Route::get('/google/callback', [RegisteredUserController::class, 'callback'])->name('google.callback');
 

@@ -286,71 +286,72 @@ public function facebookCallback(Request $request)
 }
 
 
-public function applelogin(Request $request, AppleTokenVerifier $appleTokenVerifier)
-    {
-        $request->validate([
-            'id_token' => ['required', 'string'],
-        ]);
+public function appleLogin(Request $request, AppleTokenVerifier $appleTokenVerifier)
+{
+    $request->validate([
+        'id_token' => ['required', 'string'],
+    ]);
 
-        try {
-            $claims = $appleTokenVerifier->verify($request->id_token);
-        } catch (\RuntimeException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ], 401);
-        }
+    try {
+        $claims = $appleTokenVerifier->verify($request->id_token);
+    } catch (\RuntimeException $e) {
+        return response()->json([
+            'status' => false,
+            'message' => $e->getMessage(),
+        ], 401);
+    }
 
-        $appleId = $claims['sub'];
-        $email = $claims['email'] ?? null;
+    $appleId = $claims['sub'];
+    $email = $claims['email'] ?? null;
 
-        // 1. Apple ID se check — ye primary identity hai
-        $user = User::where('apple_id', $appleId)->first();
+    if (! $email) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Apple account did not provide an email address.',
+        ], 422);
+    }
 
-        // 2. Existing email account se check aur Apple ID link
-        if (! $user && $email) {
-            $user = User::where('email', $email)->first();
+    // 1. Apple ID se check
+    $user = User::where('apple_id', $appleId)->first();
 
-            if ($user && ! $user->apple_id) {
-                $user->update([
-                    'apple_id' => $appleId,
-                ]);
-            }
-        }
+    // 2. Existing email account se check aur Apple ID link
+    if (! $user) {
+        $user = User::where('email', $email)->first();
 
-        // 3. New Apple user create
-        if (! $user) {
-            $user = User::create([
-                'name' => $email ? Str::before($email, '@') : 'Apple User',
-                'email' => $email,
-                'role' => 2,
-                'type' => 'customer',
-                'status' => 1,
+        if ($user && ! $user->apple_id) {
+            $user->update([
                 'apple_id' => $appleId,
-                'password' => Hash::make(Str::random(40)),
             ]);
         }
-
-        /*
-         * IMPORTANT:
-         * Is line ko existing API / google-login endpoint ke token logic ke
-         * according rakhein.
-         * Ye Laravel Sanctum example hai.
-         */
-        $token = $user->createToken('mobile-app')->plainTextToken;
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Login successful',
-            'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'phone' => $user->phone,
-            ],
-        ], 200);
     }
+
+    // 3. New Apple user create
+    if (! $user) {
+        $user = User::create([
+            'name' => Str::before($email, '@'),
+            'email' => $email,
+            'role' => 2,
+            'type' => 'customer',
+            'status' => 1,
+            'apple_id' => $appleId,
+            'password' => Hash::make(Str::random(40)),
+        ]);
+    }
+
+    $token = $user->createToken('mobile-app')->plainTextToken;
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Login successful',
+        'token' => $token,
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+        ],
+    ], 200);
+}
 
 
 
