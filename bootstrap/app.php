@@ -2,7 +2,6 @@
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AnyAuthMiddleware;
-use App\Http\Middleware\AuthenticateApiToken;
 use App\Http\Middleware\IsCustomer;
 use App\Http\Middleware\IsAgent;
 use App\Http\Middleware\CheckDatabaseConnection;
@@ -51,7 +50,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'customer' => IsCustomer::class,
             'agent' => IsAgent::class,
             'anyAuth' => AnyAuthMiddleware::class,
-            'auth.api' => AuthenticateApiToken::class,
             'CheckDatabaseConnection' => CheckDatabaseConnection::class,
             'PreventBackHistory' => PreventBackHistory::class
         ]);
