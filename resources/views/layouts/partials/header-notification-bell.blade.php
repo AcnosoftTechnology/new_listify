@@ -6,6 +6,7 @@
                 ->whereIn('read_on', [0, '0'])
                 ->count();
             $latestNotifications = App\Models\Notifications::where('user_id', $uid)
+                ->whereIn('read_on', [0, '0'])
                 ->orderByDesc('id')
                 ->take(5)
                 ->get();
@@ -28,7 +29,7 @@
                             $href = url(trim($lines[count($lines) - 1]));
                         }
                     @endphp
-                    <li>
+                    <li class="header-notification-row" data-notification-id="{{ $notification->id }}">
                         <a href="{{ $href }}"
                            class="first-a header-notification-item p-2 d-block {{ $isUnread ? 'fw-semibold' : '' }}"
                            data-id="{{ $notification->id }}"
@@ -44,7 +45,7 @@
                         </a>
                     </li>
                 @empty
-                    <li><p style="margin:0; padding:5px;">{{ get_phrase('No notifications') }}</p></li>
+                    <li class="header-notification-empty"><p style="margin:0; padding:5px;">{{ get_phrase('No new notifications') }}</p></li>
                 @endforelse
                 <li><a class="mt-2 text-center d-block" href="{{ route('customer.notification') }}">{{ get_phrase('View All') }}</a></li>
             </ul>
@@ -97,10 +98,33 @@
                         .then(function (r) { return r.json(); })
                         .then(function (res) {
                             if (res && res.success) {
-                                var el = document.getElementById('header-notification-count');
-                                if (el) {
-                                    var n = parseInt(el.textContent, 10) || 0;
-                                    setHeaderNotificationCount(n - 1);
+                                var row = link.closest('.header-notification-row');
+                                if (row) {
+                                    row.remove();
+                                }
+                                var menu = link.closest('.first-sub-menu');
+                                if (menu && !menu.querySelector('.header-notification-row')) {
+                                    var empty = menu.querySelector('.header-notification-empty');
+                                    if (!empty) {
+                                        var li = document.createElement('li');
+                                        li.className = 'header-notification-empty';
+                                        li.innerHTML = '<p style="margin:0; padding:5px;">{{ get_phrase('No new notifications') }}</p>';
+                                        var viewAll = menu.querySelector('li:last-child');
+                                        if (viewAll) {
+                                            menu.insertBefore(li, viewAll);
+                                        } else {
+                                            menu.appendChild(li);
+                                        }
+                                    }
+                                }
+                                if (typeof window.listifyRefreshNotificationCount === 'function') {
+                                    window.listifyRefreshNotificationCount();
+                                } else {
+                                    var el = document.getElementById('header-notification-count');
+                                    if (el) {
+                                        var n = parseInt(el.textContent, 10) || 0;
+                                        setHeaderNotificationCount(n - 1);
+                                    }
                                 }
                             }
                             window.location.href = target;
