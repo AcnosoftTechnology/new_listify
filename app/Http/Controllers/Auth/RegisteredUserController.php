@@ -319,9 +319,8 @@ public function appleLogin(Request $request, AppleTokenVerifier $appleTokenVerif
         $user = User::where('email', $email)->first();
 
         if ($user && ! $user->apple_id) {
-            $user->update([
-                'apple_id' => $appleId,
-            ]);
+        $user->apple_id = $appleId;
+        $user->save();
         }
     }
 

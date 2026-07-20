@@ -1484,3 +1484,71 @@ Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-class\">Illumin
 #69 E:\\xampp\\htdocs\\listify.asia\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #70 {main}
 "} 
+[2026-07-20 04:58:35] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 04:58:56] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 04:59:20] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 04:59:21] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 04:59:23] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 04:59:45] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:00:03] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:00:06] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:00:07] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:00:10] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:00:10] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:00:10] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:01:36] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:02:03] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:02:48] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:02:56] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-20 05:03:37] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 

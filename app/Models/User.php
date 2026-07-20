@@ -27,6 +27,8 @@ class User extends Authenticatable
         'type',
         'status',
         'facebook_id',
+        'google_id',
+        'apple_id',
         'avatar',
         'fcm_token',
     ];
