@@ -179,7 +179,9 @@ No body required.
   "reason": "sent",
   "message": "Test push sent — check your phone",
   "user_id": 5,
-  "devices": 1
+  "devices": 1,
+  "device_platforms": ["android"],
+  "note": "Android/iOS payloads do not include icon/image — phone shows app launcher icon from APK"
 }
 ```
 
@@ -393,6 +395,32 @@ Full URLs:
 | Fake/Postman token | `test` may say sent, but no real phone toast |
 | Skipping `/fcm/register` | No pushes on that device |
 | Wrong Firebase project / package name | Invalid token / no delivery |
+
+---
+
+## 12. Notification icon / “Listify” wordmark on the left
+
+**Backend (July 2026):** For `platform` `android` and `ios`, FCM **`data` does not include `icon`, `image`, or `largeIcon`**. Web push still uses `https://www.listify.asia/fcm-notification-icon.png`.
+
+If the shade still shows the full **Listify wordmark**:
+
+1. **Confirm server is updated** on **both** `api.listify.asia` and `www.listify.asia` (`FirebaseNotificationService.php`), then `php artisan optimize:clear`.
+2. **Re-register** the device: `POST /api/fcm/register` with `"platform": "android"` (or `ios`). Server auto-corrects tokens containing `:APA91` even if the app sends `web`.
+3. **Check DB** (shared): `GET /api/fcm/devices` — `platform` must be `android`/`ios`, not `web`. Optional fix for old rows:
+   ```sql
+   UPDATE fcm_tokens SET platform = 'android'
+   WHERE token LIKE '%:APA91%' AND platform = 'web';
+   ```
+4. **Check server log** after a test push (`POST /api/fcm/test`):
+   ```text
+   FCM payload keys ... "platform":"android","has_icon":false
+   ```
+   If you see `"platform":"web"` or `"has_icon":true`, production is still on old code or the wrong token is registered.
+5. **App-side (most common after backend is correct):** On Android, the **small icon** in the status bar must be a **white silhouette** drawable (`@drawable/ic_notification`), not the launcher/wordmark. The **large** image on the left often comes from:
+   - `@mipmap/ic_launcher` if the app uses `flutter_local_notifications` with `largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher')`, or
+   - Loading `message.data['icon']` / a URL — **remove that**; the server no longer sends it.
+
+Search the Flutter project for: `largeIcon`, `BigPictureStyle`, `data['icon']`, `fcm-notification-icon`.
 
 ---
 

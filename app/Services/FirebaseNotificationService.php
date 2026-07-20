@@ -152,6 +152,7 @@ class FirebaseNotificationService
             if (!in_array($platform, ['web', 'android', 'ios'], true)) {
                 $platform = 'web';
             }
+            $platform = $this->resolvePlatform($token, $platform);
 
             $click = (string) ($data['click_action'] ?? '/agent/appointment');
             $data = $this->normalizePushData($data);
@@ -320,6 +321,7 @@ class FirebaseNotificationService
                 if (isset($row->platform) && $row->platform !== '') {
                     $platform = strtolower((string) $row->platform);
                 }
+                $platform = $this->resolvePlatform($token, $platform);
                 $devices[$token] = [
                     'token' => $token,
                     'platform' => in_array($platform, ['web', 'android', 'ios'], true) ? $platform : 'web',
@@ -334,7 +336,7 @@ class FirebaseNotificationService
                 $token = trim((string) $legacy);
                 $devices[$token] = [
                     'token' => $token,
-                    'platform' => 'web',
+                    'platform' => $this->resolvePlatform($token, 'web'),
                 ];
             }
         }
@@ -468,6 +470,43 @@ class FirebaseNotificationService
      * - screen: app screen key for deep link
      * - entity_id: primary id for tracking (appointment_id, order_id, thread_code, …)
      */
+    /**
+     * Native app tokens were often saved as platform=web — that adds icon URL to FCM data.
+     */
+    public function resolvePlatform(string $token, string $declaredPlatform = 'web'): string
+    {
+        $declared = strtolower(trim($declaredPlatform ?: 'web'));
+        if (in_array($declared, ['android', 'ios'], true)) {
+            return $declared;
+        }
+
+        if ($this->isNativeMobileFcmToken($token)) {
+            return 'android';
+        }
+
+        return in_array($declared, ['web', 'android', 'ios'], true) ? $declared : 'web';
+    }
+
+    protected function isNativeMobileFcmToken(string $token): bool
+    {
+        $token = trim($token);
+        if ($token === '') {
+            return false;
+        }
+
+        // Android FCM registration token
+        if (str_contains($token, ':APA91')) {
+            return true;
+        }
+
+        // Long opaque token (typical app) — not a web push endpoint URL
+        if (strlen($token) > 100 && !str_contains($token, '://')) {
+            return true;
+        }
+
+        return false;
+    }
+
     protected function normalizePushData(array $data): array
     {
         $type = trim((string) ($data['type'] ?? ''));
