@@ -338,7 +338,9 @@
     if (cfg.canSaveToken) {
       messagingMod.onMessage(messagingRef, function (payload) {
         console.log('[FCM] Foreground push received', payload);
-        if (typeof window.listifyRefreshNotificationCount === 'function') {
+        if (typeof window.listifyRefreshNotificationBell === 'function') {
+          window.listifyRefreshNotificationBell();
+        } else if (typeof window.listifyRefreshNotificationCount === 'function') {
           window.listifyRefreshNotificationCount();
         }
         if (payload && payload.notification) {

@@ -22,6 +22,7 @@ Route::prefix('{prefix}')->controller(CustomerController::class)->middleware('au
 
 Route::controller(CustomerController::class)->middleware('auth')->group(function () {
     Route::get('/account/notifications/unread-count', 'notificationUnreadCount')->name('customer.notification.count');
+    Route::get('/account/notifications/recent', 'notificationRecentFeed')->name('customer.notification.recent');
     Route::get('/account/notifications/read', 'markAsRead')->name('customer.notification.read');
     Route::get('/customer/my-notifications', 'notification')->name('customer.notification');
     Route::get('/customer/my-notifications/delete', 'deleteNotification')->name('customer.notification.delete');

@@ -271,6 +271,44 @@ class CustomerController extends Controller{
         ]);
     }
 
+    public function notificationRecentFeed()
+    {
+        $uid = (string) auth()->id();
+
+        $rows = Notifications::where('user_id', $uid)
+            ->whereIn('read_on', [0, '0'])
+            ->orderByDesc('id')
+            ->take(5)
+            ->get();
+
+        $items = $rows->map(function ($notification) {
+            return [
+                'id' => (int) $notification->id,
+                'title' => (string) $notification->title,
+                'href' => $this->notificationClickUrl($notification),
+            ];
+        })->values();
+
+        return response()->json([
+            'success' => true,
+            'count' => Notifications::where('user_id', $uid)->whereIn('read_on', [0, '0'])->count(),
+            'items' => $items,
+        ]);
+    }
+
+    protected function notificationClickUrl(Notifications $notification): string
+    {
+        $lines = preg_split("/\r\n|\n|\r/", (string) $notification->description);
+        if (is_array($lines) && count($lines) > 1) {
+            $last = trim($lines[count($lines) - 1]);
+            if (str_starts_with($last, '/')) {
+                return url($last);
+            }
+        }
+
+        return route('customer.notification');
+    }
+
 
   
      public function mycrm() {
