@@ -40,6 +40,7 @@ class InventoryPurchaseObserver
 
             $ok = $this->firebase->sendToUser($vendorId, $title, $body, [
                 'type' => 'order',
+                'sender_id' => (string) ($order->user_id ?? ''),
                 'order_id' => (string) $order->id,
                 'listing_id' => (string) ($order->listing_id ?? ''),
                 'listing_type' => (string) ($order->type ?? ''),

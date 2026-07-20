@@ -32,6 +32,7 @@ class AppointmentObserver
 
             $ok = $this->firebase->sendToUser($agentId, $title, $body, [
                 'type' => 'enquiry',
+                'sender_id' => (string) ($appointment->customer_id ?? ''),
                 'appointment_id' => (string) $appointment->id,
                 'listing_id' => (string) ($appointment->listing_id ?? ''),
                 'listing_type' => (string) $listingType,

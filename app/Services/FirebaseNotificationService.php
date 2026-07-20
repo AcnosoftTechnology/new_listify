@@ -110,8 +110,9 @@ class FirebaseNotificationService
                 $body !== '' ? $body : 'You have a new message.',
                 [
                     'type' => 'chat',
-                    'thread_code' => $threadCode,
                     'sender_id' => (string) $senderId,
+                    'receiver_id' => (string) $receiverId,
+                    'thread_code' => $threadCode,
                     'url_prefix' => $prefix,
                     'click_action' => $click,
                 ]
@@ -153,6 +154,7 @@ class FirebaseNotificationService
             }
 
             $click = (string) ($data['click_action'] ?? '/agent/appointment');
+            $data = $this->normalizePushData($data);
             $clickPath = $this->toSitePath($click);
             $clickAbsolute = $this->toAbsoluteUrl($clickPath);
             $icon = $this->toAbsoluteUrl('/fcm-notification-icon.png');
@@ -197,24 +199,31 @@ class FirebaseNotificationService
                         'sound' => 'default',
                         'click_action' => $clickPath,
                         'channel_id' => 'listify_default',
+                        'tag' => (string) ($stringData['type'] ?? 'listify'),
                     ],
                 ];
             } else { // ios
+                $apnsPayload = [
+                    'aps' => [
+                        'alert' => [
+                            'title' => $title,
+                            'body' => $body,
+                        ],
+                        'sound' => 'default',
+                        'badge' => 1,
+                    ],
+                ];
+                foreach ($stringData as $key => $val) {
+                    if (in_array($key, ['title', 'body', 'icon'], true)) {
+                        continue;
+                    }
+                    $apnsPayload[$key] = $val;
+                }
                 $message['apns'] = [
                     'headers' => [
                         'apns-priority' => '10',
                     ],
-                    'payload' => [
-                        'aps' => [
-                            'alert' => [
-                                'title' => $title,
-                                'body' => $body,
-                            ],
-                            'sound' => 'default',
-                            'badge' => 1,
-                        ],
-                        'click_action' => $clickPath,
-                    ],
+                    'payload' => $apnsPayload,
                 ];
             }
 
@@ -426,5 +435,44 @@ class FirebaseNotificationService
     protected function base64UrlEncode(string $data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    /**
+     * Standard mobile/web push metadata for routing and analytics.
+     *
+     * Every notification includes:
+     * - type: enquiry | chat | order | test | general
+     * - screen: app screen key for deep link
+     * - entity_id: primary id for tracking (appointment_id, order_id, thread_code, …)
+     */
+    protected function normalizePushData(array $data): array
+    {
+        $type = trim((string) ($data['type'] ?? ''));
+        if ($type === '') {
+            $type = 'general';
+        }
+        $data['type'] = $type;
+
+        if (empty($data['screen'])) {
+            $data['screen'] = match ($type) {
+                'enquiry' => 'enquiry',
+                'chat' => 'chat',
+                'order' => 'order',
+                'test' => 'test',
+                default => 'home',
+            };
+        }
+
+        if (!isset($data['entity_id']) || (string) $data['entity_id'] === '') {
+            $entity = $data['appointment_id']
+                ?? $data['order_id']
+                ?? $data['thread_code']
+                ?? null;
+            if ($entity !== null && (string) $entity !== '') {
+                $data['entity_id'] = (string) $entity;
+            }
+        }
+
+        return $data;
     }
 }
