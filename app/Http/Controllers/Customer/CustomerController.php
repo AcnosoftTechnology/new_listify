@@ -254,10 +254,22 @@ class CustomerController extends Controller{
   
   
       public function notification() {
-           $noti = Notifications::where('user_id', Auth::id())->latest()->get();
+           $noti = Notifications::where('user_id', (string) Auth::id())->orderByDesc('id')->get();
           $page_data['active'] = 'Notifications';
           return view('user.customer.notification', compact('noti'),$page_data);
       }
+
+    public function notificationUnreadCount()
+    {
+        $count = Notifications::where('user_id', (string) auth()->id())
+            ->whereIn('read_on', [0, '0'])
+            ->count();
+
+        return response()->json([
+            'success' => true,
+            'count' => $count,
+        ]);
+    }
 
 
   
@@ -278,7 +290,7 @@ public function markAsRead(Request $request){
         ]);
     }
 
-    if ($notification->user_id != auth()->id()) {
+    if ((string) $notification->user_id !== (string) auth()->id()) {
         return response()->json([
             'success' => false,
             'message' => 'Not authorized'
@@ -307,7 +319,7 @@ public function deleteNotification(Request $request){
         ]);
     }
 
-    if ($notification->user_id != auth()->id()) {
+    if ((string) $notification->user_id !== (string) auth()->id()) {
         return response()->json([
             'success' => false,
             'message' => 'Not authorized'

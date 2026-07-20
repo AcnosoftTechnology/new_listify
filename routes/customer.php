@@ -20,6 +20,13 @@ Route::prefix('{prefix}')->controller(CustomerController::class)->middleware('au
     Route::post('/messages/{code?}', 'send_message')->name('user.message.send');
 });
 
+Route::controller(CustomerController::class)->middleware('auth')->group(function () {
+    Route::get('/account/notifications/unread-count', 'notificationUnreadCount')->name('customer.notification.count');
+    Route::get('/account/notifications/read', 'markAsRead')->name('customer.notification.read');
+    Route::get('/customer/my-notifications', 'notification')->name('customer.notification');
+    Route::get('/customer/my-notifications/delete', 'deleteNotification')->name('customer.notification.delete');
+});
+
 Route::controller(CustomerController::class)->middleware('auth', 'customer')->group(function () {
     Route::get('/customer/wishlist', 'wishlist')->name('customer.wishlist');
     Route::get('/customer/remove/wishlist/{id}', 'remove_wishlist')->name('customer.remove.wishlist');
@@ -36,9 +43,6 @@ Route::controller(CustomerController::class)->middleware('auth', 'customer')->gr
     
  
     Route::get('/customer/my-crm', [CustomerController::class, 'mycrm'])->name('customer.mycrm');
-    Route::get('/customer/my-notifications', [CustomerController::class, 'notification'])->name('customer.notification');
-    Route::get('/customer/my-notifications/read', [CustomerController::class, 'markAsRead'])->name('customer.notification.read');
-    Route::get('/customer/my-notifications/delete', [CustomerController::class, 'deleteNotification'])->name('customer.notification.delete');
 
     Route::get('/customer/qrcode', [CustomerController::class, 'qrcode'])->name('customer.qrcode');
     Route::get('/customer/qrcode/add', [CustomerController::class, 'addqrcode'])->name('customer.addqr');

@@ -132,54 +132,7 @@
     <li><a href="{{ route('blogs') }}" class="first-a {{ request()->routeIs('blogs') ? 'active' : '' }}">{{ get_phrase('Blogs') }}</a></li>
     <li><a href="{{ route('contact-us') }}" class="first-a {{ request()->routeIs('contact-us') ? 'active' : '' }}">{{ get_phrase('Contact') }}</a></li>
     <li><a href="{{ route('pricing') }}" class="first-a {{ request()->routeIs('pricing') ? 'active' : '' }}">{{ get_phrase('Pricing') }}</a></li>
-                                      @php
-                                      // Unread count
-                                      $notificationCount = App\Models\Notifications::where('user_id', user('id'))
-                                      ->where('read_on', 0)
-                                      ->count();
-
-                                      // Latest 5 notifications
-                                      $latestNotifications = App\Models\Notifications::where('user_id', user('id'))
-                                      ->latest() 
-                                      ->take(5)
-                                      ->get();
-                                      @endphp
-                                      
-                                 @if(auth()->check() && auth()->user()->role != 1)
-                                      <li class="have-sub-menu">
-                                        <a href="javascript:void(0);" class="first-a top_noti">
-                                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 2C10.3431 2 9 3.34315 9 5V6.26505C6.19124 7.15004 4.25 9.82885 4.25 13V17L3 18.25V19H21V18.25L19.75 17V13C19.75 9.82885 17.8088 7.15004 15 6.26505V5C15 3.34315 13.6569 2 12 2Z" stroke="#99A1B7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M14 21C14 22.1046 13.1046 23 12 23C10.8954 23 10 22.1046 10 21" stroke="#99A1B7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                                          </svg>
-                                          <span>{{ $notificationCount }}</span>
-                                        </a>
-
-                                        <ul class="first-sub-menu">
-                                          @forelse($latestNotifications as $notification)
-                                          <li>
-                                            <div class="head_notification_list d-flex">
-                                              @if($notification->media)
-                                              <img src="{{ asset('uploads/notifications/'.$notification->media) }}" 
-                                                   alt="noti-pic" 
-                                                   style="margin-right: 5px; border-radius: 5px; object-fit: cover; height: 30px; width: 30px;">
-                                              @else
-                                              <img src="{{ ('https://www.listify.asia/public/assets/notification-bell.png') }}" 
-                                                   alt="noti-pic" 
-                                                   style="margin-right: 5px; border-radius: 5px; object-fit: cover; height: 30px; width: 30px;">
-                                              @endif
-                                             <a class="first-a p-0 mx-1" style="color:#242d3d;">{{ Str::limit($notification->title, 12) }}</a>
-
-                                            </div>
-                                          </li>
-                                          @empty
-                                          <li><p style="margin:0; padding:5px;">No notifications</p></li>
-                                          @endforelse
-
-                                          <li><a class="mt-2 text-center" href="{{ route('customer.notification') }}">View All</a></li>
-                                        </ul>  
-                                      </li>
-                                      @endif
+                                      @include('layouts.partials.header-notification-bell')
 
                                         </ul>
                                     </nav>

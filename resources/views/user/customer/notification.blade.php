@@ -171,24 +171,24 @@ $(document).on("click", "#closeNotificationModal", function () {
 
 <script>
 $(document).on("click", ".viewNotification", function () {
+    let id = $(this).data("id");
     let title = $(this).data("title");
     let description = $(this).data("description");
     let media = $(this).data("media");
 
-    // Set modal title
     $("#notificationModalLabel").text(title);
-
-    // Set description
     $("#notificationDescription").text(description);
 
-    // Set image if exists
     if (media) {
         $("#notificationImage").attr("src", media).show();
     } else {
         $("#notificationImage").hide();
     }
 
-    // Show modal
+    if (id) {
+        $.get("{{ route('customer.notification.read') }}", { id: id });
+    }
+
     $("#notificationModal").modal("show");
 });
 </script>
@@ -222,14 +222,4 @@ $(document).on("click", ".deleteNotification", function () {
     });
 });
 </script>
-
-
-<script>
-$(document).on("click", ".viewNotification", function() {
-    var description = $(this).data("description");
-    $("#notificationDescription").text(description);
-    $("#notificationModal").modal("show"); 
-});
-</script>
-
 

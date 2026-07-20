@@ -23,6 +23,10 @@ class FirebaseNotificationService
     public function sendToUser(int $userId, string $title, string $body, array $data = []): bool
     {
         try {
+            $data = $this->normalizePushData($data);
+
+            app(InAppNotificationService::class)->record($userId, $title, $body, $data);
+
             if (!$this->isEnabled()) {
                 Log::info('FCM skip: firebase disabled', ['user_id' => $userId]);
 
