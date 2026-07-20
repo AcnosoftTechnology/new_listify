@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Schema;
 /**
  * In-app bell notifications (header count + My Notifications page).
  * Written when FCM push events fire so web bell stays in sync with push.
+ *
+ * Description format:
+ *   {body text}
+ *   meta:type=chat;screen=chat;sender_id=10;entity_id=abc
+ *   /click/path
  */
 class InAppNotificationService
 {
@@ -24,6 +29,11 @@ class InAppNotificationService
 
             if ($description === '') {
                 $description = $title;
+            }
+
+            $metaLine = $this->buildMetaLine($meta);
+            if ($metaLine !== '') {
+                $description .= "\n" . $metaLine;
             }
 
             if (!empty($meta['click_action'])) {
@@ -44,5 +54,18 @@ class InAppNotificationService
                 'user_id' => $userId,
             ]);
         }
+    }
+
+    protected function buildMetaLine(array $meta): string
+    {
+        $parts = [];
+        foreach (['type', 'screen', 'sender_id', 'receiver_id', 'entity_id', 'thread_code', 'order_id', 'appointment_id'] as $key) {
+            if (!isset($meta[$key]) || (string) $meta[$key] === '') {
+                continue;
+            }
+            $parts[] = $key . '=' . str_replace([';', "\n", "\r"], '', (string) $meta[$key]);
+        }
+
+        return empty($parts) ? '' : ('meta:' . implode(';', $parts));
     }
 }

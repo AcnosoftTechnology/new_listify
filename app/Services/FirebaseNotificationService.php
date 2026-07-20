@@ -157,16 +157,18 @@ class FirebaseNotificationService
             $data = $this->normalizePushData($data);
             $clickPath = $this->toSitePath($click);
             $clickAbsolute = $this->toAbsoluteUrl($clickPath);
-            $icon = $this->toAbsoluteUrl('/fcm-notification-icon.png');
 
             $stringData = [
                 'title' => $title,
                 'body' => $body,
                 'click_action' => $clickPath,
-                'icon' => $icon,
             ];
+            // Web browser toast needs an icon URL; Android/iOS use the app launcher icon.
+            if ($platform === 'web') {
+                $stringData['icon'] = $this->toAbsoluteUrl('/fcm-notification-icon.png');
+            }
             foreach ($data as $key => $value) {
-                if ($key === 'click_action') {
+                if ($key === 'click_action' || $key === 'icon') {
                     continue;
                 }
                 $stringData[(string) $key] = is_scalar($value) || $value === null
