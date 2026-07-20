@@ -163,17 +163,31 @@ class FirebaseNotificationService
                 'body' => $body,
                 'click_action' => $clickPath,
             ];
-            // Web browser toast needs an icon URL; Android/iOS use the app launcher icon.
+            // Web browser toast needs an icon URL; Android/iOS must use the app launcher icon only.
             if ($platform === 'web') {
                 $stringData['icon'] = $this->toAbsoluteUrl('/fcm-notification-icon.png');
             }
             foreach ($data as $key => $value) {
-                if ($key === 'click_action' || $key === 'icon') {
+                $key = (string) $key;
+                // Never forward icon/image to mobile — app uses its own logo
+                if (in_array($key, ['click_action', 'icon', 'image', 'large_icon', 'largeIcon', 'imageUrl', 'image_url'], true)) {
                     continue;
                 }
-                $stringData[(string) $key] = is_scalar($value) || $value === null
+                $stringData[$key] = is_scalar($value) || $value === null
                     ? (string) $value
                     : json_encode($value);
+            }
+
+            // Hard strip for mobile (even if somehow added above)
+            if ($platform !== 'web') {
+                unset(
+                    $stringData['icon'],
+                    $stringData['image'],
+                    $stringData['large_icon'],
+                    $stringData['largeIcon'],
+                    $stringData['imageUrl'],
+                    $stringData['image_url']
+                );
             }
 
             $message = [
@@ -193,15 +207,16 @@ class FirebaseNotificationService
                     ],
                 ];
             } elseif ($platform === 'android') {
+                // No icon/image fields — Android shows app launcher / notification icon from the APK
                 $message['android'] = [
                     'priority' => 'high',
                     'notification' => [
                         'title' => $title,
                         'body' => $body,
                         'sound' => 'default',
-                        'click_action' => $clickPath,
                         'channel_id' => 'listify_default',
                         'tag' => (string) ($stringData['type'] ?? 'listify'),
+                        // Do NOT set: icon, image, click_action URL as image
                     ],
                 ];
             } else { // ios
@@ -216,7 +231,7 @@ class FirebaseNotificationService
                     ],
                 ];
                 foreach ($stringData as $key => $val) {
-                    if (in_array($key, ['title', 'body', 'icon'], true)) {
+                    if (in_array($key, ['title', 'body', 'icon', 'image'], true)) {
                         continue;
                     }
                     $apnsPayload[$key] = $val;
@@ -228,6 +243,12 @@ class FirebaseNotificationService
                     'payload' => $apnsPayload,
                 ];
             }
+
+            Log::info('FCM payload keys', [
+                'platform' => $platform,
+                'data_keys' => array_keys($stringData),
+                'has_icon' => array_key_exists('icon', $stringData),
+            ]);
 
             $payload = ['message' => $message];
 
