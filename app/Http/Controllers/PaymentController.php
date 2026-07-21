@@ -224,9 +224,6 @@ public function phonepeRedirect(Request $request)
     }
 
 
-
-
-
     public function make_paytm_order(Request $request)
     {
         return view('payment.paytm.paytm_merchant_checkout');
@@ -306,42 +303,35 @@ public function phonepeCallback(Request $request)
 
 public function subscribeFreePackage($id)
 {
-    // Package details fetch karo
     $package = Pricing::findOrFail($id);
 
-    // Period se days nikalna
-    $period = $package->period;
-    if ($period == 'semiannually') {
-        $days = 180;
-    } elseif ($period == 'monthly') {
-        $days = 30;
-    } else {
-        $days = 365;
+    // Safety: ye function sirf free package (ID 11) ke liye hai
+    if ((int) $package->id !== 11) {
+        abort(403, 'This package is not a free package.');
     }
 
-    // Subscription data prepare
     $sub = [
-        'user_id' => user('id'),
-        'package_id' => $package->id,
-        'paid_amount' => 0,  // FREE package
-        'payment_method' => 'cod', // default for free
-        'status' => 1,
+        'user_id'           => user('id'),
+        'package_id'        => $package->id, // 11
+        'paid_amount'       => 0,
+        'payment_method'    => 'cod',
+        'status'            => 1,
         'auto_subscription' => 0,
-        'expire_date' => strtotime('+' . $days . ' days'),
-        'date_added' => time(),
-        'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now(),
+        'expire_date'       => null, // Lifetime free package
+        'date_added'        => time(),
+        'created_at'        => Carbon::now(),
+        'updated_at'        => Carbon::now(),
     ];
 
     Subscription::insert($sub);
 
-    // User ko agent bana do
     User::where('id', user('id'))->update([
         'is_agent' => 1,
-        'type' => 'agent'
+        'type'     => 'agent',
     ]);
 
-    Session::flash('success', get_phrase('Subscription activated successfully!'));
+    Session::flash('success', get_phrase('Free lifetime subscription activated successfully!'));
+
     return redirect()->route('customer.wishlist');
 }
 

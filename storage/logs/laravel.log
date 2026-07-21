@@ -3906,3 +3906,11 @@ Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-class\">Illumin
 #36 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(Object(Illuminate\\Encryption\\MissingAppKeyException))
 #37 {main}
 "} 
+[2026-07-21 12:30:36] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-21 12:30:47] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
