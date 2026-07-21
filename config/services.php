@@ -53,9 +53,6 @@ return [
       'redirect'      => env('FACEBOOK_REDIRECT'),
   ],
 
-  'apple' => [
-    'client_ids' => array_filter(explode(',', env('APPLE_CLIENT_IDS', ''))),
-  ],
 
   'firebase' => [
       'enabled'        => filter_var(env('FIREBASE_ENABLED', false), FILTER_VALIDATE_BOOLEAN),

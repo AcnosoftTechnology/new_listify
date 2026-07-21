@@ -5,6 +5,7 @@ use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PaymentController::class)->middleware('auth')->group(function () {
+    
     Route::get('payment/{id}', 'index')->name('payment');
     Route::get('payment/show_payment_gateway_by_ajax/{identifier}', 'show_payment_gateway_by_ajax')->name('payment.show_payment_gateway_by_ajax');
     Route::get('payment/success/{identifier?}', 'payment_success')->name('payment.success');
@@ -13,10 +14,10 @@ Route::controller(PaymentController::class)->middleware('auth')->group(function 
     // razor pay
     Route::post('payment/{identifier}/order', 'payment_razorpay')->name('razorpay.order');
     
-// PhonePe routes
-Route::post('payment/phonepe/initiate', [PaymentController::class, 'phonepeInitiate'])->name('phonepe.initiate');
-Route::get('payment/phonepe/redirect', [PaymentController::class, 'phonepeRedirect'])->name('phonepe.redirect');
-Route::post('payment/phonepe/callback', [PaymentController::class, 'phonepeCallback'])->name('phonepe.callback');
+    // PhonePe routes
+    Route::post('payment/phonepe/initiate', [PaymentController::class, 'phonepeInitiate'])->name('phonepe.initiate');
+    Route::get('payment/phonepe/redirect', [PaymentController::class, 'phonepeRedirect'])->name('phonepe.redirect');
+    Route::post('payment/phonepe/callback', [PaymentController::class, 'phonepeCallback'])->name('phonepe.callback');
 
     // paytm pay
     Route::get('payment/make/paytm/order', 'make_paytm_order')->name('make.paytm.order');

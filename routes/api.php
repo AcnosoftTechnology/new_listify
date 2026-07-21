@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\InternalUploadController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 | This host keeps web session FCM at POST /fcm/token (web.php) and uploads.
 */
 
-Route::post('/apple-login', [RegisteredUserController::class, 'appleLogin']);
+
 Route::post('/internal-upload', [InternalUploadController::class, 'upload']);
 Route::post('/custom-field-upload', [InternalUploadController::class, 'customFieldUpload']);
 Route::post('/listing-image-upload', [InternalUploadController::class, 'listingImageUpload']);

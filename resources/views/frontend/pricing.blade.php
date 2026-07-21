@@ -51,8 +51,8 @@
                                 {{-- ✅ Toggle only for 500 plan --}}
                                 @if($package->price == 500)
                                 <div class="pricing-toggle mb-3 text-center">
-                                    <button class="toggle-btn active" onclick="switchPlan('monthly')">Monthly</button>
-                                    <button class="toggle-btn" onclick="switchPlan('yearly')">Yearly</button>
+                                    <button type="button" class="toggle-btn active" onclick="switchPlan('monthly')">Monthly</button>
+                                    <button type="button" class="toggle-btn" onclick="switchPlan('yearly')">Yearly</button>
                                 </div>
                                 @endif
 
@@ -123,11 +123,9 @@
                             {{-- ✅ Button --}}
                             @if($package->price == 500)
 
-                                <a id="planBtn"
-                                   href="{{route('payment',['id'=>$package->id])}}"
-                                   class="{{$package->choice == 1?'btn at-btn-white':'theme-btn1'}} w-100 text-center">
-                                   Try Now
-                                </a>
+                            <a id="planBtn" data-package-id="12" href="{{ route('payment', ['id' => 12]) }}" class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
+                            Try Now
+                            </a>
 
                             @elseif (isset($subscription->package_id) && $subscription->package_id == $package->id)
 
@@ -157,27 +155,38 @@
 
 {{-- ✅ JS --}}
 <script>
-function switchPlan(type) {
+    const paymentUrl = "{{ route('payment', ['id' => ':id']) }}";
 
-    let price = document.querySelector('.price-amount');
-    let period = document.querySelector('.price-period');
-    let btn = document.getElementById('planBtn');
+    function switchPlan(type) {
+        const price = document.querySelector('.price-amount');
+        const period = document.querySelector('.price-period');
+        const btn = document.getElementById('planBtn');
+        const buttons = document.querySelectorAll('.toggle-btn');
 
-    let buttons = document.querySelectorAll('.toggle-btn');
-    buttons.forEach(b => b.classList.remove('active'));
+        buttons.forEach(button => button.classList.remove('active'));
 
-    if(type === 'monthly') {
-        price.innerText = '₹500';
-        period.innerText = 'Monthly';
-        btn.href = "{{ route('payment',['id'=> $package->id ?? '' ]) }}";
-        buttons[0].classList.add('active');
-    } else {
-        price.innerText = '₹5000';
-        period.innerText = 'Annually';
-        btn.href = "{{ route('payment',['id'=> $yearlyPackage->id ?? '' ]) }}";
-        buttons[1].classList.add('active');
+        if (type === 'monthly') {
+            price.innerText = '₹500';
+            period.innerText = 'Monthly';
+            btn.dataset.packageId = '12';
+
+            buttons[0].classList.add('active');
+        } else {
+            price.innerText = '₹5000';
+            period.innerText = 'Annually';
+            btn.dataset.packageId = '17';
+
+            buttons[1].classList.add('active');
+        }
+
+        // Toggle hote hi href bhi update hoga
+        btn.href = paymentUrl.replace(':id', btn.dataset.packageId);
     }
-}
+
+    // Try Now click par selected package ID ka URL forcefully set hoga
+    document.getElementById('planBtn').addEventListener('click', function () {
+        this.href = paymentUrl.replace(':id', this.dataset.packageId);
+    });
 </script>
 
 {{-- ✅ CSS --}}

@@ -57,7 +57,7 @@ class PaymentController extends Controller
         ];
     
          Session::put('payment_details', $payment_details);
-        $payment_details = session('payment_details');
+         $payment_details = session('payment_details');
        
         $page_data['payment_details']  = $payment_details;
         $page_data['package']  = $package;
@@ -72,7 +72,7 @@ class PaymentController extends Controller
 
 
     public function show_payment_gateway_by_ajax($identifier)
-    {
+        {
         $page_data['payment_details'] = session('payment_details');
 
     $payment_details = session('payment_details');
