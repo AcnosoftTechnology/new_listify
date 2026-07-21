@@ -31,11 +31,7 @@
                 data-empty-label="{{ $noNewLabel }}">
                 @forelse($latestNotifications as $notification)
                     @php
-                        $lines = preg_split("/\r\n|\n|\r/", (string) $notification->description);
-                        $href = $viewAllUrl;
-                        if (is_array($lines) && count($lines) > 1 && str_starts_with(trim($lines[count($lines) - 1]), '/')) {
-                            $href = url(trim($lines[count($lines) - 1]));
-                        }
+                        $href = $notification->clickActionUrl($viewAllUrl);
                     @endphp
                     <li class="header-notification-row" data-notification-id="{{ $notification->id }}">
                         <a href="{{ $href }}"

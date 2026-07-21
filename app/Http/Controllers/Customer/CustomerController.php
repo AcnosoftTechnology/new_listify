@@ -298,15 +298,7 @@ class CustomerController extends Controller{
 
     protected function notificationClickUrl(Notifications $notification): string
     {
-        $lines = preg_split("/\r\n|\n|\r/", (string) $notification->description);
-        if (is_array($lines) && count($lines) > 1) {
-            $last = trim($lines[count($lines) - 1]);
-            if (str_starts_with($last, '/')) {
-                return url($last);
-            }
-        }
-
-        return route('customer.notification');
+        return $notification->clickActionUrl(route('customer.notification'));
     }
 
 

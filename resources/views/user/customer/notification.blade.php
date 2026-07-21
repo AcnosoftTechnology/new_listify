@@ -102,7 +102,7 @@ font-weight:inherit!important;
                                       </td>
                                       <td>
                                           <p @class(['noti_read' => $notification->read_on == 1, 'noti_pera' => true])>
-                                              {{ \Illuminate\Support\Str::limit($notification->description, 50, '...') }}
+                                              {{ \Illuminate\Support\Str::limit($notification->displayDescription(), 50, '...') }}
                                           </p>
                                       </td>
 
@@ -112,7 +112,7 @@ font-weight:inherit!important;
    class="viewNotification" 
    data-id="{{ $notification->id }}" 
    data-title="{{ $notification->title }}"
-   data-description="{{ $notification->description }}"
+   data-description="{{ $notification->displayDescription() }}"
    data-media="{{ $notification->media ? asset('uploads/notifications/'.$notification->media) : '' }}">
    <i class="fa fa-eye"></i>
 </a>
