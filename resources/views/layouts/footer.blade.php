@@ -378,6 +378,11 @@
     background:var(--chat-bg);
     scrollbar-width:none;
 }
+.suggestions div{
+    display: flex;
+    gap: 10px;
+    overflow: auto;
+}
 .suggestions::-webkit-scrollbar{ display:none; }
 .suggestion{
      flex: none;
@@ -425,6 +430,20 @@
     background:var(--chat-bg);
     font-size:11px;
     text-align:center;
+}
+
+/* Scrollbar hide rahega, lekin scroll/swap working karega */
+.chat-body,
+.suggestions div{
+    -ms-overflow-style: none;  /* Internet Explorer / old Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+.chat-body::-webkit-scrollbar,
+.suggestions div::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    display: none;             /* Chrome, Safari, new Edge */
 }
 
 @media(max-width:600px){
@@ -480,10 +499,12 @@
     </div>
 
     <div class="suggestions">
-        <button class="suggestion">Restaurants 🍔</button>
-        <button class="suggestion">Hotels 🏨</button>
-        <button class="suggestion">Salons 💇</button>
-        <button class="suggestion">Gyms 🏋️</button>
+        <div>
+          <button class="suggestion">Restaurants 🍔</button>
+          <button class="suggestion">Hotels 🏨</button>
+          <button class="suggestion">Salons 💇</button>
+          <button class="suggestion">Gyms 🏋️</button>
+        </div>
     </div>
 
     <div class="chat-footer">
@@ -629,7 +650,7 @@ document.querySelectorAll(".suggestion").forEach((button) => {
         addMessage(selectedCategory, "user");
 
         addMessage(
-            `Great choice! ${selectedCategory} ke liye aap kis city mein search karna chahte hain?`,
+            `Great choice! Which city would you like to search for ${selectedCategory}?`,
             "bot"
         );
 
@@ -638,6 +659,7 @@ document.querySelectorAll(".suggestion").forEach((button) => {
         messageInput.focus();
     });
 });
+
 </script>
 
 <!-- End Footer Area -->
