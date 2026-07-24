@@ -608,24 +608,26 @@ async function callChatApi(message) {
     const typing = addMessage("Typing...", "bot");
 
     try {
-        const res = await fetch("https://api.listify.asia/api/v1/chat/concierge", {
+        // Same-origin proxy → api.listify.asia (avoids browser SSL/CORS failures)
+        const res = await fetch("{{ url('/api/chat/concierge') }}", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest"
             },
             body: JSON.stringify({
                 message: message,
                 session_id: session_id,
-                user_name: "Guest"
+                user_name: @json(optional(auth()->user())->name ?: 'Guest')
             })
         });
 
-        if (!res.ok) {
-            throw new Error("API Error: " + res.status);
-        }
+        const data = await res.json().catch(() => ({}));
 
-        const data = await res.json();
+        if (!res.ok) {
+            throw new Error(data.message || ("API Error: " + res.status));
+        }
 
         typing.closest(".message-row").remove();
 

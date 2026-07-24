@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ChatConciergeController;
 use App\Http\Controllers\Api\InternalUploadController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,8 +10,11 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Mobile FCM / auth APIs live on api.listify.asia (JWT).
 | This host keeps web session FCM at POST /fcm/token (web.php) and uploads.
+| AI Concierge widget uses same-origin POST /api/chat/concierge (proxy).
 */
 
+
+Route::post('/chat/concierge', [ChatConciergeController::class, 'handleChat']);
 
 Route::post('/internal-upload', [InternalUploadController::class, 'upload']);
 Route::post('/custom-field-upload', [InternalUploadController::class, 'customFieldUpload']);

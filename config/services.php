@@ -69,6 +69,14 @@ return [
       'push_api_key'   => env('FIREBASE_PUSH_API_KEY'),
   ],
 
-
+  /*
+  | Mobile / shared API host (api.listify.asia).
+  | verify_ssl defaults false while the API Let's Encrypt cert is expired
+  | (expired 2026-04-05). After renewing the cert, set LISTIFY_API_VERIFY_SSL=true.
+  */
+  'listify_api' => [
+      'url'        => env('LISTIFY_API_URL', 'https://api.listify.asia'),
+      'verify_ssl' => filter_var(env('LISTIFY_API_VERIFY_SSL', false), FILTER_VALIDATE_BOOLEAN),
+  ],
 
 ];
