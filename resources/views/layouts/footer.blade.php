@@ -212,8 +212,10 @@
 
 #ai-chat-toggle{
     position:fixed;
-    right:18px;
-    bottom:22px;
+    /* right:18px;
+    bottom:22px; */
+    right: 10px;
+    bottom: 70px;
     width:62px;
     height:62px;
     padding:0;
@@ -456,7 +458,11 @@
         border:0;
         border-radius:0;
     }
-    #ai-chat-toggle{ bottom:18px; right:18px; }
+    #ai-chat-toggle{ 
+        /* bottom:18px; right:18px;  */
+        bottom: 70px;
+        right: 8px;
+    }
     .chat-body{ padding:24px 16px; }
 }
 </style>
