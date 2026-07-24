@@ -1730,9 +1730,13 @@ textarea.cap-form-control {
     height: 118px;
 } */
 .card-item-image{
-	height: fit-content;
+	/* height: fit-content;
     width: 100%;
-    object-fit: cover;
+    object-fit: cover; */
+    height: 150px;
+    width: 100%;
+    object-fit: contain;
+
 }
 .card-item-image-list{
 	height: 100%;
