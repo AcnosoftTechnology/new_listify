@@ -10,7 +10,7 @@
     <!-- Start Content Area -->
     <section class="mt-3 ">
         <div class="container">
-            <div class="row row-28 mb-80">
+            <div class="row mb-80">
                 <!-- Sidebar -->
                 <div class="col-xl-3 col-lg-4">
                    @include('frontend.custom-types.sidebar')

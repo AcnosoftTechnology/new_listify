@@ -6,7 +6,8 @@
 @push('meta')@endpush
 @section('frontend_layout')
 
-@if($CustomlistingSetting)
+@if(isset($CustomlistingSetting) && $CustomlistingSetting)
+
 
 <section class="mt-3 ht-banner-section mb-60px"
     style="background-image: url('{{ asset($CustomlistingSetting->banner_bg_image) }}');
@@ -49,7 +50,7 @@
     <section class="mt-3">
         <div class="container">
           
-            <div class="row row-28 mb-80">
+            <div class="row mb-80">
                 <!-- Sidebar -->
                 <div class="col-xl-3 col-lg-4">
                     @include('frontend.custom-types.sidebar')
@@ -96,7 +97,7 @@
                           <!-- Card Area -->
 
                           @if (count($listings) > 0)
-                              <div class="row row-28">
+                              <div class="row">
 
                                   @foreach ($listings as $listing)
 
@@ -291,7 +292,7 @@
     <!-- End Content Area -->
 
 
-@if($CustomlistingSetting)
+@if(isset($CustomlistingSetting) && $CustomlistingSetting)
 
 <section>
     <div class="container">
@@ -340,52 +341,52 @@
 @push('js')
 
     @if (Auth::check())
-        <script>
-            "use strict";
+            <script>
+                "use strict";
 
-            function updateWishlist(button, listingId) {
-                const bookmarkButton = $(button);
-                const isActive = bookmarkButton.hasClass('active');
-                bookmarkButton.toggleClass('active');
-                const newTooltipText = isActive ? 'Add to Wishlist' : 'Remove from Wishlist';
-                bookmarkButton.attr('data-bs-title', newTooltipText);
+                function updateWishlist(button, listingId) {
+                    const bookmarkButton = $(button);
+                    const isActive = bookmarkButton.hasClass('active');
+                    bookmarkButton.toggleClass('active');
+                    const newTooltipText = isActive ? 'Add to Wishlist' : 'Remove from Wishlist';
+                    bookmarkButton.attr('data-bs-title', newTooltipText);
 
-                const tooltipInstance = bootstrap.Tooltip.getInstance(button);
-                if (tooltipInstance) tooltipInstance.dispose();
-                new bootstrap.Tooltip(button);
+                    const tooltipInstance = bootstrap.Tooltip.getInstance(button);
+                    if (tooltipInstance) tooltipInstance.dispose();
+                    new bootstrap.Tooltip(button);
 
-                $.ajax({
-                    url: '{{ route('wishlist.update') }}',
-                    method: 'POST',
-                    data: {
-                        listing_id: listingId,
-                        type: '{{ $type }}',
-                        user_id: {{ auth()->check() ? auth()->id() : 'null' }},
-                        _token: '{{ csrf_token() }}',
-                    },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            success(response.message);
-                        } else if (response.status === 'error') {
+                    $.ajax({
+                        url: '{{ route('wishlist.update') }}',
+                        method: 'POST',
+                        data: {
+                            listing_id: listingId,
+                            type: '{{ $type }}',
+                            user_id: {{ auth()->check() ? auth()->id() : 'null' }},
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                success(response.message);
+                            } else if (response.status === 'error') {
+                                bookmarkButton.toggleClass('active');
+                                const revertTooltipText = isActive ? 'Remove from Wishlist' : 'Add to Wishlist';
+                                bookmarkButton.attr('data-bs-title', revertTooltipText);
+                                const revertTooltipInstance = bootstrap.Tooltip.getInstance(button);
+                                if (revertTooltipInstance) revertTooltipInstance.dispose();
+                                new bootstrap.Tooltip(button);
+                            }
+                        },
+                        error: function(xhr) {
                             bookmarkButton.toggleClass('active');
                             const revertTooltipText = isActive ? 'Remove from Wishlist' : 'Add to Wishlist';
                             bookmarkButton.attr('data-bs-title', revertTooltipText);
                             const revertTooltipInstance = bootstrap.Tooltip.getInstance(button);
                             if (revertTooltipInstance) revertTooltipInstance.dispose();
                             new bootstrap.Tooltip(button);
-                        }
-                    },
-                    error: function(xhr) {
-                        bookmarkButton.toggleClass('active');
-                        const revertTooltipText = isActive ? 'Remove from Wishlist' : 'Add to Wishlist';
-                        bookmarkButton.attr('data-bs-title', revertTooltipText);
-                        const revertTooltipInstance = bootstrap.Tooltip.getInstance(button);
-                        if (revertTooltipInstance) revertTooltipInstance.dispose();
-                        new bootstrap.Tooltip(button);
-                    },
-                });
-            }
-        </script>
+                        },
+                    });
+                }
+            </script>
     @else
         <script>
             "use strict";

@@ -867,8 +867,7 @@ class FrontendController extends Controller{
     /**
      * Paginate listings sorted by distance when user location is in session
      */
-    private function paginateListingsByDistance($query, int $perPage = 9)
-    {
+    private function paginateListingsByDistance($query, int $perPage = 9){
         $userCoords = GeolocationService::getUserCoordinatesFromSession();
 
         if (!$userCoords) {
