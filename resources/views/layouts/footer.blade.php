@@ -465,6 +465,69 @@
     }
     .chat-body{ padding:24px 16px; }
 }
+
+.listing-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:calc(100% - 57px);
+    min-height:88px;
+    padding:12px;
+    color:#000;
+    text-decoration:none;
+    background:#fff;
+    border:1.5px solid #6c1cff;
+    border-radius:18px;
+    box-shadow:0 7px 18px rgba(108,28,255,.12);
+    transition:all .2s ease;
+}
+
+.listing-card:hover{
+    background:#faf7ff;
+    transform:translateY(-2px);
+    box-shadow:0 10px 22px rgba(108,28,255,.22);
+}
+
+.listing-card-image{
+    width:56px;
+    height:56px;
+    flex:none;
+    object-fit:cover;
+    border-radius:50%;
+    background:#f1ebff;
+}
+
+.listing-card-content{
+    flex:1;
+    min-width:0;
+}
+
+.listing-card-title{
+    overflow:hidden;
+    color:#121e2b;
+    font-size:16px;
+    font-weight:700;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.listing-card-meta{
+    margin-top:6px;
+    color:#7e8a96;
+    font-size:13px;
+}
+
+.listing-card-arrow{
+    color:#6c1cff;
+    font-size:34px;
+    line-height:1;
+}
+
+.chat-body{
+    flex:1;
+    overflow-y:auto;
+}
+
 </style>
 
 <button id="ai-chat-toggle" aria-label="Open AI Concierge">
@@ -574,6 +637,53 @@ function addMessage(text, type) {
     return message;
 }
 
+
+function addListingCard(listing, shouldScroll = true) {
+    const row = document.createElement("div");
+    row.className = "message-row";
+
+    const avatar = document.createElement("div");
+    avatar.className = "bot-mini-avatar";
+    avatar.innerHTML = `<img src="${botIcon}" alt="">`;
+
+    const card = document.createElement("a");
+    card.className = "listing-card";
+    card.href = listing.web_url || "#";
+    card.target = "_blank";
+    card.rel = "noopener noreferrer";
+
+    const title = escapeHtml(listing.title || "View listing");
+    const image = listing.image_url || botIcon;
+
+    card.innerHTML = `
+        <img class="listing-card-image"
+             src="${image}"
+             alt="${title}"
+             onerror="this.src='${botIcon}'">
+
+        <div class="listing-card-content">
+            <div class="listing-card-title">${title}</div>
+            <div class="listing-card-meta">Tap to view details</div>
+        </div>
+
+        <span class="listing-card-arrow">›</span>
+    `;
+
+    row.appendChild(avatar);
+    row.appendChild(card);
+    chatBody.appendChild(row);
+
+    if (shouldScroll) {
+        scrollChat();
+    }
+}
+
+function escapeHtml(value = "") {
+    const element = document.createElement("div");
+    element.textContent = value;
+    return element.innerHTML;
+}
+
 async function sendMessage() {
     let inputMessage = messageInput.value.trim();
     if (!inputMessage) return;
@@ -632,9 +742,19 @@ async function callChatApi(message) {
         typing.closest(".message-row").remove();
 
         addMessage(
-            data.response_text || "Sorry, I could not understand that.",
+            data.response_text || "Here are some matching listings:",
             "bot"
         );
+
+        const listings = data?.metadata?.listing_links || [];
+
+        if (listings.length) {
+            listings.forEach((listing) => {
+                addListingCard(listing, false); // false = har card ke baad scroll nahi hoga
+            });
+
+            scrollChat(); // sab cards add hone ke baad ek hi baar scroll
+        }
     } catch (error) {
         typing.textContent = "Connection error. Please try again.";
         console.error(error);
