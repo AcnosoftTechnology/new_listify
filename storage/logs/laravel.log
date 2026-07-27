@@ -4846,3 +4846,911 @@ Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-class\">Illumin
 #36 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(Object(Illuminate\\Encryption\\MissingAppKeyException))
 #37 {main}
 "} 
+[2026-07-27 09:07:39] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(399): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
+#1 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php(81): tap(NULL, Object(Closure))
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php(64): Illuminate\\Encryption\\EncryptionServiceProvider->key(Array)
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php(32): Illuminate\\Encryption\\EncryptionServiceProvider->parseKey(Array)
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(952): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(Object(Illuminate\\Foundation\\Application), Array)
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(832): Illuminate\\Container\\Container->build(Object(Closure))
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1078): Illuminate\\Container\\Container->resolve('encrypter', Array, true)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(763): Illuminate\\Foundation\\Application->resolve('encrypter', Array)
+#8 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1058): Illuminate\\Container\\Container->make('encrypter', Array)
+#9 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(1133): Illuminate\\Foundation\\Application->make('encrypter')
+#10 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(1043): Illuminate\\Container\\Container->resolveClass(Object(ReflectionParameter))
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(994): Illuminate\\Container\\Container->resolveDependencies(Array)
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(832): Illuminate\\Container\\Container->build('Illuminate\\\\Cook...')
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1078): Illuminate\\Container\\Container->resolve('Illuminate\\\\Cook...', Array, true)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(763): Illuminate\\Foundation\\Application->resolve('Illuminate\\\\Cook...', Array)
+#15 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1058): Illuminate\\Container\\Container->make('Illuminate\\\\Cook...', Array)
+#16 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(198): Illuminate\\Foundation\\Application->make('Illuminate\\\\Cook...')
+#17 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#19 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#20 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#21 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#22 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(201): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#23 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(170): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#24 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#26 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#27 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#28 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#29 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#30 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#31 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#32 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#37 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#41 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(176): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#42 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(145): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#43 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#44 D:\\xampp\\htdocs\\listify\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#45 {main}
+"} 
+[2026-07-27 09:07:39] production.ERROR: Database file at path [D:\xampp\htdocs\listify\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select "value" from "system_settings" where "key" = language limit 1) {"view":{"view":"D:\\xampp\\htdocs\\listify\\resources\\views\\errors\\500.blade.php","data":{"errors":"<pre class=sf-dump id=sf-dump-1233221906 data-indent-pad=\"  \"><span class=sf-dump-note>Illuminate\\Support\\ViewErrorBag</span> {<a class=sf-dump-ref>#862</a><samp data-depth=1 class=sf-dump-expanded>
+  #<span class=sf-dump-protected title=\"Protected property\">bags</span>: []
+</samp>}
+</pre><script>Sfdump(\"sf-dump-1233221906\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+","exception":"<pre class=sf-dump id=sf-dump-594732000 data-indent-pad=\"  \"><span class=sf-dump-note>Symfony\\Component\\HttpKernel\\Exception\\HttpException</span> {<a class=sf-dump-ref>#861</a><samp data-depth=1 class=sf-dump-expanded>
+  #<span class=sf-dump-protected title=\"Protected property\">message</span>: \"<span class=sf-dump-str title=\"49 characters\">No application encryption key has been specified.</span>\"
+  #<span class=sf-dump-protected title=\"Protected property\">code</span>: <span class=sf-dump-num>0</span>
+  #<span class=sf-dump-protected title=\"Protected property\">file</span>: \"<span class=\"sf-dump-str sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php
+97 characters\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php</span></span>\"
+  #<span class=sf-dump-protected title=\"Protected property\">line</span>: <span class=sf-dump-num>811</span>
+  -<span class=sf-dump-private title=\"Private property defined in class:&#10;`Exception`\">previous</span>: <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Encryption\\MissingAppKeyException
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Encryption</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">MissingAppKeyException</span></span> {<a class=sf-dump-ref href=#sf-dump-594732000-ref2826 title=\"5 occurrences\">#826</a><samp data-depth=2 id=sf-dump-594732000-ref2826 class=sf-dump-compact>
+    #<span class=sf-dump-protected title=\"Protected property\">message</span>: \"<span class=sf-dump-str title=\"49 characters\">No application encryption key has been specified.</span>\"
+    #<span class=sf-dump-protected title=\"Protected property\">code</span>: <span class=sf-dump-num>0</span>
+    #<span class=sf-dump-protected title=\"Protected property\">file</span>: \"<span class=\"sf-dump-str sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php
+104 characters\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php</span></span>\"
+    #<span class=sf-dump-protected title=\"Protected property\">line</span>: <span class=sf-dump-num>83</span>
+    <span class=sf-dump-meta>trace</span>: {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83
+Stack level 46.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83</span></span> { &#8230;4}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php:399
+Stack level 45.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Support\\helpers.php:399</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:81
+Stack level 44.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:81</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:64
+Stack level 43.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:64</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:32
+Stack level 42.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:32</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:952
+Stack level 41.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:952</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:832
+Stack level 40.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:832</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1078
+Stack level 39.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1078</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:763
+Stack level 38.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:763</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1058
+Stack level 37.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1058</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:1133
+Stack level 36.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:1133</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:1043
+Stack level 35.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:1043</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:994
+Stack level 34.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:994</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:832
+Stack level 33.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:832</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1078
+Stack level 32.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1078</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:763
+Stack level 31.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:763</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1058
+Stack level 30.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1058</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:198
+Stack level 29.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:198</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:127
+Stack level 28.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:127</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:807
+Stack level 27.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:807</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:786
+Stack level 26.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:786</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:750
+Stack level 25.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:750</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:739
+Stack level 24.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:739</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:201
+Stack level 23.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:201</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:170
+Stack level 22.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:170</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21
+Stack level 21.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php:31
+Stack level 20.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php:31</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 19.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21
+Stack level 18.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php:51
+Stack level 17.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php:51</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 16.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php:27
+Stack level 15.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php:27</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 14.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php:110
+Stack level 13.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php:110</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 12.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php:49
+Stack level 11.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Http\\Middleware\\HandleCors.php:49</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 10.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php:58
+Stack level 9.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Http\\Middleware\\TrustProxies.php:58</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 8.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php:22
+Stack level 7.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php:22</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 6.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:127
+Stack level 5.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:127</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:176
+Stack level 4.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:176</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:145
+Stack level 3.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:145</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1220
+Stack level 2.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1220</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\index.php:17
+Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\</span><span class=\"sf-dump-ellipsis-tail\">index.php:17</span></span> { &#8230;4}
+    </samp>}
+  </samp>}
+  -<span class=sf-dump-private title=\"Private property defined in class:&#10;`Symfony\\Component\\HttpKernel\\Exception\\HttpException`\">statusCode</span>: <span class=sf-dump-num>500</span>
+  -<span class=sf-dump-private title=\"Private property defined in class:&#10;`Symfony\\Component\\HttpKernel\\Exception\\HttpException`\">headers</span>: []
+  <span class=sf-dump-meta>trace</span>: {<samp data-depth=2 class=sf-dump-compact>
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php:811
+Stack level 33.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php:811</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Exceptions\\Handler-&gt;prepareResponse($request, Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Exceptions</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Handler-&gt;prepareResponse($request, Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>if (! $this-&gt;isHttpException($e)) {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Exceptions\\Handler-&gt;prepareResponse($request, Throwable $e)\">    $e = new HttpException(500, $e-&gt;getMessage(), $e);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php:706
+Stack level 32.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php:706</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Exceptions\\Handler-&gt;renderExceptionResponse($request, Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Exceptions</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Handler-&gt;renderExceptionResponse($request, Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                ? $this-&gt;prepareJsonResponse($request, $e)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Exceptions\\Handler-&gt;renderExceptionResponse($request, Throwable $e)\">                : $this-&gt;prepareResponse($request, $e);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php:594
+Stack level 31.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php:594</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Exceptions\\Handler-&gt;render($request, Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Exceptions</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Handler-&gt;render($request, Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>    $e instanceof ValidationException =&gt; $this-&gt;convertValidationExceptionToResponse($e, $request),</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Exceptions\\Handler-&gt;render($request, Throwable $e)\">    default =&gt; $this-&gt;renderExceptionResponse($request, $e),</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}, $e);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Pipeline.php:51
+Stack level 30.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Pipeline.php:51</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Routing\\Pipeline-&gt;handleException($passable, Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Routing</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Pipeline-&gt;handleException($passable, Throwable $e)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Routing\\Pipeline-&gt;handleException($passable, Throwable $e)\">$response = $handler-&gt;render($passable, $e);</span></code>
+      &#8250; 
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:214
+Stack level 29.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:214</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>} catch (Throwable $e) {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">    return $this-&gt;handleException($passable, $e);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:127
+Stack level 28.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:127</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;then(Closure $destination)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Pipeline-&gt;then(Closure $destination)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>try {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;then(Closure $destination)\">    return $pipeline($this-&gt;passable);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>} finally {</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:807
+Stack level 27.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:807</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Routing\\Router-&gt;runRouteWithinStack(Route $route, Request $request)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Routing</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Router-&gt;runRouteWithinStack(Route $route, Request $request)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>-&gt;through($middleware)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Routing\\Router-&gt;runRouteWithinStack(Route $route, Request $request)\">-&gt;then(fn ($request) =&gt; $this-&gt;prepareResponse(</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>    $request, $route-&gt;run()</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:786
+Stack level 26.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:786</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Routing\\Router-&gt;runRoute(Request $request, Route $route)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Routing</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Router-&gt;runRoute(Request $request, Route $route)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>return $this-&gt;prepareResponse($request,</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Routing\\Router-&gt;runRoute(Request $request, Route $route)\">    $this-&gt;runRouteWithinStack($route, $request)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:750
+Stack level 25.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:750</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Routing\\Router-&gt;dispatchToRoute(Request $request)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Routing</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Router-&gt;dispatchToRoute(Request $request)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>{</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Routing\\Router-&gt;dispatchToRoute(Request $request)\">    return $this-&gt;runRoute($request, $this-&gt;findRoute($request));</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php:739
+Stack level 24.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Routing\\Router.php:739</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Routing\\Router-&gt;dispatch(Request $request)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Routing</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Router-&gt;dispatch(Request $request)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Routing\\Router-&gt;dispatch(Request $request)\">    return $this-&gt;dispatchToRoute($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:201
+Stack level 23.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:201</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Kernel-&gt;Illuminate\\Foundation\\Http\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http\\Kernel-&gt;Illuminate\\Foundation\\Http</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Kernel-&gt;Illuminate\\Foundation\\Http\\{closure}\">    return $this-&gt;router-&gt;dispatch($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>};</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:170
+Stack level 22.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:170</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>try {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">    return $destination($passable);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>} catch (Throwable $e) {</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21
+Stack level 21.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest-&gt;handle($request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">TransformsRequest-&gt;handle($request, Closure $next)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest-&gt;handle($request, Closure $next)\">    return $next($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php:31
+Stack level 20.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php:31</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull-&gt;handle($request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">ConvertEmptyStringsToNull-&gt;handle($request, Closure $next)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull-&gt;handle($request, Closure $next)\">    return parent::handle($request, $next);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 19.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>$carry = method_exists($pipe, $this-&gt;method)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">                ? $pipe-&gt;{$this-&gt;method}(...$parameters)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                : $pipe(...$parameters);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21
+Stack level 18.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php:21</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest-&gt;handle($request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">TransformsRequest-&gt;handle($request, Closure $next)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest-&gt;handle($request, Closure $next)\">    return $next($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php:51
+Stack level 17.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php:51</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Middleware\\TrimStrings-&gt;handle($request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">TrimStrings-&gt;handle($request, Closure $next)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Middleware\\TrimStrings-&gt;handle($request, Closure $next)\">    return parent::handle($request, $next);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 16.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>$carry = method_exists($pipe, $this-&gt;method)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">                ? $pipe-&gt;{$this-&gt;method}(...$parameters)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                : $pipe(...$parameters);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php:27
+Stack level 15.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php:27</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Http\\Middleware\\ValidatePostSize-&gt;handle($request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">ValidatePostSize-&gt;handle($request, Closure $next)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Http\\Middleware\\ValidatePostSize-&gt;handle($request, Closure $next)\">    return $next($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 14.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>$carry = method_exists($pipe, $this-&gt;method)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">                ? $pipe-&gt;{$this-&gt;method}(...$parameters)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                : $pipe(...$parameters);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php:110
+Stack level 13.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php:110</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance-&gt;handle($request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">PreventRequestsDuringMaintenance-&gt;handle($request, Closure $next)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance-&gt;handle($request, Closure $next)\">    return $next($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 12.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>$carry = method_exists($pipe, $this-&gt;method)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">                ? $pipe-&gt;{$this-&gt;method}(...$parameters)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                : $pipe(...$parameters);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php:49
+Stack level 11.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Http\\Middleware\\HandleCors.php:49</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Http\\Middleware\\HandleCors-&gt;handle($request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">HandleCors-&gt;handle($request, Closure $next)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>if (! $this-&gt;hasMatchingPath($request)) {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Http\\Middleware\\HandleCors-&gt;handle($request, Closure $next)\">    return $next($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 10.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>$carry = method_exists($pipe, $this-&gt;method)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">                ? $pipe-&gt;{$this-&gt;method}(...$parameters)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                : $pipe(...$parameters);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php:58
+Stack level 9.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Http\\Middleware\\TrustProxies.php:58</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Http\\Middleware\\TrustProxies-&gt;handle(Request $request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">TrustProxies-&gt;handle(Request $request, Closure $next)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Http\\Middleware\\TrustProxies-&gt;handle(Request $request, Closure $next)\">    return $next($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 8.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>$carry = method_exists($pipe, $this-&gt;method)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">                ? $pipe-&gt;{$this-&gt;method}(...$parameters)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                : $pipe(...$parameters);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php:22
+Stack level 7.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php:22</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks-&gt;handle(Request $request, Closure $next)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http\\Middleware</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">InvokeDeferredCallbacks-&gt;handle(Request $request, Closure $next)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>{</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks-&gt;handle(Request $request, Closure $next)\">    return $next($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:209
+Stack level 6.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:209</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>$carry = method_exists($pipe, $this-&gt;method)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;Illuminate\\Pipeline\\{closure}\">                ? $pipe-&gt;{$this-&gt;method}(...$parameters)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                : $pipe(...$parameters);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php:127
+Stack level 5.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Pipeline\\Pipeline.php:127</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Pipeline\\Pipeline-&gt;then(Closure $destination)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pipeline</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Pipeline-&gt;then(Closure $destination)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>try {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Pipeline\\Pipeline-&gt;then(Closure $destination)\">    return $pipeline($this-&gt;passable);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>} finally {</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:176
+Stack level 4.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:176</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Kernel-&gt;sendRequestThroughRouter($request)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Kernel-&gt;sendRequestThroughRouter($request)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>        -&gt;through($this-&gt;app-&gt;shouldSkipMiddleware() ? [] : $this-&gt;middleware)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Kernel-&gt;sendRequestThroughRouter($request)\">        -&gt;then($this-&gt;dispatchToRouter());</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:145
+Stack level 3.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:145</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Http\\Kernel-&gt;handle($request)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Http</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Kernel-&gt;handle($request)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Http\\Kernel-&gt;handle($request)\">    $response = $this-&gt;sendRequestThroughRouter($request);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>} catch (Throwable $e) {</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1220
+Stack level 2.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1220</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Application-&gt;handleRequest(Request $request)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Application-&gt;handleRequest(Request $request)</span></span> &#8230;
+      &#8250; 
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Application-&gt;handleRequest(Request $request)\">$response = $kernel-&gt;handle($request)-&gt;send();</span></code>
+      &#8250; 
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\index.php:17
+Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\</span><span class=\"sf-dump-ellipsis-tail\">index.php:17</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>(require_once __DIR__.&#039;/bootstrap/app.php&#039;)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const>    -&gt;handleRequest(Request::capture());</span></code>
+      &#8250; 
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+  </samp>}
+</samp>}
+</pre><script>Sfdump(\"sf-dump-594732000\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+"}},"exception":"[object] (Spatie\\LaravelIgnition\\Exceptions\\ViewException(code: 0): Database file at path [D:\\xampp\\htdocs\\listify\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select \"value\" from \"system_settings\" where \"key\" = language limit 1) at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:825)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('select \"value\" ...', Array, Object(Closure))
+#1 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(398): Illuminate\\Database\\Connection->run('select \"value\" ...', Array, Object(Closure))
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3106): Illuminate\\Database\\Connection->select('select \"value\" ...', Array, true)
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3091): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3676): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3090): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(343): Illuminate\\Database\\Query\\Builder->get(Array)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3049): Illuminate\\Database\\Query\\Builder->first(Array)
+#8 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(74): Illuminate\\Database\\Query\\Builder->value('value')
+#9 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(96): get_settings('language')
+#10 D:\\xampp\\htdocs\\listify\\resources\\views\\errors\\500.blade.php(2): get_phrase('500 not found')
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(123): require('D:\\\\xampp\\\\htdocs...')
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('D:\\\\xampp\\\\htdocs...', Array)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(75): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\xampp\\\\htdocs...', Array)
+#15 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(209): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\xampp\\\\htdocs...', Array)
+#16 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(192): Illuminate\\View\\View->getContents()
+#17 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(161): Illuminate\\View\\View->renderContents()
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(79): Illuminate\\View\\View->render()
+#19 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#20 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(60): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 500, Array)
+#21 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(90): Illuminate\\Routing\\ResponseFactory->make(Object(Illuminate\\View\\View), 500, Array)
+#22 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(894): Illuminate\\Routing\\ResponseFactory->view('errors::500', Array, 500, Array)
+#23 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(815): Illuminate\\Foundation\\Exceptions\\Handler->renderHttpException(Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#24 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(706): Illuminate\\Foundation\\Exceptions\\Handler->prepareResponse(Object(Illuminate\\Http\\Request), Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#25 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(594): Illuminate\\Foundation\\Exceptions\\Handler->renderExceptionResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#26 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Pipeline.php(51): Illuminate\\Foundation\\Exceptions\\Handler->render(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#27 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(214): Illuminate\\Routing\\Pipeline->handleException(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#28 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#30 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#31 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#32 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#33 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(201): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#34 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(170): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#35 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#47 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#48 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#49 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#50 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#51 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#52 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(176): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#53 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(145): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#54 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#55 D:\\xampp\\htdocs\\listify\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#56 {main}
+
+[previous exception] [object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [D:\\xampp\\htdocs\\listify\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select \"value\" from \"system_settings\" where \"key\" = language limit 1) at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:825)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('select \"value\" ...', Array, Object(Closure))
+#1 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(398): Illuminate\\Database\\Connection->run('select \"value\" ...', Array, Object(Closure))
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3106): Illuminate\\Database\\Connection->select('select \"value\" ...', Array, true)
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3091): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3676): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3090): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(343): Illuminate\\Database\\Query\\Builder->get(Array)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3049): Illuminate\\Database\\Query\\Builder->first(Array)
+#8 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(74): Illuminate\\Database\\Query\\Builder->value('value')
+#9 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(96): get_settings('language')
+#10 D:\\xampp\\htdocs\\listify\\storage\\framework\\views\\533b53ea86465f7f36532eadfed239ad.php(1): get_phrase('500 not found')
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(123): require('D:\\\\xampp\\\\htdocs...')
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('D:\\\\xampp\\\\htdocs...', Array)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(75): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\xampp\\\\htdocs...', Array)
+#15 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(209): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\xampp\\\\htdocs...', Array)
+#16 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(192): Illuminate\\View\\View->getContents()
+#17 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(161): Illuminate\\View\\View->renderContents()
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(79): Illuminate\\View\\View->render()
+#19 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#20 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(60): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 500, Array)
+#21 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(90): Illuminate\\Routing\\ResponseFactory->make(Object(Illuminate\\View\\View), 500, Array)
+#22 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(894): Illuminate\\Routing\\ResponseFactory->view('errors::500', Array, 500, Array)
+#23 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(815): Illuminate\\Foundation\\Exceptions\\Handler->renderHttpException(Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#24 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(706): Illuminate\\Foundation\\Exceptions\\Handler->prepareResponse(Object(Illuminate\\Http\\Request), Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#25 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(594): Illuminate\\Foundation\\Exceptions\\Handler->renderExceptionResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#26 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Pipeline.php(51): Illuminate\\Foundation\\Exceptions\\Handler->render(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#27 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(214): Illuminate\\Routing\\Pipeline->handleException(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#28 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#30 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#31 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#32 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#33 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(201): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#34 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(170): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#35 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#47 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#48 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#49 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#50 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#51 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#52 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(176): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#53 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(145): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#54 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#55 D:\\xampp\\htdocs\\listify\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#56 {main}
+
+[previous exception] [object] (Illuminate\\Database\\SQLiteDatabaseDoesNotExistException(code: 0): Database file at path [D:\\xampp\\htdocs\\listify\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\SQLiteConnector.php:37)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(224): Illuminate\\Database\\Connectors\\SQLiteConnector->connect(Array)
+#1 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1231): call_user_func(Object(Closure))
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1267): Illuminate\\Database\\Connection->getPdo()
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(512): Illuminate\\Database\\Connection->getReadPdo()
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(407): Illuminate\\Database\\Connection->getPdoForSelect(true)
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(812): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('select \"value\" ...', Array)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('select \"value\" ...', Array, Object(Closure))
+#8 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(398): Illuminate\\Database\\Connection->run('select \"value\" ...', Array, Object(Closure))
+#9 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3106): Illuminate\\Database\\Connection->select('select \"value\" ...', Array, true)
+#10 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3091): Illuminate\\Database\\Query\\Builder->runSelect()
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3676): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3090): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(343): Illuminate\\Database\\Query\\Builder->get(Array)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3049): Illuminate\\Database\\Query\\Builder->first(Array)
+#15 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(74): Illuminate\\Database\\Query\\Builder->value('value')
+#16 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(96): get_settings('language')
+#17 D:\\xampp\\htdocs\\listify\\storage\\framework\\views\\533b53ea86465f7f36532eadfed239ad.php(1): get_phrase('500 not found')
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(123): require('D:\\\\xampp\\\\htdocs...')
+#19 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#20 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('D:\\\\xampp\\\\htdocs...', Array)
+#21 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(75): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\xampp\\\\htdocs...', Array)
+#22 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(209): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\xampp\\\\htdocs...', Array)
+#23 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(192): Illuminate\\View\\View->getContents()
+#24 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(161): Illuminate\\View\\View->renderContents()
+#25 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(79): Illuminate\\View\\View->render()
+#26 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#27 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(60): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 500, Array)
+#28 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(90): Illuminate\\Routing\\ResponseFactory->make(Object(Illuminate\\View\\View), 500, Array)
+#29 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(894): Illuminate\\Routing\\ResponseFactory->view('errors::500', Array, 500, Array)
+#30 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(815): Illuminate\\Foundation\\Exceptions\\Handler->renderHttpException(Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#31 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(706): Illuminate\\Foundation\\Exceptions\\Handler->prepareResponse(Object(Illuminate\\Http\\Request), Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#32 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(594): Illuminate\\Foundation\\Exceptions\\Handler->renderExceptionResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#33 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Pipeline.php(51): Illuminate\\Foundation\\Exceptions\\Handler->render(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#34 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(214): Illuminate\\Routing\\Pipeline->handleException(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#35 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#37 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#38 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#39 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#40 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(201): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#41 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(170): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#42 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#43 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#44 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#47 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#48 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#49 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#51 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#52 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#53 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#54 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#55 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#56 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#57 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(209): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#58 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(127): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#59 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(176): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#60 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(145): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#61 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#62 D:\\xampp\\htdocs\\listify\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#63 {main}
+"} 
+[2026-07-27 09:07:39] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(399): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
+#1 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php(81): tap(NULL, Object(Closure))
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php(64): Illuminate\\Encryption\\EncryptionServiceProvider->key(Array)
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php(32): Illuminate\\Encryption\\EncryptionServiceProvider->parseKey(Array)
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(952): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(Object(Illuminate\\Foundation\\Application), Array)
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(832): Illuminate\\Container\\Container->build(Object(Closure))
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1078): Illuminate\\Container\\Container->resolve('encrypter', Array, true)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(763): Illuminate\\Foundation\\Application->resolve('encrypter', Array)
+#8 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1058): Illuminate\\Container\\Container->make('encrypter', Array)
+#9 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(1133): Illuminate\\Foundation\\Application->make('encrypter')
+#10 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(1043): Illuminate\\Container\\Container->resolveClass(Object(ReflectionParameter))
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(994): Illuminate\\Container\\Container->resolveDependencies(Array)
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(832): Illuminate\\Container\\Container->build('Illuminate\\\\Cook...')
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1078): Illuminate\\Container\\Container->resolve('Illuminate\\\\Cook...', Array, true)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(763): Illuminate\\Foundation\\Application->resolve('Illuminate\\\\Cook...', Array)
+#15 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1058): Illuminate\\Container\\Container->make('Illuminate\\\\Cook...', Array)
+#16 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(258): Illuminate\\Foundation\\Application->make('Illuminate\\\\Cook...')
+#17 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(216): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1222): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#19 D:\\xampp\\htdocs\\listify\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#20 {main}
+"} 
+[2026-07-27 09:07:39] production.ERROR: Database file at path [D:\xampp\htdocs\listify\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select "value" from "system_settings" where "key" = language limit 1) {"view":{"view":"D:\\xampp\\htdocs\\listify\\resources\\views\\errors\\500.blade.php","data":{"errors":"<pre class=sf-dump id=sf-dump-1171743677 data-indent-pad=\"  \"><span class=sf-dump-note>Illuminate\\Support\\ViewErrorBag</span> {<a class=sf-dump-ref>#623</a><samp data-depth=1 class=sf-dump-expanded>
+  #<span class=sf-dump-protected title=\"Protected property\">bags</span>: []
+</samp>}
+</pre><script>Sfdump(\"sf-dump-1171743677\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+","exception":"<pre class=sf-dump id=sf-dump-1787897085 data-indent-pad=\"  \"><span class=sf-dump-note>Symfony\\Component\\HttpKernel\\Exception\\HttpException</span> {<a class=sf-dump-ref>#631</a><samp data-depth=1 class=sf-dump-expanded>
+  #<span class=sf-dump-protected title=\"Protected property\">message</span>: \"<span class=sf-dump-str title=\"49 characters\">No application encryption key has been specified.</span>\"
+  #<span class=sf-dump-protected title=\"Protected property\">code</span>: <span class=sf-dump-num>0</span>
+  #<span class=sf-dump-protected title=\"Protected property\">file</span>: \"<span class=\"sf-dump-str sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php
+97 characters\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php</span></span>\"
+  #<span class=sf-dump-protected title=\"Protected property\">line</span>: <span class=sf-dump-num>811</span>
+  -<span class=sf-dump-private title=\"Private property defined in class:&#10;`Exception`\">previous</span>: <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Encryption\\MissingAppKeyException
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Encryption</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">MissingAppKeyException</span></span> {<a class=sf-dump-ref href=#sf-dump-1787897085-ref2123 title=\"6 occurrences\">#123</a><samp data-depth=2 id=sf-dump-1787897085-ref2123 class=sf-dump-compact>
+    #<span class=sf-dump-protected title=\"Protected property\">message</span>: \"<span class=sf-dump-str title=\"49 characters\">No application encryption key has been specified.</span>\"
+    #<span class=sf-dump-protected title=\"Protected property\">code</span>: <span class=sf-dump-num>0</span>
+    #<span class=sf-dump-protected title=\"Protected property\">file</span>: \"<span class=\"sf-dump-str sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php
+104 characters\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php</span></span>\"
+    #<span class=sf-dump-protected title=\"Protected property\">line</span>: <span class=sf-dump-num>83</span>
+    <span class=sf-dump-meta>trace</span>: {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83
+Stack level 21.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83</span></span> { &#8230;4}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php:399
+Stack level 20.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Support\\helpers.php:399</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:81
+Stack level 19.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:81</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:64
+Stack level 18.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:64</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:32
+Stack level 17.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:32</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:952
+Stack level 16.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:952</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:832
+Stack level 15.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:832</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1078
+Stack level 14.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1078</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:763
+Stack level 13.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:763</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1058
+Stack level 12.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1058</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:1133
+Stack level 11.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:1133</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:1043
+Stack level 10.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:1043</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:994
+Stack level 9.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:994</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:832
+Stack level 8.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:832</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1078
+Stack level 7.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1078</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:763
+Stack level 6.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Container\\Container.php:763</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1058
+Stack level 5.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1058</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:258
+Stack level 4.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:258</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php:216
+Stack level 3.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Http\\Kernel.php:216</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1222
+Stack level 2.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Application.php:1222</span></span> { &#8230;5}
+      <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\index.php:17
+Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\</span><span class=\"sf-dump-ellipsis-tail\">index.php:17</span></span> { &#8230;4}
+    </samp>}
+  </samp>}
+  -<span class=sf-dump-private title=\"Private property defined in class:&#10;`Symfony\\Component\\HttpKernel\\Exception\\HttpException`\">statusCode</span>: <span class=sf-dump-num>500</span>
+  -<span class=sf-dump-private title=\"Private property defined in class:&#10;`Symfony\\Component\\HttpKernel\\Exception\\HttpException`\">headers</span>: []
+  <span class=sf-dump-meta>trace</span>: {<samp data-depth=2 class=sf-dump-compact>
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php:811
+Stack level 7.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php:811</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Exceptions\\Handler-&gt;prepareResponse($request, Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Exceptions</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Handler-&gt;prepareResponse($request, Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>if (! $this-&gt;isHttpException($e)) {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Exceptions\\Handler-&gt;prepareResponse($request, Throwable $e)\">    $e = new HttpException(500, $e-&gt;getMessage(), $e);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php:706
+Stack level 6.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php:706</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Exceptions\\Handler-&gt;renderExceptionResponse($request, Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Exceptions</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Handler-&gt;renderExceptionResponse($request, Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>                ? $this-&gt;prepareJsonResponse($request, $e)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Exceptions\\Handler-&gt;renderExceptionResponse($request, Throwable $e)\">                : $this-&gt;prepareResponse($request, $e);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php:594
+Stack level 5.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Exceptions\\Handler.php:594</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Exceptions\\Handler-&gt;render($request, Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Exceptions</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">Handler-&gt;render($request, Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>    $e instanceof ValidationException =&gt; $this-&gt;convertValidationExceptionToResponse($e, $request),</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Exceptions\\Handler-&gt;render($request, Throwable $e)\">    default =&gt; $this-&gt;renderExceptionResponse($request, $e),</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}, $e);</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php:221
+Stack level 4.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php:221</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;renderHttpResponse(Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Bootstrap</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">HandleExceptions-&gt;renderHttpResponse(Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>{</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;renderHttpResponse(Throwable $e)\">    $this-&gt;getExceptionHandler()-&gt;render(static::$app[&#039;request&#039;], $e)-&gt;send();</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;2}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php:198
+Stack level 3.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php:198</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;handleException(Throwable $e)
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Bootstrap</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">HandleExceptions-&gt;handleException(Throwable $e)</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>} else {</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;handleException(Throwable $e)\">    $this-&gt;renderHttpResponse($e);</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>}</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php:258
+Stack level 2.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xampp\\htdocs\\listify\\vendor</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">\\laravel\\framework\\</span><span class=\"sf-dump-ellipsis-tail\">src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php:258</span></span> {<samp data-depth=3 class=sf-dump-compact>
+      <span class=\"sf-dump-note sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;Illuminate\\Foundation\\Bootstrap\\{closure}
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;Illuminate\\Foundation\\Bootstrap</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}</span></span> &#8230;
+      &#8250; <code class=\"php\"><span class=sf-dump-default>return fn (...$arguments) =&gt; static::$app</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-const title=\"in Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;Illuminate\\Foundation\\Bootstrap\\{closure}\">    ? $this-&gt;{$method}(...$arguments)</span></code>
+      &#8250; <code class=\"php\"><span class=sf-dump-default>    : false;</span></code>
+      <span class=sf-dump-meta>arguments</span>: { &#8230;1}
+    </samp>}
+    <span class=\"sf-dump-meta sf-dump-ellipsization\" title=\"Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;Illuminate\\Foundation\\Bootstrap\\{closure}()
+Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-class\">Illuminate\\Foundation\\Bootstrap\\HandleExceptions-&gt;Illuminate\\Foundation\\Bootstrap</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-class\">\\</span><span class=\"sf-dump-ellipsis-tail\">{closure}()</span></span> {}
+  </samp>}
+</samp>}
+</pre><script>Sfdump(\"sf-dump-1787897085\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+"}},"exception":"[object] (Spatie\\LaravelIgnition\\Exceptions\\ViewException(code: 0): Database file at path [D:\\xampp\\htdocs\\listify\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select \"value\" from \"system_settings\" where \"key\" = language limit 1) at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:825)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('select \"value\" ...', Array, Object(Closure))
+#1 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(398): Illuminate\\Database\\Connection->run('select \"value\" ...', Array, Object(Closure))
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3106): Illuminate\\Database\\Connection->select('select \"value\" ...', Array, true)
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3091): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3676): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3090): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(343): Illuminate\\Database\\Query\\Builder->get(Array)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3049): Illuminate\\Database\\Query\\Builder->first(Array)
+#8 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(74): Illuminate\\Database\\Query\\Builder->value('value')
+#9 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(96): get_settings('language')
+#10 D:\\xampp\\htdocs\\listify\\resources\\views\\errors\\500.blade.php(2): get_phrase('500 not found')
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(123): require('D:\\\\xampp\\\\htdocs...')
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('D:\\\\xampp\\\\htdocs...', Array)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(75): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\xampp\\\\htdocs...', Array)
+#15 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(209): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\xampp\\\\htdocs...', Array)
+#16 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(192): Illuminate\\View\\View->getContents()
+#17 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(161): Illuminate\\View\\View->renderContents()
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(79): Illuminate\\View\\View->render()
+#19 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#20 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(60): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 500, Array)
+#21 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(90): Illuminate\\Routing\\ResponseFactory->make(Object(Illuminate\\View\\View), 500, Array)
+#22 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(894): Illuminate\\Routing\\ResponseFactory->view('errors::500', Array, 500, Array)
+#23 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(815): Illuminate\\Foundation\\Exceptions\\Handler->renderHttpException(Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#24 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(706): Illuminate\\Foundation\\Exceptions\\Handler->prepareResponse(Object(Illuminate\\Http\\Request), Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#25 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(594): Illuminate\\Foundation\\Exceptions\\Handler->renderExceptionResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#26 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(221): Illuminate\\Foundation\\Exceptions\\Handler->render(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#27 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(198): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->renderHttpResponse(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#28 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleException(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#29 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#30 {main}
+
+[previous exception] [object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [D:\\xampp\\htdocs\\listify\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select \"value\" from \"system_settings\" where \"key\" = language limit 1) at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:825)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('select \"value\" ...', Array, Object(Closure))
+#1 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(398): Illuminate\\Database\\Connection->run('select \"value\" ...', Array, Object(Closure))
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3106): Illuminate\\Database\\Connection->select('select \"value\" ...', Array, true)
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3091): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3676): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3090): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(343): Illuminate\\Database\\Query\\Builder->get(Array)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3049): Illuminate\\Database\\Query\\Builder->first(Array)
+#8 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(74): Illuminate\\Database\\Query\\Builder->value('value')
+#9 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(96): get_settings('language')
+#10 D:\\xampp\\htdocs\\listify\\storage\\framework\\views\\533b53ea86465f7f36532eadfed239ad.php(1): get_phrase('500 not found')
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(123): require('D:\\\\xampp\\\\htdocs...')
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('D:\\\\xampp\\\\htdocs...', Array)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(75): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\xampp\\\\htdocs...', Array)
+#15 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(209): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\xampp\\\\htdocs...', Array)
+#16 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(192): Illuminate\\View\\View->getContents()
+#17 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(161): Illuminate\\View\\View->renderContents()
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(79): Illuminate\\View\\View->render()
+#19 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#20 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(60): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 500, Array)
+#21 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(90): Illuminate\\Routing\\ResponseFactory->make(Object(Illuminate\\View\\View), 500, Array)
+#22 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(894): Illuminate\\Routing\\ResponseFactory->view('errors::500', Array, 500, Array)
+#23 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(815): Illuminate\\Foundation\\Exceptions\\Handler->renderHttpException(Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#24 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(706): Illuminate\\Foundation\\Exceptions\\Handler->prepareResponse(Object(Illuminate\\Http\\Request), Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#25 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(594): Illuminate\\Foundation\\Exceptions\\Handler->renderExceptionResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#26 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(221): Illuminate\\Foundation\\Exceptions\\Handler->render(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#27 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(198): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->renderHttpResponse(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#28 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleException(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#29 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#30 {main}
+
+[previous exception] [object] (Illuminate\\Database\\SQLiteDatabaseDoesNotExistException(code: 0): Database file at path [D:\\xampp\\htdocs\\listify\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. at D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\SQLiteConnector.php:37)
+[stacktrace]
+#0 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(224): Illuminate\\Database\\Connectors\\SQLiteConnector->connect(Array)
+#1 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#2 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1231): call_user_func(Object(Closure))
+#3 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1267): Illuminate\\Database\\Connection->getPdo()
+#4 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(512): Illuminate\\Database\\Connection->getReadPdo()
+#5 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(407): Illuminate\\Database\\Connection->getPdoForSelect(true)
+#6 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(812): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('select \"value\" ...', Array)
+#7 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('select \"value\" ...', Array, Object(Closure))
+#8 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(398): Illuminate\\Database\\Connection->run('select \"value\" ...', Array, Object(Closure))
+#9 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3106): Illuminate\\Database\\Connection->select('select \"value\" ...', Array, true)
+#10 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3091): Illuminate\\Database\\Query\\Builder->runSelect()
+#11 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3676): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#12 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3090): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#13 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(343): Illuminate\\Database\\Query\\Builder->get(Array)
+#14 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3049): Illuminate\\Database\\Query\\Builder->first(Array)
+#15 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(74): Illuminate\\Database\\Query\\Builder->value('value')
+#16 D:\\xampp\\htdocs\\listify\\app\\Helpers\\common_helpers.php(96): get_settings('language')
+#17 D:\\xampp\\htdocs\\listify\\storage\\framework\\views\\533b53ea86465f7f36532eadfed239ad.php(1): get_phrase('500 not found')
+#18 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(123): require('D:\\\\xampp\\\\htdocs...')
+#19 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#20 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('D:\\\\xampp\\\\htdocs...', Array)
+#21 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(75): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\xampp\\\\htdocs...', Array)
+#22 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(209): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\xampp\\\\htdocs...', Array)
+#23 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(192): Illuminate\\View\\View->getContents()
+#24 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(161): Illuminate\\View\\View->renderContents()
+#25 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(79): Illuminate\\View\\View->render()
+#26 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#27 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(60): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 500, Array)
+#28 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ResponseFactory.php(90): Illuminate\\Routing\\ResponseFactory->make(Object(Illuminate\\View\\View), 500, Array)
+#29 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(894): Illuminate\\Routing\\ResponseFactory->view('errors::500', Array, 500, Array)
+#30 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(815): Illuminate\\Foundation\\Exceptions\\Handler->renderHttpException(Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#31 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(706): Illuminate\\Foundation\\Exceptions\\Handler->prepareResponse(Object(Illuminate\\Http\\Request), Object(Symfony\\Component\\HttpKernel\\Exception\\HttpException))
+#32 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(594): Illuminate\\Foundation\\Exceptions\\Handler->renderExceptionResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#33 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(221): Illuminate\\Foundation\\Exceptions\\Handler->render(Object(Illuminate\\Http\\Request), Object(Illuminate\\Encryption\\MissingAppKeyException))
+#34 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(198): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->renderHttpResponse(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#35 D:\\xampp\\htdocs\\listify\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleException(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#36 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(Object(Illuminate\\Encryption\\MissingAppKeyException))
+#37 {main}
+"} 
+[2026-07-27 09:10:40] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 

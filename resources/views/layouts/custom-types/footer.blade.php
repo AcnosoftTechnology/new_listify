@@ -1,4 +1,7 @@
 <!-- Start Footer Area -->
+
+@include('partials.ai-chat')
+
 <footer class="main-footer-section">
     <div class="container">
         <div class="row">
