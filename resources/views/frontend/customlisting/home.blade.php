@@ -27,15 +27,22 @@
                 <p class="in-subtitle-16px text-white text-center max-w-723px mx-auto mb-40px">
                     {{ $page_data->banner_description ?? 'Awesome site description here...' }}
                 </p>
-              <div class="mb-60px d-flex align-items-center gap-3 flex-wrap justify-content-center">
-                <a href="https://www.listify.asia/listing/{{$page_data->slug}}/grid" class="btn ht-btn-primary">
-                  Explore More
-                </a>
-                <a href="{{$page_data->banner_tab_link}}" class="btn ht-btn-primary">
-                  {{ $page_data->banner_tab_name ?? 'Learn More' }}
-                </a>
+                
+                <div class="mb-60px d-flex align-items-center gap-3 flex-wrap justify-content-center">
 
-              </div>
+                    @if(!empty($page_data->slug))
+                        <a href="{{ url('listing/' . $page_data->slug . '/grid') }}" class="btn ht-btn-primary">
+                            Explore More
+                        </a>
+                    @endif
+
+                    @if(!empty($page_data->banner_tab_link))
+                        <a href="{{ $page_data->banner_tab_link }}" class="btn ht-btn-primary">
+                            {{ $page_data->banner_tab_name ?? 'Learn More' }}
+                        </a>
+                    @endif
+
+                </div>
 
             </div>
         </div>
