@@ -326,6 +326,16 @@
     overflow-y:auto;
 }
 
+.bot-message strong{
+    color:#111;
+    font-weight:700;
+}
+
+.bot-message .chat-detail-label{
+    color:#111;
+    font-size:16px;
+}
+
 </style>
 
 <button id="ai-chat-toggle" aria-label="Open AI Concierge">
@@ -418,14 +428,9 @@ function addMessage(text, type) {
     message.textContent = text;
 
     if (type === "bot") {
-        const avatar = document.createElement("div");
-        avatar.className = "bot-mini-avatar";
-
-        const image = document.createElement("img");
-        image.src = botIcon;
-        image.alt = "";
-        avatar.appendChild(image);
-        row.appendChild(avatar);
+        message.innerHTML = formatBotMessage(text);
+    } else {
+        message.textContent = text;
     }
 
     row.appendChild(message);
@@ -433,6 +438,40 @@ function addMessage(text, type) {
     scrollChat();
 
     return message;
+}
+
+function formatBotMessage(text = "") {
+    // Pehle text ko safe banata hai
+    let formatted = escapeHtml(text);
+
+    // Description aur Location ko separate formatted lines banata hai
+    formatted = formatted.replace(
+        /\s*-\s*\*\*(Description|Location)\*\*:?\s*/gi,
+        '<br><br><span class="chat-detail-label">- <strong>$1:</strong></span> '
+    );
+
+    // Agar "-" nahi laga hua ho, tab bhi Description / Location format ho
+    formatted = formatted.replace(
+        /\s*\*\*(Description|Location)\*\*:?\s*/gi,
+        '<br><br><span class="chat-detail-label">- <strong>$1:</strong></span> '
+    );
+
+    // **Any text** ko bold banata hai
+    formatted = formatted.replace(
+        /\*\*(.*?)\*\*/g,
+        '<strong>$1</strong>'
+    );
+
+    // Normal new line ko HTML line break banata hai
+    formatted = formatted.replace(/\n/g, '<br>');
+
+    return formatted;
+}
+
+function escapeHtml(value = "") {
+    const element = document.createElement("div");
+    element.textContent = value;
+    return element.innerHTML;
 }
 
 
