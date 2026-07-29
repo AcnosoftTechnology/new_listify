@@ -336,6 +336,20 @@
     font-size:16px;
 }
 
+.listing-results{
+    display:flex;
+    flex:1;
+    min-width:0;
+    flex-direction:column;
+    gap:12px;
+}
+
+.listing-results .listing-card{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+}
+
 </style>
 
 <button id="ai-chat-toggle" aria-label="Open AI Concierge">
@@ -474,14 +488,7 @@ function escapeHtml(value = "") {
     return element.innerHTML;
 }
 
-function addListingCard(listing, shouldScroll = true) {
-    const row = document.createElement("div");
-    row.className = "message-row";
-
-    const avatar = document.createElement("div");
-    avatar.className = "bot-mini-avatar";
-    avatar.innerHTML = `<img src="${botIcon}" alt="">`;
-
+function addListingCard(listing, shouldScroll = true, container = null) {
     const card = document.createElement("a");
     card.className = "listing-card";
     card.href = listing.web_url || "#";
@@ -504,6 +511,24 @@ function addListingCard(listing, shouldScroll = true) {
 
         <span class="listing-card-arrow">›</span>
     `;
+
+    // Agar group container diya hai, to bot icon ke bina card add hoga
+    if (container) {
+        container.appendChild(card);
+
+        if (shouldScroll) {
+            scrollChat();
+        }
+
+        return;
+    }
+
+    const row = document.createElement("div");
+    row.className = "message-row";
+
+    const avatar = document.createElement("div");
+    avatar.className = "bot-mini-avatar";
+    avatar.innerHTML = `<img src="${botIcon}" alt="">`;
 
     row.appendChild(avatar);
     row.appendChild(card);
@@ -607,15 +632,33 @@ async function callChatApi(message) {
                 : "Sorry, I could not understand that.";
         }
 
-        /* Sirf heading ka bot message */
-        addMessage(heading, "bot");
+       /* Heading aur listing cards ek hi bot group mein show honge */
+        const resultRow = document.createElement("div");
+        resultRow.className = "message-row";
 
-        /* Neeche sirf clickable listing cards */
+        const avatar = document.createElement("div");
+        avatar.className = "bot-mini-avatar";
+        avatar.innerHTML = `<img src="${botIcon}" alt="">`;
+
+        const resultContent = document.createElement("div");
+        resultContent.className = "listing-results";
+
+        const headingMessage = document.createElement("div");
+        headingMessage.className = "bot-message";
+        headingMessage.innerHTML = formatBotMessage(heading);
+
+        resultContent.appendChild(headingMessage);
+
+        /* Listing cards: inke side mein separate bot icon nahi hoga */
         if (listings.length) {
             listings.forEach((listing) => {
-                addListingCard(listing, false);
+                addListingCard(listing, false, resultContent);
             });
         }
+
+        resultRow.appendChild(avatar);
+        resultRow.appendChild(resultContent);
+        chatBody.appendChild(resultRow);
 
         /* Sab render hone ke baad scroll */
         scrollChat();
