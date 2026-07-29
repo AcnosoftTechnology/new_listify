@@ -377,10 +377,10 @@
 
     <div class="suggestions">
         <div>
-          <button class="suggestion">Restaurants 🍔</button>
-          <button class="suggestion">Hotels 🏨</button>
-          <button class="suggestion">Salons 💇</button>
-          <button class="suggestion">Gyms 🏋️</button>
+          <button class="suggestion" data-category="Restaurants">Restaurants 🍔</button>
+          <button class="suggestion" data-category="Hotels">Hotels 🏨</button>
+          <button class="suggestion" data-category="Salons">Salons 💇</button>
+          <button class="suggestion" data-category="Gyms">Gyms 🏋️</button>
         </div>
     </div>
 
@@ -474,7 +474,6 @@ function escapeHtml(value = "") {
     return element.innerHTML;
 }
 
-
 function addListingCard(listing, shouldScroll = true) {
     const row = document.createElement("div");
     row.className = "message-row";
@@ -526,9 +525,22 @@ async function sendMessage() {
     if (!inputMessage) return;
 
     if (waitingForCity && selectedCategory) {
-        const city = inputMessage;
+        /*
+        Input example:
+        Find Restaurants [Delhi]
 
-        addMessage(city, "user");
+        Brackets ke andar se sirf city nikalega.
+        */
+        const cityMatch = inputMessage.match(/\[([^\]]*)\]/);
+        const city = cityMatch ? cityMatch[1].trim() : inputMessage;
+
+        // User ne abhi [city] replace nahi kiya
+        if (!city || city.toLowerCase() === "city") {
+            messageInput.focus();
+            return;
+        }
+
+        addMessage(inputMessage, "user");
         messageInput.value = "";
         messageInput.placeholder = "Ask me anything about Listify...";
 
@@ -583,7 +595,7 @@ async function callChatApi(message) {
         Example:
         "Here are some travel agencies you might find interesting:
         1. **Kailash Mansarovar Yatra** ..."
-        
+
         Isse sirf colon se pehle wali heading li jayegi.
         */
         let heading = fullText.split(/:\s*(?=\d+\.|\*\*)/)[0].trim();
@@ -607,11 +619,12 @@ async function callChatApi(message) {
 
         /* Sab render hone ke baad scroll */
         scrollChat();
-            } catch (error) {
-                typing.textContent = "Connection error. Please try again.";
-                console.error(error);
-            }
-        }
+
+    } catch (error) {
+        typing.textContent = "Connection error. Please try again.";
+        console.error(error);
+    }
+}
 
 document.getElementById("sendMessage").onclick = () => sendMessage();
 
@@ -624,7 +637,11 @@ messageInput.addEventListener("keydown", (event) => {
 /* Restaurants / Hotels / Salons / Gyms chip click */
 document.querySelectorAll(".suggestion").forEach((button) => {
     button.addEventListener("click", () => {
-        selectedCategory = button.textContent.trim();
+
+        // Emoji ke bina category name: Restaurants, Hotels, Salons, Gyms
+        selectedCategory = button.dataset.category ||
+            button.textContent.trim().split(/\s+/)[0];
+
         waitingForCity = true;
 
         addMessage(selectedCategory, "user");
@@ -634,10 +651,16 @@ document.querySelectorAll(".suggestion").forEach((button) => {
             "bot"
         );
 
-        messageInput.value = "";
-        messageInput.placeholder = "Enter your city name...";
+        // Input mein pre-filled city template
+        messageInput.value = `Find ${selectedCategory} [city]`;
+        messageInput.placeholder = "Enter city name...";
+
+        // Sirf "city" select hoga; user direct Delhi/Mumbai type kar sakta hai
+        const cityStart = messageInput.value.indexOf("[city]");
+        const cityEnd = cityStart + "[city]".length;
+
         messageInput.focus();
+        messageInput.setSelectionRange(cityStart, cityEnd);
     });
 });
-
 </script>
