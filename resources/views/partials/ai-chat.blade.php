@@ -644,18 +644,11 @@ document.querySelectorAll(".suggestion").forEach((button) => {
 
         waitingForCity = true;
 
-        addMessage(selectedCategory, "user");
-
-        addMessage(
-            `Great choice! Which city would you like to search for ${selectedCategory}?`,
-            "bot"
-        );
-
         // Input mein pre-filled city template
         messageInput.value = `Find ${selectedCategory} [city]`;
         messageInput.placeholder = "Enter city name...";
 
-        // Sirf "city" select hoga; user direct Delhi/Mumbai type kar sakta hai
+        // [city] poora select hoga
         const cityStart = messageInput.value.indexOf("[city]");
         const cityEnd = cityStart + "[city]".length;
 
