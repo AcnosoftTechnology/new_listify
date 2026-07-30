@@ -314,7 +314,7 @@ public function subscribeFreePackage($id)
         'user_id'           => user('id'),
         'package_id'        => $package->id, // 11
         'paid_amount'       => 0,
-        'payment_method'    => 'cod',
+        'payment_method'    => 'COD',
         'status'            => 1,
         'auto_subscription' => 0,
         'expire_date'       => null, // Lifetime free package
