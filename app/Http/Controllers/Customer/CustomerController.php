@@ -175,61 +175,101 @@ class CustomerController extends Controller{
     }
 
     public function send_message(Request $request, $prefix, $code)
-    {
-        $request->validate([
-            'message' => 'required|string|max:5000',
-        ]);
+{
+    $request->validate([
+        'message' => 'nullable|string|max:5000',
+        'attachment' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+    ]);
 
-        $uid = user('id');
-        $thread = Message_thread::where('message_thread_code', $code)
-            ->where(function ($q) use ($uid) {
-                $q->where('sender', $uid)->orWhere('receiver', $uid);
-            })
-            ->first();
+    $uid = user('id');
 
-        if (!$thread) {
-            return redirect()->back()->with('error', get_phrase('Conversation not found'));
-        }
+    $thread = Message_thread::where('message_thread_code', $code)
+        ->where(function ($q) use ($uid) {
+            $q->where('sender', $uid)->orWhere('receiver', $uid);
+        })
+        ->first();
 
-        $messageText = sanitize($request->message);
-
-        Message::insert([
-            'message_thread_code' => $code,
-            'message' => $messageText,
-            'sender' => $uid,
-            'read_status' => 0,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        $thread->updated_at = Carbon::now();
-        $thread->save();
-
-        // Push to the other party (vendor ↔ customer)
-        try {
-            $receiverId = ((int) $thread->sender === (int) $uid)
-                ? (int) $thread->receiver
-                : (int) $thread->sender;
-
-            $pushOk = app(FirebaseNotificationService::class)->notifyChatMessage(
-                (int) $uid,
-                $receiverId,
-                (string) $messageText,
-                (string) $code
-            );
-
-            Log::info('Chat push after send_message', [
-                'from' => (int) $uid,
-                'to' => $receiverId,
-                'thread' => $code,
-                'sent' => $pushOk,
-            ]);
-        } catch (\Throwable $e) {
-            Log::warning('Chat push failed: ' . $e->getMessage());
-        }
-
-        return redirect()->back();
+    if (!$thread) {
+        return redirect()->back()->with('error', get_phrase('Conversation not found'));
     }
+
+    $messageText = sanitize($request->message);
+
+    /*
+    |--------------------------------------------------------------------------
+    | IMAGE UPLOAD LOGIC
+    |--------------------------------------------------------------------------
+    */
+
+    $imagePath = null;
+
+    if ($request->hasFile('attachment')) {
+
+        $image = $request->file('attachment');
+
+        $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+        $destinationPath = public_path('uploads/chat');
+
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
+        }
+
+        $image->move($destinationPath, $fileName);
+
+        $imagePath = 'uploads/chat/' . $fileName;
+    }
+
+    if (empty($messageText) && empty($imagePath)) {
+        return redirect()->back()->with(
+            'error',
+            get_phrase('Message or image is required')
+        );
+    }
+
+    Message::insert([
+        'message_thread_code' => $code,
+        'message' => !empty($imagePath) ? $imagePath : $messageText,
+        'sender' => $uid,
+        'read_status' => 0,
+        'created_at' => Carbon::now(),
+        'updated_at' => Carbon::now(),
+    ]);
+
+    $thread->updated_at = Carbon::now();
+    $thread->save();
+
+    // Push to the other party (vendor ↔ customer)
+    try {
+
+        $receiverId = ((int) $thread->sender === (int) $uid)
+            ? (int) $thread->receiver
+            : (int) $thread->sender;
+
+        $pushMessage = !empty($imagePath)
+            ? '📷 Image'
+            : $messageText;
+
+        $pushOk = app(FirebaseNotificationService::class)->notifyChatMessage(
+            (int) $uid,
+            $receiverId,
+            (string) $pushMessage,
+            (string) $code
+        );
+
+        Log::info('Chat push after send_message', [
+            'from' => (int) $uid,
+            'to' => $receiverId,
+            'thread' => $code,
+            'sent' => $pushOk,
+        ]);
+
+    } catch (\Throwable $e) {
+        Log::warning('Chat push failed: ' . $e->getMessage());
+    }
+
+    return redirect()->back();
+}
 
     public function remove_wishlist($id) {
         Wishlist::where('id', $id)->delete();

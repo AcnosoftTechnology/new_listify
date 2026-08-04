@@ -346,25 +346,62 @@
                                 </div>
                             </div>
                         </div>
-                        <form>
+                        <form enctype="multipart/form-data">
                             <div class="mb-20 mt-3">
-                                <label for="message" class="form-label smform-label2 mb-16">{{ get_phrase('Message*') }}</label>
-                                <textarea class="form-control mform-control review-textarea" name="message" id="message" required></textarea>
+                                <label for="message" class="form-label smform-label2 mb-16">
+                                    {{ get_phrase('Message*') }}
+                                </label>
+
+                                <textarea class="form-control mform-control review-textarea"
+                                    name="message"
+                                    id="message"
+                                    required></textarea>
                             </div>
-                            
+
+                            <div class="mb-20">
+                                <label class="form-label smform-label2 mb-16">
+                                    {{ get_phrase('Attachment') }}
+                                </label>
+                                <input type="file" id="attachment" name="attachment" class="form-control" accept=".png,.jpg,.jpeg,.webp">
+                            </div>
+
                             <div class="d-flex justify-content-between">
-                                <button class="theme-btn1" type="button" onclick="send_message('{{ $listing->user_id }}')">{{ get_phrase('Submit') }}</button>
+                                <button class="theme-btn1"
+                                    type="button"
+                                    onclick="send_message('{{ $listing->user_id }}')">
+                                    {{ get_phrase('Submit') }}
+                                </button>
 
                                 @if (Auth::check())
-                                   @if (isset(auth()->user()->id) && auth()->user()->id !== $listing->user_id)
-                                    @php
-                                        $existingReport = \App\Models\ReportedListing::where('listing_id', $listing->id)->where('type', $listing->type)->where('reporter_id', auth()->user()->id)->exists();
-                                    @endphp
-                                    @if (!$existingReport)
-                                       <a href="javascript:;" onclick="edit_modal('modal-md','{{ route('reportListingForm',['type'=>$listing->type ,'id'=>$listing->id]) }}','{{ get_phrase('Report this listing') }}')"   class="report-text">{{get_phrase('Report this listing')}}</a>
-                                       @else 
-                                       <a href="javascript:;"  class="report-text">{{get_phrase('Already Reported')}}</a>
-                                       @endif
+                                    @if (isset(auth()->user()->id) && auth()->user()->id !== $listing->user_id)
+
+                                        @php
+                                            $existingReport = \App\Models\ReportedListing::where('listing_id', $listing->id)
+                                                ->where('type', $listing->type)
+                                                ->where('reporter_id', auth()->user()->id)
+                                                ->exists();
+                                        @endphp
+
+                                        @if (!$existingReport)
+
+                                            <a href="javascript:;"
+                                                onclick="edit_modal(
+                                                    'modal-md',
+                                                    '{{ route('reportListingForm', ['type' => $listing->type, 'id' => $listing->id]) }}',
+                                                    '{{ get_phrase('Report this listing') }}'
+                                                )"
+                                                class="report-text">
+
+                                                {{ get_phrase('Report this listing') }}
+                                            </a>
+
+                                        @else
+
+                                            <a href="javascript:;" class="report-text">
+                                                {{ get_phrase('Already Reported') }}
+                                            </a>
+
+                                        @endif
                                     @endif
                                 @endif
                             </div>
@@ -996,58 +1033,94 @@
         });
     </script>
 
-    @if (Auth::check())
-        @if (isset(auth()->user()->id) && auth()->user()->id != $listing->user_id)
-            <script>
-                "use strict";
+@if (Auth::check())
+    @if (isset(auth()->user()->id) && auth()->user()->id != $listing->user_id)
+        <script>
+            "use strict";
 
-                function send_message(user_id) {
-                    var message = $('#message').val();
-                    if (message != "") {
-                        $.ajax({
-                            url: '{{ route('customerMessage') }}',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            data: {
-                                agent_id: user_id,
-                                message: message
-                            },
-                            success: function(response) {
-                                if (response.status == 'success') {
-                                    success("Message sent successfully");
-                                    $('#message').val('');
-                                } else {
-                                    error("Message send failed");
-                                }
-                            }
-                        });
+            function send_message(user_id) {
+
+            var message = $('#message').val();
+            var attachment = $('#attachment')[0].files[0];
+
+            if (attachment) {
+
+                var allowedTypes = [
+                    'image/png',
+                    'image/jpeg',
+                    'image/jpg',
+                    'image/webp'
+                ];
+
+                if (!allowedTypes.includes(attachment.type)) {
+                    error("Only PNG, JPG, JPEG and WEBP images are allowed.");
+                    return;
+                }
+            }
+
+            if (message === '' && !attachment) {
+                warning("Please enter a message or upload an image.");
+                return;
+            }
+
+            var formData = new FormData();
+
+            formData.append('agent_id', user_id);
+            formData.append('message', message);
+
+            if (attachment) {
+                formData.append('attachment', attachment);
+            }
+
+            $.ajax({
+                url: '{{ route('customerMessage') }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                success: function(response) {
+
+                    if (response.status === 'success') {
+
+                        success("Message sent successfully");
+
+                        $('#message').val('');
+                        $('#attachment').val('');
                     } else {
-                        warning("Please fill up the field first");
-                    }
-                }
-            </script>
-        @else
-            <script>
-                "use strict";
 
-                function send_message(user_id) {
-                    warning("You can't Message yourself");
+                        error(response.message);
+                    }
+                },
+
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                    error("Something went wrong.");
                 }
-            </script>
-        @endif
+            });
+        }
+        </script>
     @else
         <script>
             "use strict";
 
-            function send_message(listing_id) {
-                warning("Please login first!");
+            function send_message(user_id) {
+                warning("You can't Message yourself");
             }
         </script>
     @endif
+@else
+    <script>
+        "use strict";
 
-
-
+        function send_message(listing_id) {
+            warning("Please login first!");
+        }
+    </script>
+@endif
 
 
 @endpush

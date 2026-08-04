@@ -486,74 +486,203 @@ class FrontendController extends Controller{
     
     
 
-    public function customerMessage(Request $request)
-    {
-        if (!Auth::check()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => get_phrase('Please login first'),
-            ], 401);
-        }
-
-        $message = sanitize((string) $request->input('message', ''));
-        $receiver = (int) $request->input('agent_id');
-        $sender = (int) auth()->id();
-
-        if ($message === '' || $receiver <= 0) {
-            return response()->json([
-                'status' => 'error',
-                'message' => get_phrase('Message is required'),
-            ], 422);
-        }
-
-        if ($sender === $receiver) {
-            return response()->json([
-                'status' => 'error',
-                'message' => get_phrase("You can't message yourself"),
-            ], 422);
-        }
-
-        $thread = Message_thread::where(function ($q) use ($sender, $receiver) {
-            $q->where('sender', $sender)->where('receiver', $receiver);
-        })->orWhere(function ($q) use ($sender, $receiver) {
-            $q->where('sender', $receiver)->where('receiver', $sender);
-        })->first();
-
-        if (!$thread) {
-            $thread = new Message_thread();
-            $thread->message_thread_code = substr(md5((string) rand(100000000, 20000000000)), 0, 15);
-            $thread->sender = $sender;
-            $thread->receiver = $receiver;
-            $thread->save();
-        }
-
-        $dataMessage = new Message();
-        $dataMessage->message_thread_code = $thread->message_thread_code;
-        $dataMessage->message = $message;
-        $dataMessage->sender = $sender;
-        $dataMessage->read_status = 0;
-        $dataMessage->save();
-
-        $thread->updated_at = Carbon::now();
-        $thread->save();
-
-        // Notify vendor when customer messages from listing page
-        try {
-            app(FirebaseNotificationService::class)->notifyChatMessage(
-                $sender,
-                $receiver,
-                $message,
-                (string) $thread->message_thread_code
-            );
-        } catch (\Throwable $e) {
-            Log::warning('Listing chat push failed: ' . $e->getMessage());
-        }
-
+public function customerMessage(Request $request)
+{
+    if (!Auth::check()) {
         return response()->json([
-            'code' => $thread->message_thread_code,
-            'status' => 'success',
-        ]);
+            'status' => 'error',
+            'message' => get_phrase('Please login first'),
+        ], 401);
     }
+
+    $message = sanitize((string) $request->input('message', ''));
+    $receiver = (int) $request->input('agent_id');
+    $sender = (int) auth()->id();
+
+    /*
+    |--------------------------------------------------------------------------
+    | IMAGE UPLOAD LOGIC
+    |--------------------------------------------------------------------------
+    */
+
+    $imagePath = null;
+
+    if ($request->hasFile('attachment')) {
+
+        $request->validate([
+            'attachment' => 'image|mimes:png,jpg,jpeg,webp|max:5120',
+        ]);
+
+        $image = $request->file('attachment');
+
+        $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+        $destinationPath = public_path('uploads/chat');
+
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
+        }
+
+        $image->move($destinationPath, $fileName);
+
+        $imagePath = 'uploads/chat/' . $fileName;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | MESSAGE VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if ($message === '' && empty($imagePath)) {
+        return response()->json([
+            'status' => 'error',
+            'message' => get_phrase('Message or image is required'),
+        ], 422);
+    }
+
+    if ($receiver <= 0) {
+        return response()->json([
+            'status' => 'error',
+            'message' => get_phrase('Invalid user'),
+        ], 422);
+    }
+
+    if ($sender === $receiver) {
+        return response()->json([
+            'status' => 'error',
+            'message' => get_phrase("You can't message yourself"),
+        ], 422);
+    }
+
+    $thread = Message_thread::where(function ($q) use ($sender, $receiver) {
+        $q->where('sender', $sender)->where('receiver', $receiver);
+    })->orWhere(function ($q) use ($sender, $receiver) {
+        $q->where('sender', $receiver)->where('receiver', $sender);
+    })->first();
+
+    if (!$thread) {
+        $thread = new Message_thread();
+        $thread->message_thread_code = substr(md5((string) rand(100000000, 20000000000)), 0, 15);
+        $thread->sender = $sender;
+        $thread->receiver = $receiver;
+        $thread->save();
+    }
+
+    $dataMessage = new Message();
+    $dataMessage->message_thread_code = $thread->message_thread_code;
+
+    /*
+    |--------------------------------------------------------------------------
+    | SAVE TEXT OR IMAGE PATH
+    |--------------------------------------------------------------------------
+    */
+
+    if (!empty($imagePath)) {
+        $dataMessage->message = $imagePath;
+    } else {
+        $dataMessage->message = $message;
+    }
+
+    $dataMessage->sender = $sender;
+    $dataMessage->read_status = 0;
+    $dataMessage->save();
+
+    $thread->updated_at = Carbon::now();
+    $thread->save();
+
+    try {
+
+        $notificationMessage = !empty($imagePath)
+            ? '📷 Image'
+            : $message;
+
+        app(FirebaseNotificationService::class)->notifyChatMessage(
+            $sender,
+            $receiver,
+            $notificationMessage,
+            (string) $thread->message_thread_code
+        );
+
+    } catch (\Throwable $e) {
+        Log::warning('Listing chat push failed: ' . $e->getMessage());
+    }
+
+    return response()->json([
+        'code' => $thread->message_thread_code,
+        'status' => 'success',
+    ]);
+}
+
+
+
+    // public function customerMessage(Request $request) {
+    //     if (!Auth::check()) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => get_phrase('Please login first'),
+    //         ], 401);
+    //     }
+
+    //     $message = sanitize((string) $request->input('message', ''));
+    //     $receiver = (int) $request->input('agent_id');
+    //     $sender = (int) auth()->id();
+
+    //     if ($message === '' || $receiver <= 0) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => get_phrase('Message is required'),
+    //         ], 422);
+    //     }
+
+    //     if ($sender === $receiver) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => get_phrase("You can't message yourself"),
+    //         ], 422);
+    //     }
+
+    //     $thread = Message_thread::where(function ($q) use ($sender, $receiver) {
+    //         $q->where('sender', $sender)->where('receiver', $receiver);
+    //     })->orWhere(function ($q) use ($sender, $receiver) {
+    //         $q->where('sender', $receiver)->where('receiver', $sender);
+    //     })->first();
+
+    //     if (!$thread) {
+    //         $thread = new Message_thread();
+    //         $thread->message_thread_code = substr(md5((string) rand(100000000, 20000000000)), 0, 15);
+    //         $thread->sender = $sender;
+    //         $thread->receiver = $receiver;
+    //         $thread->save();
+    //     }
+
+    //     $dataMessage = new Message();
+    //     $dataMessage->message_thread_code = $thread->message_thread_code;
+    //     $dataMessage->message = $message;
+    //     $dataMessage->sender = $sender;
+    //     $dataMessage->read_status = 0;
+    //     $dataMessage->save();
+
+    //     $thread->updated_at = Carbon::now();
+    //     $thread->save();
+
+    //     // Notify vendor when customer messages from listing page
+    //     try {
+    //         app(FirebaseNotificationService::class)->notifyChatMessage(
+    //             $sender,
+    //             $receiver,
+    //             $message,
+    //             (string) $thread->message_thread_code
+    //         );
+    //     } catch (\Throwable $e) {
+    //         Log::warning('Listing chat push failed: ' . $e->getMessage());
+    //     }
+
+    //     return response()->json([
+    //         'code' => $thread->message_thread_code,
+    //         'status' => 'success',
+    //     ]);
+    // }
 
 
     public function customerBookAppointment(Request $request){
