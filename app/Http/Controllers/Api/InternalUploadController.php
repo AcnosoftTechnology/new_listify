@@ -766,6 +766,136 @@ public function paymentImageUpload(Request $request){
     }
 }
 
+public function chatImageUpload(Request $request)
+{
+    try {
+
+        /*
+        |--------------------------------------------------------------------------
+        | SECRET CHECK
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->secret != env('INTERNAL_UPLOAD_SECRET')) {
+
+            return response()->json([
+
+                'status' => false,
+
+                'message' => 'Unauthorized'
+
+            ], 401);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE CHECK
+        |--------------------------------------------------------------------------
+        */
+
+        if (!$request->hasFile('file')) {
+
+            return response()->json([
+
+                'status' => false,
+
+                'message' => 'File not found'
+
+            ], 400);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDATION
+        |--------------------------------------------------------------------------
+        */
+
+        $validator = Validator::make($request->all(), [
+
+            'file' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+
+                'status' => false,
+
+                'message' => $validator->errors()->first()
+
+            ], 422);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE
+        |--------------------------------------------------------------------------
+        */
+
+        $file = $request->file('file');
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE NAME
+        |--------------------------------------------------------------------------
+        */
+
+        $filename =
+            time() . '_' . uniqid() . '.' .
+            $file->getClientOriginalExtension();
+
+        /*
+        |--------------------------------------------------------------------------
+        | DESTINATION
+        |--------------------------------------------------------------------------
+        */
+
+        $destinationPath =
+            public_path('uploads/chat');
+
+        if (!file_exists($destinationPath)) {
+
+            mkdir($destinationPath, 0777, true);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOVE FILE
+        |--------------------------------------------------------------------------
+        */
+
+        $file->move($destinationPath, $filename);
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESPONSE
+        |--------------------------------------------------------------------------
+        */
+
+        return response()->json([
+
+            'status' => true,
+
+            'file' => $filename,
+
+            'url' =>
+                url('public/uploads/chat/' . $filename)
+
+        ]);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+
+            'status' => false,
+
+            'message' => $e->getMessage()
+
+        ], 500);
+    }
+}
+
   
     
 }

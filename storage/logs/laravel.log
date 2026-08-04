@@ -10710,3 +10710,11 @@ Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xamp
 [2026-08-04 12:20:07] local.INFO: FCM skip: firebase disabled {"user_id":43} 
 [2026-08-04 12:20:07] local.WARNING: FCM chat notify: no delivery (missing token or FCM error) {"receiver_id":43} 
 [2026-08-04 12:20:07] local.INFO: Chat push after send_message {"from":50,"to":43,"thread":"7d6fe27bc02e4a2","sent":false} 
+[2026-08-04 12:31:13] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-08-04 12:31:21] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 

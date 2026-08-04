@@ -23,3 +23,4 @@ Route::post('/inventory-image-upload', [InternalUploadController::class, 'invent
 Route::post('/qrcode-image-upload', [InternalUploadController::class, 'qrcodeImageUpload']);
 Route::post('/blog-image-upload', [InternalUploadController::class, 'blogImageUpload']);
 Route::post('/payment-image-upload', [InternalUploadController::class, 'paymentImageUpload']);
+Route::post('/chat-image-upload', [InternalUploadController::class, 'chatImageUpload']);
