@@ -10718,3 +10718,7 @@ Stack level 1.\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-path\">D:\\xamp
 [stacktrace]
 #0 {main}
 "} 
+[2026-08-04 12:54:53] local.ERROR: Trait "Laravel\Sanctum\HasApiTokens" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Laravel\\Sanctum\\HasApiTokens\" not found at D:\\xampp\\htdocs\\listify\\app\\Models\\User.php:11)
+[stacktrace]
+#0 {main}
+"} 
