@@ -47,18 +47,25 @@ class InventoryImport implements ToCollection
                 $salePrice = $price - (($price * $discount) / 100);
             }
 
-            Inventory::create([
-                'listing_id'      => $this->listingId,
-                'category_id'     => $category->id,
-                'type'            => $this->type,
-                'name'            => trim($row[0]),
-                'price'           => $price,
-                'discount_price'  => $discount,
-                'sale_price'      => $salePrice,
-                'description'     => trim($row[4]),
-                'additional_info' => trim($row[5]),
-                'availability'    => trim($row[6]),
-            ]);
+            Inventory::updateOrCreate(
+
+                [
+                    'listing_id'  => $this->listingId,
+                    'category_id' => $category->id,
+                    'name'        => trim($row[0]),
+                ],
+
+                [
+                    'type'            => $this->type,
+                    'price'           => $price,
+                    'discount_price'  => $discount,
+                    'sale_price'      => $salePrice,
+                    'description'     => trim($row[4]),
+                    'additional_info' => trim($row[5]),
+                    'availability'    => trim($row[6]),
+                    'image'           => trim($row[7]),
+                ]
+            );
         }
     }
 }
