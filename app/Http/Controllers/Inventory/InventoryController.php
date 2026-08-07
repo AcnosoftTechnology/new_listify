@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Inventory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Imports\InventoryImport;
+use App\Exports\InventoryExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -32,4 +33,16 @@ class InventoryController extends Controller
             dd($e->getMessage());
         }
     }
+
+    public function exportExcel(Request $request){
+        return Excel::download(
+            new InventoryExport(
+                $request->listing_id,
+                $request->type
+            ),
+            'inventory.xlsx'
+        );
+    }
+
+
 }

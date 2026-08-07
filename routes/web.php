@@ -33,6 +33,8 @@ use App\Http\Controllers\Inventory\InventoryController;
 use App\Models\Room;
 
 Route::post('inventory/import', [InventoryController::class, 'importExcel'])->name('inventory.import');
+Route::get('/inventory/export', [InventoryController::class, 'exportExcel'])->name('inventory.export');
+
 
 // CSRF token refresh route
 Route::get('/refresh-csrf', function () {

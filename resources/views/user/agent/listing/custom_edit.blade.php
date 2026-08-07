@@ -313,6 +313,13 @@
                             <div class="d-flex align-items-center justify-content-between mb-5">
                                 <h5 class="in-title-16px mb-3 capitalize"> {{ get_phrase('Your  Shop Inventory') }} </h5>
                                 <div>
+                                    <a href="{{ route('inventory.export', [
+                                        'listing_id' => $listing->id,
+                                        'type' => $type
+                                    ]) }}"
+                                    class="btn btn-success">
+                                        Export Excel
+                                    </a>
                                     <button
                                     type="button"
                                         class="btn btn-primary"

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inventory extends Model
 {
-   
     public $timestamps = true;
 
     protected $fillable = [
@@ -23,4 +22,12 @@ class Inventory extends Model
         'icon_data',
         'image',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(
+            InventoryCategory::class,
+            'category_id'
+        );
+    }
 }
