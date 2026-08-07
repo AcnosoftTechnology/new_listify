@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class InventoryCategory extends Model
 {
-    //
+    protected $fillable = [
+        'listing_id',
+        'type',
+        'name',
+    ];
 }

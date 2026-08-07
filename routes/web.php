@@ -28,7 +28,11 @@ use App\Http\Controllers\SeoController;
 use App\Http\Controllers\Updater;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\Inventory\InventoryController;
+
 use App\Models\Room;
+
+Route::post('inventory/import', [InventoryController::class, 'importExcel'])->name('inventory.import');
 
 // CSRF token refresh route
 Route::get('/refresh-csrf', function () {
