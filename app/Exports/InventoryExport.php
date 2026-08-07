@@ -33,8 +33,8 @@ public function collection()
             'description' => $item->description,
             'additional_info' => $item->additional_info,
             'availability' => $item->availability,
-            'image' => $item->image,
         ];
+
     });
 }
 
@@ -48,7 +48,6 @@ public function collection()
             'Description',
             'Additional Information',
             'Availability',
-            'Image',
         ];
     }
 }
