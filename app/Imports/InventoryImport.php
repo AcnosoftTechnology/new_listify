@@ -63,7 +63,6 @@ class InventoryImport implements ToCollection
                     'description'     => trim($row[4]),
                     'additional_info' => trim($row[5]),
                     'availability'    => trim($row[6]),
-                    'image'           => trim($row[7]),
                 ]
             );
         }
