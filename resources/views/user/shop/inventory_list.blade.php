@@ -52,7 +52,7 @@
                     <tr class="ca-tr">
                         <td>{{$i++}}</td>
                         <td class="ca-subtitle-14px ca-text-dark min-w-110px">{{$inventory->name}}</td>
-                        <td class="ca-subtitle-14px ca-text-dark min-w-110px">{{$category->name}}</td>
+                        <td class="ca-subtitle-14px ca-text-dark min-w-110px">{{ $inventory->category->name ?? 'Category Deleted' }}</td>
                         <td class="ca-subtitle-14px ca-text-dark min-w-110px">{{$inventory->price}}</td>
                         <td>
                             @if($inventory->availability == 1)
