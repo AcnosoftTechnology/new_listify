@@ -30,10 +30,16 @@ use App\Http\Controllers\InstallController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Inventory\InventoryController;
 
+
 use App\Models\Room;
 
 Route::post('inventory/import', [InventoryController::class, 'importExcel'])->name('inventory.import');
 Route::get('/inventory/export', [InventoryController::class, 'exportExcel'])->name('inventory.export');
+
+Route::post(
+    'payment/{identifier}/subscription',
+    [\App\Http\Controllers\PaymentController::class, 'payment_razorpay_subscription']
+)->name('razorpay.subscription');
 
 
 // CSRF token refresh route

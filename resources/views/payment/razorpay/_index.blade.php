@@ -40,45 +40,11 @@
 @endphp
 
 @if ($public_key != '' && $secret_key != '')
-    <!-- <form action="{{ route('razorpay.order', $payment_gateway->identifier) }}" method="post">
+    <form action="{{ route('razorpay.order', $payment_gateway->identifier) }}" method="post">
         @csrf
         <input type="hidden" name="price" value="{{ $payment_details['payable_amount'] }}">
         <button type="submit" class="btn btn-primary">{{ get_phrase('Pay by Razorpay') }}</button>
-    </form> -->
-    @php
-    $period = strtolower(trim($payment_details['items'][0]['period']));
-@endphp
-
-@if($period == 'monthly' || $period == 'annually')
-
-    {{-- Razorpay Auto Subscription --}}
-    <form action="{{ route('razorpay.subscription', $payment_gateway->identifier) }}" method="post">
-        @csrf
-
-        <input type="hidden" name="price" value="{{ $payment_details['payable_amount'] }}">
-
-        <button type="submit" class="btn btn-primary">
-            {{ get_phrase('Subscribe with Razorpay') }}
-        </button>
-
     </form>
-
-@else
-
-    {{-- Existing One Time Payment --}}
-    <form action="{{ route('razorpay.order', $payment_gateway->identifier) }}" method="post">
-        @csrf
-
-        <input type="hidden" name="price" value="{{ $payment_details['payable_amount'] }}">
-
-        <button type="submit" class="btn btn-primary">
-            {{ get_phrase('Pay by Razorpay') }}
-        </button>
-
-    </form>
-
-@endif
-
 @else
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none;">
         <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">

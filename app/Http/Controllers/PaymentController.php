@@ -224,8 +224,7 @@ public function phonepeRedirect(Request $request)
 
 
 
-        public function payment_razorpay($identifier)
-        {
+     public function payment_razorpay($identifier){
             $payment_details = session('payment_details');
             $payment_gateway = DB::table('payment_geteways')->where('identifier', $identifier)->first();
             $model_name      = $payment_gateway->model_name;
@@ -234,6 +233,37 @@ public function phonepeRedirect(Request $request)
 
             return view('payment.razorpay.payment', compact('data'));
         }
+
+     
+    public function payment_razorpay_subscription(Request $request, $identifier){
+
+        $payment_details = session('payment_details');
+
+        if (!isset($payment_details['items'][0])) {
+            abort(404, 'Package not found');
+        }
+
+        $period = strtolower(trim($payment_details['items'][0]['period']));
+
+        if ($period == 'monthly') {
+            $planId = 'plan_TON6QkhsMZDaVk';
+        } elseif ($period == 'annually') {
+            $planId = 'plan_TONAKHsJtkYlmH';
+        } else {
+            return back()->with('error', 'Invalid package period.');
+        }
+
+        $payment_gateway = DB::table('payment_geteways')
+            ->where('identifier', $identifier)
+            ->first();
+
+        $model_name = $payment_gateway->model_name;
+        $model_full_path = str_replace(' ', '', 'App\Models\payment_gateway\\' . $model_name);
+
+        $data = $model_full_path::subscription_create($identifier, $planId);
+
+        return view('payment.razorpay.subscription', compact('data'));
+    }   
 
 
     public function make_paytm_order(Request $request)

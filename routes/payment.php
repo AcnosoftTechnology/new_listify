@@ -10,6 +10,7 @@ Route::controller(PaymentController::class)->middleware('auth')->group(function 
     Route::get('payment/show_payment_gateway_by_ajax/{identifier}', 'show_payment_gateway_by_ajax')->name('payment.show_payment_gateway_by_ajax');
     Route::get('payment/success/{identifier?}', 'payment_success')->name('payment.success');
     Route::get('payment/create/{identifier}', 'payment_create')->name('payment.create');
+    Route::post('payment/{identifier}/subscription', 'payment_razorpay_subscription')->name('razorpay.subscription');
 
     // razor pay
     Route::post('payment/{identifier}/order', 'payment_razorpay')->name('razorpay.order');
