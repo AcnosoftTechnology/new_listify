@@ -635,7 +635,7 @@ public function index(){
 
 
 
-        public function listing_details($type, $id, $slug){
+public function listing_details($type, $id, $slug){
             
             $whatsapp_no = null;
 

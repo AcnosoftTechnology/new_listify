@@ -313,22 +313,8 @@
                             <div class="d-flex align-items-center justify-content-between mb-5">
                                 <h5 class="in-title-16px mb-3 capitalize"> {{ get_phrase('Your  Shop Inventory') }} </h5>
                                 <div>
-                                    <a href="{{ route('inventory.export', [
-                                        'listing_id' => $listing->id,
-                                        'type' => $type
-                                    ]) }}"
-                                    class="btn btn-success">
-                                        Export Excel
-                                    </a>
-                                    <button
-                                    type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#importModal">
-
-                                        Import Excel
-
-                                    </button>
+                                    <a href="{{ route('inventory.export', ['listing_id' => $listing->id, 'type' => $type]) }}" class="btn btn-success"> Export Excel</a>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal"> Import Excel</button>
                                     <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.create', ['prefix' => 'agent', 'type' => $type,'listing_id' => $listing->id]) }}', '{{ get_phrase('Add Product') }}')" class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add New Product') }} </a>
                                     <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.category.create', ['prefix' => 'agent', 'type' => $type, 'listing_id' => $listing->id]) }}', '{{ get_phrase('Add Category') }}')"class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add Product Category') }} </a>
 

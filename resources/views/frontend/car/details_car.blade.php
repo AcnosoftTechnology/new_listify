@@ -579,6 +579,7 @@
                      {{-- Custom Field --}}
                 </div>
                 <!-- Sidebar -->
+            @if($show_whatsapp)
                 <div class="col-xl-4 col-lg-5">
                     <div class="sticky-class">
                         <div class="cardetails-form-sidebar mb-24">
@@ -658,6 +659,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </section>

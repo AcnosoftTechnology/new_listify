@@ -515,6 +515,7 @@
 
                 </div>
                 <!-- Sidebar -->
+              @if($show_whatsapp)
                 <div class="col-xl-4 col-lg-5">
                     <div class="beauty-details-sidebar">
                         <h1 class="title mb-20">{{ get_phrase('Book a Meeting') }}</h1>
@@ -566,6 +567,7 @@
                        
                     </div>
                 </div>
+              @endif
             </div>
         </div>
     </section>

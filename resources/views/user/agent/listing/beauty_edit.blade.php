@@ -437,6 +437,8 @@
                                     <div class="d-flex align-items-center justify-content-between mb-5">
                                         <h5 class="in-title-16px mb-3 capitalize"> {{ get_phrase('Your  Shop Inventory') }} </h5>
                                         <div>
+                                            <a href="{{ route('inventory.export', ['listing_id' => $listing->id, 'type' => $type]) }}" class="btn btn-success"> Export Excel</a>
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal"> Import Excel</button>
                                             <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.create', ['prefix' => 'agent', 'type' => 'beauty','listing_id' => $listing->id]) }}', '{{ get_phrase('Add Product') }}')" class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add New Product') }} </a>
                                             <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.category.create', ['prefix' => 'agent', 'type' => 'beauty', 'listing_id' => $listing->id]) }}', '{{ get_phrase('Add Category') }}')" class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add Product Category') }} </a>
                                         </div>
@@ -473,6 +475,53 @@
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="importModal" tabindex="-1">
+
+                                <div class="modal-dialog">
+
+                                    <div class="modal-content">
+
+                                        <form action="{{ route('inventory.import') }}"
+                                            method="POST"
+                                            enctype="multipart/form-data">
+
+                                            @csrf
+
+                                            <input type="hidden"
+                                                name="listing_id"
+                                                value="{{ $listing->id }}">
+
+                                            <input type="hidden"
+                                                name="type"
+                                                value="{{ $type }}">
+
+                                            <div class="modal-body">
+
+                                                <input type="file"
+                                                    name="excel"
+                                                    class="form-control">
+
+                                            </div>
+
+                                            <div class="modal-footer">
+
+                                                <button type="submit"
+                                                        class="btn btn-success">
+
+                                                    Import
+
+                                                </button>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
 
     @include('user.agent.listing.script')
     <script>

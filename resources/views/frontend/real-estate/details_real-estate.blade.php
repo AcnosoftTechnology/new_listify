@@ -649,6 +649,7 @@
                      {{-- Custom Field --}} 
 
                 </div>
+                @if($show_whatsapp)
                 <div class="col-xl-4 col-lg-5">
                     <div class="realdetails-sidebar">
                         <h1 class="title mb-20">{{get_phrase('Book a Meeting')}}</h1>
@@ -716,6 +717,7 @@
                        @endif
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </section>

@@ -524,6 +524,7 @@
                     {{-- Custom Field --}}        
                 </div>
                 <!-- Right Sidebar -->
+                 @if($show_whatsapp)
                 <div class="col-xl-4 col-lg-5">
                     <div class="hoteldetails-form-area mb-30px">
                         <h4 class="sub-title mb-16">{{ get_phrase('Book a Meeting') }}</h4>
@@ -566,6 +567,7 @@
                        @endif
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </section>

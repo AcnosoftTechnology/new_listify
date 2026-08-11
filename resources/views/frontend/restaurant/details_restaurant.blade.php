@@ -500,6 +500,7 @@
              {{-- Custom Field --}}
             </div>
             <!-- Right Sidebar -->
+             @if($show_whatsapp)
             <div class="col-xl-4 col-lg-5">
                 <div class="restdetails-sidebar eRestaurent mb-16">
                     <h1 class="title mb-16">{{get_phrase('Book a table')}}</h1>
@@ -581,6 +582,7 @@
                     @endif
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </section>
