@@ -137,8 +137,11 @@
                     </ul>
                 </nav>
             </div>
-            @if (check_subscription(user('id')))
-                <div class="mb-3">
+        @php
+        $activeSubscription = \App\Models\Subscription::where('user_id', user('id'))->where('status', 1)->latest('id')->first();
+        @endphp     
+@if($activeSubscription)   
+    <div class="mb-3">
                     <h3 class="in-title-14px mb-2 cap-sidebar-title">{{ get_phrase('My Panel') }}</h3>
                     <nav>
                         <ul>
@@ -183,13 +186,9 @@
             
                           
                           
-                            {{-- Shop Addon --}}                           
+                       {{-- Shop Addon --}}                           
                            @php
-                            $activeSubscription = \App\Models\Subscription::where('user_id', user('id'))
-                                ->where('status', 1)
-                                ->latest('id')
-                                ->first();
-
+                            $activeSubscription = \App\Models\Subscription::where('user_id', user('id'))->where('status', 1)->latest('id')->first();
                             $showOrderManager = $activeSubscription && $activeSubscription->package_id != 11;
                         @endphp
                        
@@ -339,8 +338,10 @@
 
                       
                     </nav>
-                </div>
-            @endif
+    </div>
+@endif
+
+            
             <div class="d-flex justify-content-center d-none">
                 <a href="{{ route('logout') }}" class="btn cap-btn-primary w-100">
                     <img src="{{ asset('assets/frontend/images/icons/logout-left-white-20.svg') }}" alt="icon">

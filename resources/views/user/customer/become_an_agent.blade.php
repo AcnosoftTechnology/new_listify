@@ -4,7 +4,8 @@
 @section('frontend_layout')
 <link rel="stylesheet" href="{{asset('assets/frontend/css/all.min.css')}}">
 @php
-    $subscription = App\Models\Subscription::where('user_id', user('id'))->orderBy('id','DESC')->first();
+    $subscription = App\Models\Subscription::where('user_id', user('id'))->orderBy('id', 'DESC')->first();
+    $hasSubscription = App\Models\Subscription::where('user_id', user('id'))->exists();
 @endphp
 <style>
     .fs-14px{
@@ -126,7 +127,13 @@
                                 </div>
 
                                 {{-- verified --}}
-                                @if (isset($subscription->package_id) && $subscription->package_id == $package->id)
+                                @php
+                                    $activeSubscription = \App\Models\Subscription::where('user_id', user('id'))
+                                        ->where('status', 1)
+                                        ->latest('id')
+                                        ->first();
+                                @endphp
+                                @if($activeSubscription)
                                 <div class="verified_package">
                                     <img src="https://www.listify.asia/public/image/verified.png" class="w-50">
                                 </div>
@@ -153,26 +160,58 @@
                               
                             </div>
 
+                            
                             {{-- ✅ Button --}}
                             @if($package->price == 500)
 
-                                <a id="planBtn" data-package-id="12" href="{{ route('payment', ['id' => 12]) }}" class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
-                                   Try Now
-                                </a>
+                                @php
+                                    $currentPackage = $subscription->package_id ?? 0;
+                                @endphp
 
-                            @elseif (isset($subscription->package_id) && $subscription->package_id == $package->id)
+                                <a id="planBtn"
+                                data-package-id="12"
+                                data-current="{{ $currentPackage }}"
+                                href="{{ ($currentPackage == 12) ? 'javascript:void(0)' : route('payment',['id'=>12]) }}"
+                                class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
 
-                                <a href="javascript:void(0)"
-                                   class="{{$package->choice == 1?'btn at-btn-white':'theme-btn1'}} w-100 text-center">
-                                   Activated
+                                    @if(!$hasSubscription)
+                                        Try Now
+                                    @elseif($currentPackage == 12)
+                                        Activated
+                                    @else
+                                        Upgrade Plan
+                                    @endif
+
                                 </a>
 
                             @else
 
-                                <a href="{{route('payment',['id'=>$package->id])}}"
-                                   class="{{$package->choice == 1?'btn at-btn-white':'theme-btn1'}} w-100 text-center">
-                                   Try Now
-                                </a>
+                                @if(!$hasSubscription)
+
+                                    <a href="{{ route('payment',['id'=>$package->id]) }}"
+                                    class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
+                                        Try Now
+                                    </a>
+
+                                @else
+
+                                    @if(isset($subscription->package_id) && $subscription->package_id == $package->id)
+
+                                        <a href="javascript:void(0)"
+                                        class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
+                                            Activated
+                                        </a>
+
+                                    @else
+
+                                        <a href="{{ route('payment',['id'=>$package->id]) }}"
+                                        class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
+                                            Upgrade Plan
+                                        </a>
+
+                                    @endif
+
+                                @endif
 
                             @endif
 
@@ -194,35 +233,74 @@
     const paymentUrl = "{{ route('payment', ['id' => ':id']) }}";
 
     function switchPlan(type) {
+
         const price = document.querySelector('.price-amount');
         const period = document.querySelector('.price-period');
         const btn = document.getElementById('planBtn');
         const buttons = document.querySelectorAll('.toggle-btn');
 
-        buttons.forEach(button => button.classList.remove('active'));
+        const currentPackage = btn.dataset.current;
 
-        if (type === 'monthly') {
+        buttons.forEach(b => b.classList.remove('active'));
+
+        if(type === 'monthly'){
+
             price.innerText = '₹500';
             period.innerText = 'Monthly';
+
             btn.dataset.packageId = '12';
 
             buttons[0].classList.add('active');
-        } else {
+
+            if(currentPackage == '12'){
+                btn.innerText = 'Activated';
+                btn.href = 'javascript:void(0)';
+            }else if(currentPackage == '17'){
+                btn.innerText = 'Upgrade Plan';
+                btn.href = paymentUrl.replace(':id','12');
+            }else{
+                btn.innerText = 'Try Now';
+                btn.href = paymentUrl.replace(':id','12');
+            }
+
+        }else{
+
             price.innerText = '₹5000';
             period.innerText = 'Annually';
+
             btn.dataset.packageId = '17';
 
             buttons[1].classList.add('active');
-        }
 
-        // Toggle hote hi href bhi update hoga
-        btn.href = paymentUrl.replace(':id', btn.dataset.packageId);
+            if(currentPackage == '17'){
+                btn.innerText = 'Activated';
+                btn.href = 'javascript:void(0)';
+            }else if(currentPackage == '12'){
+                btn.innerText = 'Upgrade Plan';
+                btn.href = paymentUrl.replace(':id','17');
+            }else{
+                btn.innerText = 'Try Now';
+                btn.href = paymentUrl.replace(':id','17');
+            }
+        }
     }
 
-    // Try Now click par selected package ID ka URL forcefully set hoga
-    document.getElementById('planBtn').addEventListener('click', function () {
-        this.href = paymentUrl.replace(':id', this.dataset.packageId);
-    });
+    const btn = document.getElementById('planBtn');
+
+    if(btn){
+
+        btn.addEventListener('click',function(e){
+
+            if(this.innerText.trim() === 'Activated'){
+                e.preventDefault();
+                return false;
+            }
+
+            this.href = paymentUrl.replace(':id', this.dataset.packageId);
+
+        });
+
+    }
 </script>
 
 {{-- ✅ CSS --}}
