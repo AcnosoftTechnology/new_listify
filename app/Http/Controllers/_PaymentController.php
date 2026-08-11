@@ -372,7 +372,7 @@ $sub = [
     return redirect()->route('customer.wishlist');
 }
 
-public function webRedirectToPayFee(Request $request) {
+    public function webRedirectToPayFee(Request $request) {
       
         // Check if the 'auth' query parameter is present
         if (!$request->has('auth')) {

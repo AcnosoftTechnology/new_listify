@@ -187,15 +187,14 @@
     </div>
   
   <!-- ✅ Special Features (Dynamic) -->
-<div class="special_feature mt-4">
-    <div class="row" id="special-feature-wrapper">
-        <!-- JS se fill hoga -->
+    <div class="special_feature mt-4">
+        <div class="row" id="special-feature-wrapper">
+            <!-- JS se fill hoga -->
+        </div>
     </div>
-</div>
   
   
-</div> 
-  
+</div>   
 
   
  <!-- ✅ Order Button Section -->

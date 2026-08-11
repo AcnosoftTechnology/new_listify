@@ -185,7 +185,7 @@
                                                <!---abhishek-editing---->
                                               
                                                 <li class="sidebar-nav-item">
-                                                        <a href="https://www.listify.asia/customer/wishlist" class="user-dropdown-item fill-none">
+                                                        <a href="{{ route('customer.wishlist') }}" class="user-dropdown-item fill-none">
                                                             <span class="d-flex align-items-center mt-1px gap-6px">
                                                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M6.86992 8.1525C6.79492 8.145 6.70492 8.145 6.62242 8.1525C4.83742 8.0925 3.41992 6.63 3.41992 4.83C3.41992 2.9925 4.90492 1.5 6.74992 1.5C8.58742 1.5 10.0799 2.9925 10.0799 4.83C10.0724 6.63 8.65492 8.0925 6.86992 8.1525Z" stroke="#99A1B7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />

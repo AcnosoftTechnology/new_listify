@@ -88,6 +88,7 @@
                     @endforeach
             </div>
             @elseif($field->custom_type == 'video')
+            @if($show_whatsapp)
             <div class="mb-36">
                 <h2 class="in-title3-24px mb-20"> {{ $customTitles['video'] ?? '' }}</h2>
                 <div class="row">
@@ -119,6 +120,7 @@
                     @endforeach
                 </div>
             </div>
+            @endif
             @elseif($field->custom_type == 'faq')
             <div class="mb-36">
                <h2 class="in-title3-24px mb-20">{{ $customTitles['faq'] ?? '' }}</h2>

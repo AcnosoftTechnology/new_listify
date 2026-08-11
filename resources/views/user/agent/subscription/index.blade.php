@@ -117,14 +117,13 @@
                                     <tbody class="ca-tbody">
                                         @foreach ($all_subscription as $row)
                                             @php
-                                                $today = date('Y-m-d');
-                                                $today_time = strtotime($today);
-                                                $expiry_status = strtotime($row->expire_date) < $today_time;
-
                                                 $created_at = date('d M Y', strtotime($row->created_at));
-                                                $expire_date = date('d M Y', $row->expire_date);
+
+                                                $expire_date = $row->expire_date
+                                                    ? date('d M Y', $row->expire_date)
+                                                    : 'Lifetime';
                                             @endphp
-                                            <tr class="ca-tr">
+                                                                                    <tr class="ca-tr">
                                                 <td class="min-w-110px">
                                                     <p class="ca-subtitle-14px ca-text-dark text-nowrap">{{ App\Models\Pricing::where('id', $row->package_id)->first()->name }}</p>
                                                 </td>
@@ -137,17 +136,23 @@
                                                 <td>
                                                     <p class="ca-subtitle-14px ca-text-dark text-nowrap mb-2">{{ currency($row->paid_amount) }}</p>
                                                 </td>
-                                                <td>
-                                                    @if ($expiry_status)
-                                                        <div class="badge-success-light">
-                                                            <i class="fas fa-check"></i>
-                                                        </div>
-                                                    @else
-                                                        <div class="badge-danger-light">
-                                                            <i class="fas fa-check"></i>
-                                                        </div>
-                                                    @endif
-                                                </td>
+                                                    <td>
+                                                        @if ($row->status == 1)
+                                                            <span class="badge bg-success">
+                                                                <i class="fas fa-check"></i> Active
+                                                            </span>
+
+                                                        @elseif($row->status == 0)
+                                                            <span class="badge bg-danger">
+                                                                <i class="fas fa-times"></i> Inactive
+                                                            </span>
+
+                                                        @elseif($row->status == 2)
+                                                            <span class="badge bg-warning text-dark">
+                                                                <i class="fas fa-clock"></i> Expired
+                                                            </span>
+                                                        @endif
+                                                    </td>
                                                 <td>
                                                     <div class="tDownloadIcon">
                                                         <a class="invoiceTag" href="{{ route('subscriptionInvoice', ['id' => $row->id]) }}" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -24,5 +24,7 @@ Route::controller(PaymentController::class)->middleware('auth')->group(function 
     Route::get('payment/make/{identifier}/status', 'paytm_paymentCallback')->name('payment.status');
 
 });
+
 Route::get('payment/web_redirect_to_pay_fee', [PaymentController::class, 'webRedirectToPayFee'])->name('payment.web_redirect_to_pay_fee');
+
 Route::post('/subscribe/free/{id}', [PaymentController::class, 'subscribeFreePackage'])->name('package.subscribe_free');

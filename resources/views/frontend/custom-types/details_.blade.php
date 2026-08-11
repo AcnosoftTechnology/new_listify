@@ -63,15 +63,16 @@
                             </div>
                         </div>
                         <div class="detailstop-share-back abhishek-whishlist d-flex align-items-center flex-wrap">
-                          
-                                               
-                        @if(!empty($whatsapp_no))
-                          @if(!empty(Auth::user()->whatsapp) && should_show_whatsapp())
-                        <div class="agent_whatsapp_no">
-                          <a href="https://wa.me/{{ $whatsapp_no }}" class="save-share bg-success"><i class="fab fa-whatsapp" style="color:#fff;font-size: 22px;"></i></a>
-                        </div>
-                          @endif
-                        @endif                      
+                                                                      
+                            @if($show_whatsapp && !empty($whatsapp_no))
+                                @if(!empty(Auth::user()->whatsapp) && should_show_whatsapp())
+                                    <div class="agent_whatsapp_no">
+                                        <a href="https://wa.me/{{ $whatsapp_no }}" class="save-share bg-success">
+                                            <i class="fab fa-whatsapp" style="color:#fff;font-size:22px;"></i>
+                                        </a>
+                                    </div>
+                                @endif
+                            @endif                 
                           
                             @php
                                 $is_in_wishlist = check_wishlist_status($listing->id, $listing->type);
@@ -112,38 +113,38 @@
                 $showSidebar = should_show_sidebar($user_id);
             @endphp
            
-                  <div class="col-xl-8 col-lg-7">
+                <div class="col-xl-8 col-lg-7">
                    
                     <!-- Banners -->                   
-              <div class="swiper atn-banner-slider mb-30px">
-                        <div class="swiper-wrapper">
-                            @php
-    $images = is_array(json_decode($listing->image, true))
-        ? json_decode($listing->image, true)
-        : [];
-@endphp
+                    <div class="swiper atn-banner-slider mb-30px">
+                                <div class="swiper-wrapper">
+                                    @php
+                                        $images = is_array(json_decode($listing->image, true))
+                                            ? json_decode($listing->image, true)
+                                            : [];
+                                    @endphp
 
-@if(count($images) > 0)
+                                    @if(count($images) > 0)
 
-    @foreach ($images as $key => $image)
+                                        @foreach ($images as $key => $image)
 
-        <div class="swiper-slide">
-            <div class="atn-slide-banner">
-                <img src="{{ get_all_image('listing-images/' . $image) }}" alt="">
-            </div>
-        </div>
+                                    <div class="swiper-slide">
+                                        <div class="atn-slide-banner">
+                                            <img src="{{ get_all_image('listing-images/' . $image) }}" alt="">
+                                        </div>
+                                    </div>
 
-    @endforeach
+                                @endforeach
 
-@else
+                            @else
 
-    <div class="swiper-slide">
-        <div class="atn-slide-banner">
-            <img src="{{ asset('assets/frontend/images/default-image.webp') }}" alt="">
-        </div>
-    </div>
+                        <div class="swiper-slide">
+                            <div class="atn-slide-banner">
+                                <img src="{{ asset('assets/frontend/images/default-image.webp') }}" alt="">
+                            </div>
+                    </div>
 
-@endif
+            @endif
 
                         </div>
                         <div class="swiper-button-next"></div>
@@ -170,20 +171,26 @@
                         @endif
                     </div>
 
-              {{-- Shop Addon --}}
-             
-                  @if (addon_status('shop') == 1)
-                      @php 
-                      $shopItems = App\Models\Inventory::where('type', $listing->type)->where('listing_id', $listing->id)->where('availability', 1)->get();
-                      $shopCategories = App\Models\InventoryCategory::where('type', $listing->type)->where('listing_id', $listing->id)->get();
-                      @endphp
+                        {{-- Shop Addon --}}
+                        @if (addon_status('shop') == 1 && $show_whatsapp)
 
-                      @if($shopItems && $shopItems->count() > 0)
-                          @include('frontend.shop')
-                      @endif
-                  @endif
-             
-              {{-- Shop Addon --}}
+                            @php 
+                                $shopItems = App\Models\Inventory::where('type', $listing->type)
+                                    ->where('listing_id', $listing->id)
+                                    ->where('availability', 1)
+                                    ->get();
+
+                                $shopCategories = App\Models\InventoryCategory::where('type', $listing->type)
+                                    ->where('listing_id', $listing->id)
+                                    ->get();
+                            @endphp
+
+                            @if($shopItems->count() > 0)
+                                @include('frontend.shop')
+                            @endif
+
+                        @endif
+                        {{-- Shop Addon --}}
               
                     <!-- Amenities -->
                     <div class="hotel-amenities-area mb-50px">
@@ -216,92 +223,92 @@
                 });
             @endphp
 
-@if($validInvoices->isNotEmpty())
-<div class="restdetails-agent-details">
-    <div class="accordion" id="accordionExample">
-        @foreach($validInvoices as $i => $invoice)
+            @if($validInvoices->isNotEmpty())
+            <div class="restdetails-agent-details">
+                <div class="accordion" id="accordionExample">
+                    @foreach($validInvoices as $i => $invoice)
 
-            @if(!empty($invoice->note))
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingNote{{ $i }}">
-                        <button class="accordion-button {{ $i != 0 ? 'collapsed' : '' }}"
-                                type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseNote{{ $i }}"
-                                aria-expanded="{{ $i == 0 ? 'true' : 'false' }}"
-                                aria-controls="collapseNote{{ $i }}">
-                            Note
-                        </button>
-                    </h2>
-                    <div id="collapseNote{{ $i }}" class="accordion-collapse collapse {{ $i == 0 ? 'show' : '' }}"
-                         aria-labelledby="headingNote{{ $i }}" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {!! $invoice->note !!}
-                        </div>
-                    </div>
+                        @if(!empty($invoice->note))
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingNote{{ $i }}">
+                                    <button class="accordion-button {{ $i != 0 ? 'collapsed' : '' }}"
+                                            type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseNote{{ $i }}"
+                                            aria-expanded="{{ $i == 0 ? 'true' : 'false' }}"
+                                            aria-controls="collapseNote{{ $i }}">
+                                        Note
+                                    </button>
+                                </h2>
+                                <div id="collapseNote{{ $i }}" class="accordion-collapse collapse {{ $i == 0 ? 'show' : '' }}"
+                                    aria-labelledby="headingNote{{ $i }}" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        {!! $invoice->note !!}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(!empty($invoice->terms_condition))
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTerms{{ $i }}">
+                                    <button class="accordion-button collapsed"
+                                            type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseTerms{{ $i }}"
+                                            aria-expanded="false" aria-controls="collapseTerms{{ $i }}">
+                                        Terms & Conditions
+                                    </button>
+                                </h2>
+                                <div id="collapseTerms{{ $i }}" class="accordion-collapse collapse"
+                                    aria-labelledby="headingTerms{{ $i }}" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        {!! $invoice->terms_condition !!}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(!empty($invoice->shipping))
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingShipping{{ $i }}">
+                                    <button class="accordion-button collapsed"
+                                            type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseShipping{{ $i }}"
+                                            aria-expanded="false" aria-controls="collapseShipping{{ $i }}">
+                                        Shipping
+                                    </button>
+                                </h2>
+                                <div id="collapseShipping{{ $i }}" class="accordion-collapse collapse"
+                                    aria-labelledby="headingShipping{{ $i }}" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        {!! $invoice->shipping !!}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(!empty($invoice->disclaimer))
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingDisclaimer{{ $i }}">
+                                    <button class="accordion-button collapsed"
+                                            type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseDisclaimer{{ $i }}"
+                                            aria-expanded="false" aria-controls="collapseDisclaimer{{ $i }}">
+                                        Disclaimer
+                                    </button>
+                                </h2>
+                                <div id="collapseDisclaimer{{ $i }}" class="accordion-collapse collapse"
+                                    aria-labelledby="headingDisclaimer{{ $i }}" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        {!! $invoice->disclaimer !!}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                    @endforeach
                 </div>
+            </div>
             @endif
-
-            @if(!empty($invoice->terms_condition))
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTerms{{ $i }}">
-                        <button class="accordion-button collapsed"
-                                type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTerms{{ $i }}"
-                                aria-expanded="false" aria-controls="collapseTerms{{ $i }}">
-                            Terms & Conditions
-                        </button>
-                    </h2>
-                    <div id="collapseTerms{{ $i }}" class="accordion-collapse collapse"
-                         aria-labelledby="headingTerms{{ $i }}" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {!! $invoice->terms_condition !!}
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            @if(!empty($invoice->shipping))
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingShipping{{ $i }}">
-                        <button class="accordion-button collapsed"
-                                type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseShipping{{ $i }}"
-                                aria-expanded="false" aria-controls="collapseShipping{{ $i }}">
-                            Shipping
-                        </button>
-                    </h2>
-                    <div id="collapseShipping{{ $i }}" class="accordion-collapse collapse"
-                         aria-labelledby="headingShipping{{ $i }}" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {!! $invoice->shipping !!}
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            @if(!empty($invoice->disclaimer))
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingDisclaimer{{ $i }}">
-                        <button class="accordion-button collapsed"
-                                type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseDisclaimer{{ $i }}"
-                                aria-expanded="false" aria-controls="collapseDisclaimer{{ $i }}">
-                            Disclaimer
-                        </button>
-                    </h2>
-                    <div id="collapseDisclaimer{{ $i }}" class="accordion-collapse collapse"
-                         aria-labelledby="headingDisclaimer{{ $i }}" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {!! $invoice->disclaimer !!}
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-        @endforeach
-    </div>
-</div>
-@endif
 
 
 {{-- Invoice Policy Section Addon --}}                 
@@ -623,8 +630,8 @@
                 </div>
                 <!-- Sidebar -->
 
-
-    <div class="col-xl-4 col-lg-5">               
+ @if($show_whatsapp)
+    <div class="col-xl-4 col-lg-5">       
         <div class="beauty-details-sidebar">
             <h1 class="title mb-20">{{ get_phrase('Book a Meeting') }}</h1>
 
@@ -675,8 +682,9 @@
                     @endif
                 @endif
             @endif
-        </div>                 
+        </div>     
     </div>
+  @endif
 
         </div>
     </section>

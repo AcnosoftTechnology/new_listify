@@ -260,63 +260,73 @@ class FrontendController extends Controller{
     // }
 
 
- public function listing_details($type, $id, $slug){
-
+public function listing_details($type, $id, $slug)
+{
     $whatsapp_no = null;
 
     if ($type == 'car') {
         $page_data['listing'] = CarListing::where('id', $id)->first();
         $page_data['directory'] = 'car';
-        $user_id = $page_data['listing']->user_id;
     } elseif ($type == 'beauty') {
         $page_data['listing'] = BeautyListing::where('id', $id)->first();
         $page_data['directory'] = 'beauty';
-        $user_id = $page_data['listing']->user_id;
     } elseif ($type == 'hotel') {
         $page_data['listing'] = HotelListing::where('id', $id)->first();
         $page_data['directory'] = 'hotel';
-        $user_id = $page_data['listing']->user_id;
     } elseif ($type == 'real-estate') {
         $page_data['listing'] = RealEstateListing::where('id', $id)->first();
         $page_data['directory'] = 'real-estate';
-        $user_id = $page_data['listing']->user_id;
     } elseif ($type == 'restaurant') {
         $page_data['listing'] = RestaurantListing::where('id', $id)->first();
         $page_data['directory'] = 'restaurant';
-        $user_id = $page_data['listing']->user_id;
     } else {
-        $page_data['listing'] = CustomListings::where('type', $type)->where('id', $id)->first(); 
+        $page_data['listing'] = CustomListings::where('type', $type)
+            ->where('id', $id)
+            ->first();
         $page_data['directory'] = 'custom-types';
-        $user_id = $page_data['listing']->user_id;
     }
 
-      $user_whatsno = User::where('id', $user_id)->first();
-      $user_qr = Qrcode::where('user_id', $user_id)->first();
-      $user_name = User::select('id','name')->where('id', $user_id)->first();
-      $whatsapp_no = $user_whatsno ? $user_whatsno->whatsapp : null;
-      $current_user_id = auth()->id();
-        
-      $page_data['whatsapp_no'] = $whatsapp_no; 
-      $page_data['type'] = $type;
-      $page_data['listing_id'] = $id;
-      $page_data['user_id'] = $user_id; 
-      $page_data['user_name'] = $user_name;
-      
-      $page_data['current_user_id'] = $current_user_id;
+    // Listing not found
+    if (!$page_data['listing']) {
+        abort(404);
+    }
 
+    $user_id = $page_data['listing']->user_id;
+
+    // Active Subscription
+    $activeSubscription = \App\Models\Subscription::where('user_id', $user_id)
+        ->where('status', 1)
+        ->latest('id')
+        ->first();
+
+    // WhatsApp only for paid packages
+    $page_data['show_whatsapp'] = $activeSubscription && $activeSubscription->package_id != 11;
+
+    $user_whatsno = User::find($user_id);
+    $user_qr      = Qrcode::where('user_id', $user_id)->first();
+    $user_name    = User::select('id', 'name')->find($user_id);
+
+    $whatsapp_no = $user_whatsno ? $user_whatsno->whatsapp : null;
+    $current_user_id = auth()->id();
+
+    $page_data['whatsapp_no'] = $whatsapp_no;
+    $page_data['type'] = $type;
+    $page_data['listing_id'] = $id;
+    $page_data['user_id'] = $user_id;
+    $page_data['user_name'] = $user_name;
+    $page_data['user_qr'] = $user_qr;
+    $page_data['current_user_id'] = $current_user_id;
 
     if ($page_data['directory'] === 'custom-types') {
         $customView = 'frontend.custom-types.details_' . $type;
-        $defaultView = 'frontend.custom-types.details_'; 
+        $defaultView = 'frontend.custom-types.details_';
         $viewPath = View::exists($customView) ? $customView : $defaultView;
     } else {
         $viewPath = 'frontend.' . $type . '.details_' . $type;
     }
-   
-   
+
     return view($viewPath, $page_data);
 }
-
 
 
     public function pricing(){

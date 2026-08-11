@@ -57,10 +57,16 @@
                                 <div  class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <p>
-                                            {{ get_phrase('Country').': '.($country->name ?? '') }}<br>
-                                            {{ get_phrase('City').': '.(App\Models\City::where('id', $address->city)->first()->name ?? '') }}<br>
-                                            {{ get_phrase('Address line').': '.($address->addressline ?? '') }}<br>
-                                        </p>
+                                        {{ get_phrase('Country') . ': ' . ($country->name ?? 'N/A') }}<br>
+
+                                        {{ get_phrase('City') . ': ' .
+                                            ($address && $address->city
+                                                ? (App\Models\City::find($address->city)->name ?? 'N/A')
+                                                : 'N/A')
+                                        }}<br>
+
+                                        {{ get_phrase('Address line') . ': ' . ($address->addressline ?? 'N/A') }}<br>
+                                    </p>
                                     </div>                                    
                                 </div>
                             </div>
@@ -106,10 +112,10 @@
                                   <p class="text-center">{{ $created_at }}</p>
                                 </td>
                                 <td class="w-100">
-                                   <p class="text-center">{{ currency($package->price) }}</p>
+                                   <p class="text-center">{{ number_format($package->price, 2) }}</p>
                                 </td>
                                 <td class="w-100">
-                                    <p class="text-center">{{ currency($subscriptionDetails->paid_amount) }}</p>
+                                    <p class="text-center">{{ number_format($subscriptionDetails->paid_amount, 2) }}</p>
                                 </td>
                             </tr>
                             <tr>
@@ -120,7 +126,7 @@
                                     <p class="text-center">{{ get_phrase('Subtotal') }}</p>
                                 </td>
                                 <td class="w-100">
-                                   <p class="text-center">{{ currency($subscriptionDetails->paid_amount) }}</p>
+                                   <p class="text-center">{{ number_format($subscriptionDetails->paid_amount, 2) }}</p>
                                 </td>
                             </tr>
                             <tr>
@@ -131,7 +137,7 @@
                                     <p class="text-center">{{ get_phrase('Grand Total') }}</p>
                                 </td>
                                 <td>
-                                   <p class="text-center">{{ currency($subscriptionDetails->paid_amount) }}</p>
+                                   <p class="text-center">{{ number_format($subscriptionDetails->paid_amount, 2) }}</p>
                                 </td>
                             </tr>
                         </tbody>
