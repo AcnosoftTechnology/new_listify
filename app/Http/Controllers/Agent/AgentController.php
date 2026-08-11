@@ -67,21 +67,55 @@ class AgentController extends Controller{
         return view('user.agent.my_listings', $page_data);
     }
 
-    public function add_listing() {
+    /*public function add_listing() {
          if(current_package() == 0 ){
             Session::flash('success', get_phrase('Your package listing limit has been reached. Please purchase a new package to create more listings'));
              return redirect('customer/become-an-agent');
          }
         $page_data['active'] = 'add_listing';
         return view('user.agent.listing.add', $page_data);
-    }
+    }*/
 
-    public function add_listing_type($type) {
+    
+    public function add_listing(){
+        $check = can_create_new_listing();
+
+        if(!$check['status']){
+            Session::flash('error',$check['message']);
+            return redirect()->back();
+        }
+
+        $page_data['active']='add_listing';
+
+        return view('user.agent.listing.add',$page_data);
+    }     
+
+    /*public function add_listing_type($type) {
         $page_data['active'] = 'add_listing';
         $page_data['type'] = $type;
         $page_data['categories'] = Category::where('type', $type)->get();
         return view('user.agent.listing.add_listing_form', $page_data);
-    }
+    }*/
+
+     
+    public function add_listing_type($type) {
+        
+        $check = can_create_new_listing();
+
+        if(!$check['status']){
+            Session::flash('error',$check['message']);
+            return redirect()->route('agent.add.listing');
+        }
+
+        $page_data['active']='add_listing';
+        $page_data['type']=$type;
+        $page_data['categories']=Category::where('type',$type)->get();
+
+        return view('user.agent.listing.add_listing_form',$page_data);
+    }    
+ 
+        
+
 
     public function listing_edit($id, $type, $tab='') {
       

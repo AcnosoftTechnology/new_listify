@@ -779,5 +779,67 @@ if (!function_exists('can_add_listing')) {
 
 
 
+if (!function_exists('can_create_new_listing')) {
+
+    function can_create_new_listing()
+    {
+        $user_id = auth()->id();
+
+        // Active package
+        $subscription = DB::table('subscriptions')
+            ->where('user_id', $user_id)
+            ->where('status', 1)
+            ->latest('id')
+            ->first();
+
+        if (!$subscription) {
+            return [
+                'status' => false,
+                'message' => 'Please purchase a package first.'
+            ];
+        }
+
+        // Total existing listings
+        $currentListings =
+            DB::table('custom_listings')->where('user_id',$user_id)->count()
+            + DB::table('car_listings')->where('user_id',$user_id)->count()
+            + DB::table('hotel_listings')->where('user_id',$user_id)->count()
+            + DB::table('restaurant_listings')->where('user_id',$user_id)->count()
+            + DB::table('real_estate_listings')->where('user_id',$user_id)->count();
+
+        // FREE PACKAGE
+        if($subscription->package_id == 11){
+
+            if($currentListings >= 1){
+
+                return [
+                    'status'=>false,
+                    'message'=>'Free package allows only one listing.'
+                ];
+            }
+
+            return [
+                'status'=>true
+            ];
+        }
+
+        // Paid Packages
+        if($currentListings >= 3){
+
+            return [
+                'status'=>false,
+                'message'=>'Your package listing limit has been reached.'
+            ];
+        }
+
+        return [
+            'status'=>true
+        ];
+    }
+
+}
+
+
+
 
 

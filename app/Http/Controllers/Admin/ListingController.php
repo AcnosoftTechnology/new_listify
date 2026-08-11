@@ -101,6 +101,109 @@ class ListingController extends Controller{
 
     public function listing_store(Request $request, $type){
 
+        // ======================================================
+        // Listing Limit Validation (Admin Bypass)
+        // ======================================================
+
+        if (!(user('id') == 1 && user('type') == 'admin')) {
+
+            $userId = user('id');
+
+            $subscription = \App\Models\Subscription::where('user_id', $userId)
+                ->where('status', 1)
+                ->latest()
+                ->first();
+
+            $packageId = $subscription->package_id ?? 11; // 11 = Free Package
+
+            // Count total listings of user
+            $totalListings = 0;
+
+            $totalListings += \App\Models\CarListing::where('user_id', $userId)->count();
+            $totalListings += \App\Models\BeautyListing::where('user_id', $userId)->count();
+            $totalListings += \App\Models\HotelListing::where('user_id', $userId)->count();
+            $totalListings += \App\Models\RealEstateListing::where('user_id', $userId)->count();
+            $totalListings += \App\Models\RestaurantListing::where('user_id', $userId)->count();
+            $totalListings += \App\Models\CustomListings::where('user_id', $userId)->count();
+
+            // Free package
+            if ($packageId == 11) {
+
+                if ($totalListings >= 1) {
+                    Session::flash('error', get_phrase('Your free package allows only 1 listing.'));
+                    return redirect()->back();
+                }
+
+            } else {
+
+                // Paid Package
+
+                // Check if user ever had free package
+                $hadFreePackage = \App\Models\Subscription::where('user_id', $userId)
+                    ->where('package_id', 11)
+                    ->exists();
+
+                if ($hadFreePackage) {
+
+                    // Free -> Paid
+                    if ($totalListings >= 3) {
+                        Session::flash('error', get_phrase('Your package allows a maximum of 3 listings.'));
+                        return redirect()->back();
+                    }
+
+                } else {
+
+                    // Direct Paid User
+                    if ($totalListings >= 3) {
+                        Session::flash('error', get_phrase('Your package allows a maximum of 3 listings.'));
+                        return redirect()->back();
+                    }
+
+                }
+            }
+
+            // Same category validation
+            $categoryExists = false;
+
+            switch ($type) {
+
+                case 'car':
+                    $categoryExists = \App\Models\CarListing::where('user_id', $userId)->exists();
+                    break;
+
+                case 'beauty':
+                    $categoryExists = \App\Models\BeautyListing::where('user_id', $userId)->exists();
+                    break;
+
+                case 'hotel':
+                    $categoryExists = \App\Models\HotelListing::where('user_id', $userId)->exists();
+                    break;
+
+                case 'real-estate':
+                    $categoryExists = \App\Models\RealEstateListing::where('user_id', $userId)->exists();
+                    break;
+
+                case 'restaurant':
+                    $categoryExists = \App\Models\RestaurantListing::where('user_id', $userId)->exists();
+                    break;
+
+                default:
+                    $categoryExists = \App\Models\CustomListings::where('user_id', $userId)
+                        ->where('type', $type)
+                        ->exists();
+                    break;
+            }
+
+            if ($categoryExists) {
+                Session::flash('error', get_phrase('You have already created a listing in this category.'));
+                return redirect()->back();
+            }
+        }
+
+        // ======================================================
+        // End Listing Validation
+        // ======================================================
+
         $data['title'] = sanitize($request->title);
         $data['category'] = sanitize($request->category);
         $data['description'] = $request->description;

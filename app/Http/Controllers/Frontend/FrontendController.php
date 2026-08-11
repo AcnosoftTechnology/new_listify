@@ -46,7 +46,7 @@ use Illuminate\Support\Str;
 class FrontendController extends Controller{
  
   
-    public function index(){
+    /*public function index(){
    
         $userCoords = GeolocationService::getUserCoordinatesFromSession();
         $limit = 8;
@@ -90,16 +90,186 @@ class FrontendController extends Controller{
         }
 
         return view('frontend.index',$page_data);
+    }*/
+
+    public function index(){
+
+    $userCoords = GeolocationService::getUserCoordinatesFromSession();
+    $limit = 8;
+
+    // ======================================================
+    // Filter expired listings (Admin bypass)
+    // ======================================================
+    $filterExpiredListings = function ($listings) {
+
+        return $listings->filter(function ($listing) {
+
+            $user = User::find($listing->user_id);
+
+            // Admin ki listings hamesha show hongi
+            if ($user && $user->id == 1 && $user->type == 'admin') {
+                return true;
+            }
+
+            $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                ->latest('id')
+                ->first();
+
+            return $latestSubscription && $latestSubscription->status != 2;
+        })->values();
+    };
+
+    $page_data['beautyListing'] = $filterExpiredListings(
+        BeautyListing::where('visibility','visible')->get()
+    );
+
+    $page_data['restaurantListing'] = $filterExpiredListings(
+        RestaurantListing::where('visibility','visible')->get()
+    );
+
+    $page_data['realEstateListing'] = $filterExpiredListings(
+        RealEstateListing::where('visibility','visible')->get()
+    );
+
+    $page_data['hotelListing'] = $filterExpiredListings(
+        HotelListing::where('visibility','visible')->get()
+    );
+
+    $page_data['carListing'] = $filterExpiredListings(
+        CarListing::where('visibility','visible')->get()
+    );
+
+    if ($userCoords) {
+
+        $page_data['customlistings'] = GeolocationService::sortListingsByDistance(
+            $filterExpiredListings(
+                CustomListings::where('visibility', 'visible')->get()
+            ),
+            $userCoords['latitude'],
+            $userCoords['longitude']
+        );
+
+    } else {
+
+        $page_data['customlistings'] = $filterExpiredListings(
+            CustomListings::where('visibility','visible')
+                ->orderBy('created_at', 'DESC')
+                ->get()
+        );
     }
 
+    $page_data['categories'] = Category::all();
+    $page_data['reviews'] = Review::whereNull('reply_id')
+        ->where('rating',5)
+        ->orderBy('created_at', 'DESC')
+        ->take(50)
+        ->get();
+
+    $page_data['blogs'] = Blog::where('status', 1)
+        ->where('is_popular', 1)
+        ->orderBy('created_at', 'desc')
+        ->take(3)
+        ->get();
+
+    $page_data['customTypes'] = CustomType::where('status', 1)
+        ->orderBy('sorting','asc')
+        ->take(5)
+        ->get();
+
+    if ($userCoords) {
+
+        $lat = $userCoords['latitude'];
+        $lng = $userCoords['longitude'];
+
+        $page_data['Totalhotels'] = GeolocationService::getSortedListings(HotelListing::class, $lat, $lng, $limit);
+        $page_data['Totalrestaurant'] = GeolocationService::getSortedListings(RestaurantListing::class, $lat, $lng, $limit);
+        $page_data['Totalbeauty'] = GeolocationService::getSortedListings(BeautyListing::class, $lat, $lng, $limit);
+        $page_data['TotalrealEstate'] = GeolocationService::getSortedListings(RealEstateListing::class, $lat, $lng, $limit);
+        $page_data['Totalcar'] = GeolocationService::getSortedListings(CarListing::class, $lat, $lng, $limit);
+
+        $page_data['userHasLocation'] = true;
+
+    } else {
+
+        $page_data['Totalhotels'] = $filterExpiredListings(
+            HotelListing::where('visibility','visible')
+                ->orderBy('created_at', 'desc')
+                ->take($limit)
+                ->get()
+        );
+
+        $page_data['Totalrestaurant'] = $filterExpiredListings(
+            RestaurantListing::where('visibility','visible')
+                ->orderBy('created_at', 'desc')
+                ->take($limit)
+                ->get()
+        );
+
+        $page_data['Totalbeauty'] = $filterExpiredListings(
+            BeautyListing::where('visibility','visible')
+                ->orderBy('created_at', 'desc')
+                ->take($limit)
+                ->get()
+        );
+
+        $page_data['TotalrealEstate'] = $filterExpiredListings(
+            RealEstateListing::where('visibility','visible')
+                ->orderBy('created_at', 'desc')
+                ->take($limit)
+                ->get()
+        );
+
+        $page_data['Totalcar'] = $filterExpiredListings(
+            CarListing::where('visibility','visible')
+                ->orderBy('created_at', 'desc')
+                ->take($limit)
+                ->get()
+        );
+
+        $page_data['userHasLocation'] = false;
+    }
+
+    return view('frontend.index', $page_data);
+}    
+
     public function hotel_home(){
+
         $page_data['cities'] = City::get();
         $uniqueCountryIds = City::distinct()->pluck('country');
         $page_data['listing_countries'] = Country::whereIn('id', $uniqueCountryIds)->take(6)->get();
         $page_data['categories'] = Category::where('type','hotel')->get();
 
         $userCoords = GeolocationService::getUserCoordinatesFromSession();
-        $listings = HotelListing::where('visibility', 'visible')->get();
+
+        // Get all visible listings
+        $allListings = HotelListing::where('visibility', 'visible')->get();
+
+        // Hide expired package listings (Admin bypass)
+        $listings = $allListings->filter(function ($listing) {
+
+            $user = User::find($listing->user_id);
+
+            // Admin bypass
+            if ($user && $user->id == 1 && $user->type == 'admin') {
+                return true;
+            }
+
+            $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                ->latest('id')
+                ->first();
+
+            // No subscription
+            if (!$latestSubscription) {
+                return false;
+            }
+
+            // Expired package
+            if ($latestSubscription->status == 2) {
+                return false;
+            }
+
+            return true;
+        });
 
         if ($userCoords) {
             $page_data['top_listings'] = GeolocationService::sortListingsByDistance(
@@ -112,40 +282,165 @@ class FrontendController extends Controller{
         }
 
         $page_data['directory'] = 'hotel';
+
         return view('frontend.hotel.home', $page_data);
-    }    
+    }  
 
     public function car_home(){
         $page_data['categories'] = Category::where('type','car')->get();
-        $page_data['top_listings'] = CarListing::orderBy('id', 'desc')->where('visibility', 'visible')->get();
+
+        $allListings = CarListing::orderBy('id', 'desc')
+            ->where('visibility', 'visible')
+            ->get();
+
+        $page_data['top_listings'] = $allListings->filter(function ($listing) {
+
+            $user = User::find($listing->user_id);
+
+            if ($user && $user->id == 1 && $user->type == 'admin') {
+                return true;
+            }
+
+            $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                ->latest('id')
+                ->first();
+
+            return $latestSubscription && $latestSubscription->status != 2;
+        })->values();
+
         $page_data['directory'] = 'car';
+
         return view('frontend.car.home', $page_data);
     }
 
     public function beauty_home(){
-        $page_data['BeautyPopular'] = BeautyListing::orderBy('id', 'desc')->where('visibility', 'visible')->where('is_popular','popular')->limit(4)->get();
-        $page_data['BeautyBest'] = BeautyListing::orderBy('id', 'desc')->where('visibility', 'visible')->where('is_popular','best')->limit(4)->get();
-        $page_data['BeautyWellness'] = BeautyListing::orderBy('id', 'desc')->where('visibility', 'visible')->where('is_popular','wellness')->limit(4)->get();
+        $page_data['BeautyPopular'] = BeautyListing::orderBy('id','desc')
+            ->where('visibility','visible')
+            ->where('is_popular','popular')
+            ->get()
+            ->filter(function ($listing) {
+
+                $user = User::find($listing->user_id);
+
+                if ($user && $user->id == 1 && $user->type == 'admin') {
+                    return true;
+                }
+
+                $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                    ->latest('id')
+                    ->first();
+
+                return $latestSubscription && $latestSubscription->status != 2;
+            })
+            ->take(4)
+            ->values();
+
+        $page_data['BeautyBest'] = BeautyListing::orderBy('id','desc')
+            ->where('visibility','visible')
+            ->where('is_popular','best')
+            ->get()
+            ->filter(function ($listing) {
+
+                $user = User::find($listing->user_id);
+
+                if ($user && $user->id == 1 && $user->type == 'admin') {
+                    return true;
+                }
+
+                $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                    ->latest('id')
+                    ->first();
+
+                return $latestSubscription && $latestSubscription->status != 2;
+            })
+            ->take(4)
+            ->values();
+
+        $page_data['BeautyWellness'] = BeautyListing::orderBy('id','desc')
+            ->where('visibility','visible')
+            ->where('is_popular','wellness')
+            ->get()
+            ->filter(function ($listing) {
+
+                $user = User::find($listing->user_id);
+
+                if ($user && $user->id == 1 && $user->type == 'admin') {
+                    return true;
+                }
+
+                $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                    ->latest('id')
+                    ->first();
+
+                return $latestSubscription && $latestSubscription->status != 2;
+            })
+            ->take(4)
+            ->values();
+
         $page_data['directory'] = 'beauty';
+
         return view('frontend.beauty.home', $page_data);
     }
 
     public function doctor_home(){
-        $page_data['top_listings'] = HotelListing::orderBy('id', 'desc')->where('visibility', 'visible')->limit(4)->get();
+
+        $allListings = HotelListing::orderBy('id','desc')
+            ->where('visibility','visible')
+            ->get();
+
+        $page_data['top_listings'] = $allListings->filter(function ($listing) {
+
+            $user = User::find($listing->user_id);
+
+            if ($user && $user->id == 1 && $user->type == 'admin') {
+                return true;
+            }
+
+            $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                ->latest('id')
+                ->first();
+
+            return $latestSubscription && $latestSubscription->status != 2;
+        })->take(4)->values();
+
         $page_data['directory'] = 'doctor';
+
         return view('frontend.doctor.home', $page_data);
     }
   
     public function realestate_home(){
+
         $page_data['categories'] = Category::where('type','real-estate')->get();
+
         $cityIdsWithListings = RealEstateListing::distinct()->pluck('city');
         $page_data['listing_cities'] = City::whereIn('id', $cityIdsWithListings)->take(4)->get();
-        $page_data['top_listings'] = RealEstateListing::orderBy('id', 'desc')->where('visibility', 'visible')->get();
+
+        $allListings = RealEstateListing::orderBy('id','desc')
+            ->where('visibility','visible')
+            ->get();
+
+        $page_data['top_listings'] = $allListings->filter(function ($listing) {
+
+            $user = User::find($listing->user_id);
+
+            if ($user && $user->id == 1 && $user->type == 'admin') {
+                return true;
+            }
+
+            $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                ->latest('id')
+                ->first();
+
+            return $latestSubscription && $latestSubscription->status != 2;
+        })->values();
+
         $page_data['directory'] = 'real-estate';
+
         return view('frontend.real-estate.home', $page_data);
     }
   
     public function restaurant_home(){
+
         $countryIdsWithListings = RestaurantListing::distinct()->pluck('country');
         $page_data['countries'] = Country::whereIn('id', $countryIdsWithListings)->take(4)->get();
 
@@ -153,10 +448,32 @@ class FrontendController extends Controller{
         $page_data['cities'] = City::whereIn('id', $cityIdsWithListings)->take(4)->get();
 
         $page_data['categories'] = Category::where('type','real-estate')->get();
-        $page_data['top_listings'] = RestaurantListing::orderBy('id', 'desc')->where('visibility', 'visible')->get();
+
+        $allListings = RestaurantListing::orderBy('id','desc')
+            ->where('visibility','visible')
+            ->get();
+
+        $page_data['top_listings'] = $allListings->filter(function ($listing) {
+
+            $user = User::find($listing->user_id);
+
+            if ($user && $user->id == 1 && $user->type == 'admin') {
+                return true;
+            }
+
+            $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)
+                ->latest('id')
+                ->first();
+
+            return $latestSubscription && $latestSubscription->status != 2;
+        })->values();
+
         $page_data['directory'] = 'restaurant';
+
         return view('frontend.restaurant.home', $page_data);
     }
+
+
 
     // public function listing_view($type, $view){
     //     if($type == 'car'){
@@ -236,97 +553,91 @@ class FrontendController extends Controller{
             return view($bladePath, $page_data);
         }
 
+        public function listing_details($type, $id, $slug){
+            
+            $whatsapp_no = null;
 
-    // public function listing_details($type, $id, $slug){
-    //     if($type == 'car'){
-    //         $page_data['listing'] = CarListing::where('id', $id)->first();
-    //         $page_data['directory'] = 'car';
-    //     }elseif($type == 'beauty'){
-    //         $page_data['listing'] = BeautyListing::where('id', $id)->first();
-    //         $page_data['directory'] = 'beauty';
-    //     }elseif($type == 'hotel'){
-    //         $page_data['listing'] = HotelListing::where('id', $id)->first();
-    //         $page_data['directory'] = 'hotel';
-    //     }elseif($type == 'real-estate'){
-    //         $page_data['listing'] = RealEstateListing::where('id', $id)->first();
-    //         $page_data['directory'] = 'real-estate';
-    //     }elseif($type == 'restaurant'){
-    //         $page_data['listing'] = RestaurantListing::where('id', $id)->first();
-    //         $page_data['directory'] = 'restaurant';
-    //     }
-    //     $page_data['type'] = $type;
-    //     $page_data['listing_id'] = $id;
-    //     return view('frontend.'.$type.'.details_'.$type, $page_data);
-    // }
+            if ($type == 'car') {
+                $page_data['listing'] = CarListing::where('id', $id)->first();
+                $page_data['directory'] = 'car';
+            } elseif ($type == 'beauty') {
+                $page_data['listing'] = BeautyListing::where('id', $id)->first();
+                $page_data['directory'] = 'beauty';
+            } elseif ($type == 'hotel') {
+                $page_data['listing'] = HotelListing::where('id', $id)->first();
+                $page_data['directory'] = 'hotel';
+            } elseif ($type == 'real-estate') {
+                $page_data['listing'] = RealEstateListing::where('id', $id)->first();
+                $page_data['directory'] = 'real-estate';
+            } elseif ($type == 'restaurant') {
+                $page_data['listing'] = RestaurantListing::where('id', $id)->first();
+                $page_data['directory'] = 'restaurant';
+            } else {
+                $page_data['listing'] = CustomListings::where('type', $type)
+                    ->where('id', $id)
+                    ->first();
+                $page_data['directory'] = 'custom-types';
+            }
 
+            // Listing not found
+            if (!$page_data['listing']) {
+                abort(404);
+            }
 
-public function listing_details($type, $id, $slug)
-{
-    $whatsapp_no = null;
+            $user_id = $page_data['listing']->user_id;
 
-    if ($type == 'car') {
-        $page_data['listing'] = CarListing::where('id', $id)->first();
-        $page_data['directory'] = 'car';
-    } elseif ($type == 'beauty') {
-        $page_data['listing'] = BeautyListing::where('id', $id)->first();
-        $page_data['directory'] = 'beauty';
-    } elseif ($type == 'hotel') {
-        $page_data['listing'] = HotelListing::where('id', $id)->first();
-        $page_data['directory'] = 'hotel';
-    } elseif ($type == 'real-estate') {
-        $page_data['listing'] = RealEstateListing::where('id', $id)->first();
-        $page_data['directory'] = 'real-estate';
-    } elseif ($type == 'restaurant') {
-        $page_data['listing'] = RestaurantListing::where('id', $id)->first();
-        $page_data['directory'] = 'restaurant';
-    } else {
-        $page_data['listing'] = CustomListings::where('type', $type)
-            ->where('id', $id)
-            ->first();
-        $page_data['directory'] = 'custom-types';
-    }
+            // ======================================================
+            // Hide listing if user has no active package
+            // Admin bypass
+            // ======================================================
 
-    // Listing not found
-    if (!$page_data['listing']) {
-        abort(404);
-    }
+            $user = User::find($user_id);
 
-    $user_id = $page_data['listing']->user_id;
+            if (!($user && $user->id == 1 && $user->type == 'admin')) {
 
-    // Active Subscription
-    $activeSubscription = \App\Models\Subscription::where('user_id', $user_id)
-        ->where('status', 1)
-        ->latest('id')
-        ->first();
+                $hasActivePackage = \App\Models\Subscription::where('user_id', $user_id)
+                    ->where('status', 1)
+                    ->exists();
 
-    // WhatsApp only for paid packages
-    $page_data['show_whatsapp'] = $activeSubscription && $activeSubscription->package_id != 11;
+                if (!$hasActivePackage) {
+                    abort(404);
+                }
+            }
 
-    $user_whatsno = User::find($user_id);
-    $user_qr      = Qrcode::where('user_id', $user_id)->first();
-    $user_name    = User::select('id', 'name')->find($user_id);
+            // Active Subscription
+            $activeSubscription = \App\Models\Subscription::where('user_id', $user_id)
+                ->where('status', 1)
+                ->latest('id')
+                ->first();
 
-    $whatsapp_no = $user_whatsno ? $user_whatsno->whatsapp : null;
-    $current_user_id = auth()->id();
+            // WhatsApp only for paid packages
+            $page_data['show_whatsapp'] = $activeSubscription && $activeSubscription->package_id != 11;
 
-    $page_data['whatsapp_no'] = $whatsapp_no;
-    $page_data['type'] = $type;
-    $page_data['listing_id'] = $id;
-    $page_data['user_id'] = $user_id;
-    $page_data['user_name'] = $user_name;
-    $page_data['user_qr'] = $user_qr;
-    $page_data['current_user_id'] = $current_user_id;
+            $user_whatsno = User::find($user_id);
+            $user_qr      = Qrcode::where('user_id', $user_id)->first();
+            $user_name    = User::select('id', 'name')->find($user_id);
 
-    if ($page_data['directory'] === 'custom-types') {
-        $customView = 'frontend.custom-types.details_' . $type;
-        $defaultView = 'frontend.custom-types.details_';
-        $viewPath = View::exists($customView) ? $customView : $defaultView;
-    } else {
-        $viewPath = 'frontend.' . $type . '.details_' . $type;
-    }
+            $whatsapp_no = $user_whatsno ? $user_whatsno->whatsapp : null;
+            $current_user_id = auth()->id();
 
-    return view($viewPath, $page_data);
-}
+            $page_data['whatsapp_no'] = $whatsapp_no;
+            $page_data['type'] = $type;
+            $page_data['listing_id'] = $id;
+            $page_data['user_id'] = $user_id;
+            $page_data['user_name'] = $user_name;
+            $page_data['user_qr'] = $user_qr;
+            $page_data['current_user_id'] = $current_user_id;
+
+            if ($page_data['directory'] === 'custom-types') {
+                $customView = 'frontend.custom-types.details_' . $type;
+                $defaultView = 'frontend.custom-types.details_';
+                $viewPath = View::exists($customView) ? $customView : $defaultView;
+            } else {
+                $viewPath = 'frontend.' . $type . '.details_' . $type;
+            }
+
+            return view($viewPath, $page_data);
+        }
 
 
     public function pricing(){
@@ -1171,11 +1482,47 @@ public function customerMessage(Request $request)
   
   
   
- public function custom_listing($slug){    
+/* public function custom_listing($slug){    
     $listings = CustomListings::where('type', $slug)->get();
     $page_data = CustomlistingSetting::where('slug', $slug)->firstOrFail();
     return view('frontend.customlisting.home', compact('page_data', 'listings', 'slug'));
- }
+ }*/
+
+    
+ public function custom_listing($slug){
+    // Pehle sab listings le lo
+    $allListings = CustomListings::where('type', $slug)->get();
+
+    // Expired users ki listings remove kar do
+    $listings = $allListings->filter(function ($listing) {
+
+        $user = User::find($listing->user_id);
+
+        // Admin bypass
+        if ($user && $user->id == 1 && $user->type == 'admin') {
+            return true;
+        }
+
+        // Latest subscription
+        $latestSubscription = \App\Models\Subscription::where('user_id', $listing->user_id)->latest('id')->first();
+
+        // Agar subscription hi nahi hai to hide
+        if (!$latestSubscription) {
+            return false;
+        }
+
+        // Expired package hide
+        if ($latestSubscription->status == 2) {
+            return false;
+        }
+
+        return true;
+    });
+
+    $page_data = CustomlistingSetting::where('slug', $slug)->firstOrFail();
+
+    return view('frontend.customlisting.home', compact('page_data', 'listings', 'slug'));
+}   
 
 
 
