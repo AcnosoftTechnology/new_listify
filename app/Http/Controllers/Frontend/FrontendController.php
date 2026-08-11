@@ -92,7 +92,7 @@ class FrontendController extends Controller{
         return view('frontend.index',$page_data);
     }*/
 
-    public function index(){
+public function index(){
 
     $userCoords = GeolocationService::getUserCoordinatesFromSession();
     $limit = 8;
@@ -475,33 +475,8 @@ class FrontendController extends Controller{
 
 
 
-    // public function listing_view($type, $view){
-    //     if($type == 'car'){
-    //         $page_data['listings'] = CarListing::where('visibility', 'visible')->paginate(9);
-    //         $page_data['directory'] = 'car';
-    //     }elseif($type == 'beauty'){
-    //         $page_data['listings'] = BeautyListing::where('visibility', 'visible')->paginate(9);
-    //         $page_data['directory'] = 'beauty';
-    //     }elseif($type == 'hotel'){
-    //         $page_data['listings'] = HotelListing::where('visibility', 'visible')->paginate(9);
-    //         $page_data['directory'] = 'hotel';
-    //     }elseif($type == 'real-estate'){
-    //         $page_data['listings'] = RealEstateListing::where('visibility', 'visible')->paginate(9);
-    //         $page_data['directory'] = 'real-estate';
-    //     }elseif($type == 'restaurant'){
-    //         $page_data['listings'] = RestaurantListing::where('visibility', 'visible')->paginate(9);
-    //         $page_data['directory'] = 'restaurant';
-    //     }elseif($type == 'doctor') {
-    //         $page_data['listings'] = User::where('type', 'doctor')->paginate(9);
-    //     }
-        
-    //     $page_data['categories'] = Category::where('type', $type)->get();
-    //     $page_data['type'] = $type;
-    //     $page_data['view'] = $view;
-    //     return view('frontend.'.$type.'.'.$view.'_listing', $page_data);
-    // }
   
-    public function listing_view($type, $view){
+   /* public function listing_view($type, $view){
             $page_data['type'] = $type;
             $page_data['view'] = $view;
 
@@ -551,7 +526,114 @@ class FrontendController extends Controller{
             $page_data['categories'] = Category::where('type', $type)->get();
 
             return view($bladePath, $page_data);
-        }
+ }*/
+
+
+            public function listing_view($type, $view){
+    $page_data['type'] = $type;
+    $page_data['view'] = $view;
+
+    // ======================================================
+    // Expired users (Admin excluded)
+    // ======================================================
+    $expiredUserIds = \App\Models\Subscription::where('status', 2)
+        ->whereNotIn('user_id', function ($query) {
+            $query->select('user_id')
+                ->from('subscriptions')
+                ->where('status', 1);
+        })
+        ->pluck('user_id')
+        ->toArray();
+
+    if ($type == 'car') {
+        $query = CarListing::where('visibility', 'visible')
+            ->where(function ($q) use ($expiredUserIds) {
+                $q->whereNotIn('user_id', $expiredUserIds)
+                  ->orWhere('user_id', 1); // Admin
+            });
+
+        $page_data['listings'] = $this->paginateListingsByDistance($query);
+        $page_data['directory'] = 'car';
+        $bladePath = 'frontend.car.'.$view.'_listing';
+
+    } elseif ($type == 'beauty') {
+
+        $query = BeautyListing::where('visibility', 'visible')
+            ->where(function ($q) use ($expiredUserIds) {
+                $q->whereNotIn('user_id', $expiredUserIds)
+                  ->orWhere('user_id', 1);
+            });
+
+        $page_data['listings'] = $this->paginateListingsByDistance($query);
+        $page_data['directory'] = 'beauty';
+        $bladePath = 'frontend.beauty.'.$view.'_listing';
+
+    } elseif ($type == 'hotel') {
+
+        $query = HotelListing::where('visibility', 'visible')
+            ->where(function ($q) use ($expiredUserIds) {
+                $q->whereNotIn('user_id', $expiredUserIds)
+                  ->orWhere('user_id', 1);
+            });
+
+        $page_data['listings'] = $this->paginateListingsByDistance($query);
+        $page_data['directory'] = 'hotel';
+        $bladePath = 'frontend.hotel.'.$view.'_listing';
+
+    } elseif ($type == 'real-estate') {
+
+        $query = RealEstateListing::where('visibility', 'visible')
+            ->where(function ($q) use ($expiredUserIds) {
+                $q->whereNotIn('user_id', $expiredUserIds)
+                  ->orWhere('user_id', 1);
+            });
+
+        $page_data['listings'] = $this->paginateListingsByDistance($query);
+        $page_data['directory'] = 'real-estate';
+        $bladePath = 'frontend.real-estate.'.$view.'_listing';
+
+    } elseif ($type == 'restaurant') {
+
+        $query = RestaurantListing::where('visibility', 'visible')
+            ->where(function ($q) use ($expiredUserIds) {
+                $q->whereNotIn('user_id', $expiredUserIds)
+                  ->orWhere('user_id', 1);
+            });
+
+        $page_data['listings'] = $this->paginateListingsByDistance($query);
+        $page_data['directory'] = 'restaurant';
+        $bladePath = 'frontend.restaurant.'.$view.'_listing';
+
+    } elseif ($type == 'doctor') {
+
+        $page_data['listings'] = User::where('type', 'doctor')->paginate(9);
+        $page_data['directory'] = 'doctor';
+        $bladePath = 'frontend.doctor.'.$view.'_listing';
+
+    } else {
+
+        // Slug (travel-tourism) se customlisting_setting ka data lao
+        $page_data['CustomlistingSetting'] = \App\Models\CustomlistingSetting::where('slug', $type)->first();
+
+        // Custom Listings
+        $query = CustomListings::where('visibility', 'visible')
+                    ->where('type', $type)
+                    ->where(function ($q) use ($expiredUserIds) {
+                        $q->whereNotIn('user_id', $expiredUserIds)
+                          ->orWhere('user_id', 1);
+                    });
+
+        $page_data['listings'] = $this->paginateListingsByDistance($query);
+        $page_data['directory'] = 'custom-types';
+        $bladePath = 'frontend.custom-types.'.$view.'_listing';
+    }
+
+    $page_data['categories'] = Category::where('type', $type)->get();
+
+    return view($bladePath, $page_data);
+}
+
+
 
         public function listing_details($type, $id, $slug){
             

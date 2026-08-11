@@ -37,16 +37,10 @@ Route::get('/inventory/export', [InventoryController::class, 'exportExcel'])->na
 
 
 // CSRF token refresh route
-Route::get('/refresh-csrf', function () {
-    return response()->json([
-        'token' => csrf_token()
-    ]);
-});
+Route::get('/refresh-csrf', function () {return response()->json(['token' => csrf_token() ]);});
 
 // Save browser FCM token (logged-in users only)
-Route::post('/fcm/token', [\App\Http\Controllers\FcmTokenController::class, 'store'])
-    ->middleware('auth')
-    ->name('fcm.token.store');
+Route::post('/fcm/token', [\App\Http\Controllers\FcmTokenController::class, 'store'])->middleware('auth')->name('fcm.token.store');
 
 // Home page
 Route::get('/', [FrontendController::class, 'index'])->name('home');
@@ -93,11 +87,8 @@ Route::get('/blog-search', [FrontendController::class, 'blog_search'])->name('bl
 
 //phonepe
 Route::get('/phonepe/test-token', [FrontendController::class, 'testToken']);
-
 // Agent Details
 Route::get('/listing/agent/{id}/{slug}', [FrontendController::class, 'agent_details'])->name('agent.details');
-
-
 // Share User Profile 
 Route::get('user-profile/{slug}', [FrontendController::class, 'User_profile'])->name('user.profile');
 
