@@ -93,35 +93,46 @@ class PaymentController extends Controller
         return view('payment.' . $identifier . '.index', $page_data);
     }
 
-    public function payment_success($identifier, Request $request)
-    {
+    public function payment_success($identifier, Request $request){
+    $payment_details = session('payment_details');
+    $payment_gateway = DB::table('payment_geteways')->where('identifier', $identifier)->first();
+    $model_name      = $payment_gateway->model_name;
+    $model_full_path = str_replace(' ', '', 'App\Models\payment_gateway\\' . $model_name);
 
-        $payment_details = session('payment_details');
-        $payment_gateway = DB::table('payment_geteways')->where('identifier', $identifier)->first();
-        $model_name      = $payment_gateway->model_name;
-        $model_full_path = str_replace(' ', '', 'App\Models\payment_gateway\ ' . $model_name);
+    // Instantiate the payment gateway class
+    $paystack = new $model_full_path();
 
-        // $status = $model_full_path::payment_status($identifier, $request->all());
-         // Instantiate the payment gateway class
-         $paystack = new $model_full_path();
-         // Call the payment_status method on the instantiated object
-         if($paystack){
-            $status = $paystack->payment_status($identifier, $request->all());
-         }else{
-             $status = $model_full_path::payment_status($identifier, $request->all());
-         }
-       
-        if ($status === true) {
-            $success_model    = $payment_details['success_method']['model_name'];
-            $success_function = $payment_details['success_method']['function_name'];
-
-            $model_full_path = str_replace(' ', '', 'App\Models\ ' . $success_model);
-            return $model_full_path::$success_function($identifier);
-        } else {
-            Session::flash('error', get_phrase('Payment failed! Please try again.'));
-            return redirect()->to($payment_details['cancel_url']);
-        }
+    // Call the payment_status method
+    if ($paystack) {
+        $status = $paystack->payment_status($identifier, $request->all());
+    } else {
+        $status = $model_full_path::payment_status($identifier, $request->all());
     }
+
+    if ($status === true) {
+
+        // Razorpay Details Session me Save
+        session([
+            'razorpay_payment_id'      => $request->razorpay_payment_id,
+            'razorpay_order_id'        => $request->razorpay_order_id,
+            'razorpay_signature'       => $request->razorpay_signature,
+            'razorpay_subscription_id' => $request->razorpay_subscription_id,
+        ]);
+
+        $success_model    = $payment_details['success_method']['model_name'];
+        $success_function = $payment_details['success_method']['function_name'];
+
+        $model_full_path = str_replace(' ', '', 'App\Models\\' . $success_model);
+
+        return $model_full_path::$success_function($identifier);
+
+    } else {
+
+        Session::flash('error', get_phrase('Payment failed! Please try again.'));
+        return redirect()->to($payment_details['cancel_url']);
+
+    }
+}
 
 
 
@@ -213,16 +224,16 @@ public function phonepeRedirect(Request $request)
 
 
 
-    public function payment_razorpay($identifier)
-    {
-        $payment_details = session('payment_details');
-        $payment_gateway = DB::table('payment_geteways')->where('identifier', $identifier)->first();
-        $model_name      = $payment_gateway->model_name;
-        $model_full_path = str_replace(' ', '', 'App\Models\payment_gateway\ ' . $model_name);
-        $data            = $model_full_path::payment_create($identifier);
+        public function payment_razorpay($identifier)
+        {
+            $payment_details = session('payment_details');
+            $payment_gateway = DB::table('payment_geteways')->where('identifier', $identifier)->first();
+            $model_name      = $payment_gateway->model_name;
+            $model_full_path = str_replace(' ', '', 'App\Models\payment_gateway\ ' . $model_name);
+            $data            = $model_full_path::payment_create($identifier);
 
-        return view('payment.razorpay.payment', compact('data'));
-    }
+            return view('payment.razorpay.payment', compact('data'));
+        }
 
 
     public function make_paytm_order(Request $request)

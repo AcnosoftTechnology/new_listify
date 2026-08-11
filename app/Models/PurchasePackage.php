@@ -13,8 +13,7 @@ class PurchasePackage extends Model
 {
     use HasFactory;
 
-public static function purchase_package($identifier)
-{
+public static function purchase_package($identifier){
     $package = session('payment_details');
 
     if (!isset($package['items'][0])) {
@@ -38,10 +37,17 @@ public static function purchase_package($identifier)
 
     // New subscription
     $sub = [
-        'user_id'           => user('id'),
-        'package_id'        => $package['items'][0]['id'],
-        'paid_amount'       => $package['items'][0]['price'],
-        'payment_method'    => $identifier,
+        'user_id'        => user('id'),
+        'package_id'     => $package['items'][0]['id'],
+        'paid_amount'    => $package['items'][0]['price'],
+        'payment_method' => $identifier,
+
+        // Razorpay Details
+        'razorpay_payment_id'      => session('razorpay_payment_id'),
+        'razorpay_order_id'        => session('razorpay_order_id'),
+        'razorpay_signature'       => session('razorpay_signature'),
+        'razorpay_subscription_id' => session('razorpay_subscription_id'),
+
         'status'            => 1,
         'auto_subscription' => 0,
         'expire_date'       => $expireDate,
@@ -49,7 +55,7 @@ public static function purchase_package($identifier)
         'created_at'        => now(),
         'updated_at'        => now(),
     ];
-
+    
     Subscription::insert($sub);
 
     User::where('id', user('id'))->update([

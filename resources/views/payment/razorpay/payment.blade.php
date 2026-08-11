@@ -33,12 +33,19 @@
 
         "order_id": "{{ $page_data['order_id'] }}",
 
-        "handler": function(response) {
-            var razorpay_payment_id = response.razorpay_payment_id;
-            var razorpay_order_id = response.razorpay_order_id;
-            var razorpay_signature = response.razorpay_signature;
-            window.location.href = "{{$payment_details['success_url'] . '/' . $payment_gateway->identifier}}?razorpay_payment_id=" + response.razorpay_payment_id;
-        },
+        "handler": function (response) {
+        var url = "{{$payment_details['success_url'] . '/' . $payment_gateway->identifier}}";
+        url += "?razorpay_payment_id=" + encodeURIComponent(response.razorpay_payment_id);
+        url += "&razorpay_order_id=" + encodeURIComponent(response.razorpay_order_id);
+        url += "&razorpay_signature=" + encodeURIComponent(response.razorpay_signature);
+
+        // Future Auto Subscription Support
+        if (response.razorpay_subscription_id) {
+            url += "&razorpay_subscription_id=" + encodeURIComponent(response.razorpay_subscription_id);
+        }
+
+        window.location.href = url;
+    },
 
         "prefill": {
             "name": "{{ $page_data['name'] }}",
