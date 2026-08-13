@@ -45,8 +45,22 @@
                                 </div>
                                 <p class="fz-15-r-gray">
                                     {{ get_phrase('Your current package price is') }}
-                                    @php $date = date('M d, Y, h:m a', $current_subscription->expire_date); @endphp
-                                    <span class="fz-24-b-black">{{ currency($current_package->price) }}.</span> {{ get_phrase('It will expired on ') }} {{ $date }}
+
+                                    <span class="fz-24-b-black">
+                                        {{ currency($current_package->price) }}
+                                    </span>.
+
+                                    @if(!is_null($current_subscription->expire_date))
+                                        @php
+                                            $date = date('M d, Y, h:i a', $current_subscription->expire_date);
+                                        @endphp
+
+                                        {{ get_phrase('It will expire on') }} {{ $date }}
+                                    @else
+                                        <span class="badge bg-success">
+                                            {{ get_phrase('Lifetime / Free Plan') }}
+                                        </span>
+                                    @endif
                                 </p>
                             </div>
                         @else

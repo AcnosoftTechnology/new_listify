@@ -172,20 +172,47 @@ if (! function_exists('format_time')) {
         return date("g:i A", strtotime($time));
     }
 }
-if (! function_exists('check_subscription')) {
-    function check_subscription($user_id) {
-        $subscription = App\Models\Subscription::where('user_id', $user_id)->orderBy('id','DESC')->first();
-        if($subscription){
-            if(time() > $subscription->expire_date){
-                return 0;
-            }else{
-                return 1;
-            }
-        }else{
+// if (! function_exists('check_subscription')) {
+//     function check_subscription($user_id) {
+//         $subscription = App\Models\Subscription::where('user_id', $user_id)->orderBy('id','DESC')->first();
+//         if($subscription){
+//             if(time() > $subscription->expire_date){
+//                 return 0;
+//             }else{
+//                 return 1;
+//             }
+//         }else{
+//             return 0;
+//         }
+//     }
+// }
+
+if (!function_exists('check_subscription')) {
+    function check_subscription($user_id)
+    {
+        $subscription = App\Models\Subscription::where('user_id', $user_id)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        if (!$subscription) {
             return 0;
         }
+
+        // Lifetime package
+        if (is_null($subscription->expire_date)) {
+            return 1;
+        }
+
+        // Expiry check
+        if (time() > $subscription->expire_date) {
+            return 0;
+        }
+
+        return 1;
     }
 }
+
+
 
 if (! function_exists('current_package')) {
     function current_package() {
@@ -781,8 +808,8 @@ if (!function_exists('can_add_listing')) {
 
 if (!function_exists('can_create_new_listing')) {
 
-    function can_create_new_listing()
-    {
+    function can_create_new_listing(){
+
         $user_id = auth()->id();
 
         // Active package
