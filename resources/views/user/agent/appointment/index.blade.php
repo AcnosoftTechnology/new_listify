@@ -153,7 +153,7 @@
                                                 </p>
                                                 <div class="d-flex gap-1 align-items-center">
                                                     <img src="{{ asset('assets/frontend/images/icons/clock-gray-12.svg') }}" alt="icon">
-                                                    <p class="in-subtitle-14px">{{ date('h:i A', strtotime($appointment->time)) }}</p>
+                                                    <p class="in-subtitle-14px">{{ \Carbon\Carbon::parse($appointment->time, 'UTC')->setTimezone('Asia/Kolkata')->format('h:i A') }}</p>
                                                 </div>
                                                 @if($appointment->listing_type == 'restaurant')
                                                     @php
@@ -197,10 +197,10 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu">
                                             <li><a class="dropdown-item" href="{{route('agent.appointment.status',['id'=>$appointment->id, 'status'=>$appointment->status])}}">
-                                                @if ($appointment->status == 1)
-                                                {{get_phrase('Mark as completed')}}
+                                                @if ($appointment->status == 1)                                               
+                                                 {{get_phrase('Mark as incomplete')}}
                                                 @else 
-                                                {{get_phrase('Mark as incomplete')}}
+                                                 {{get_phrase('Mark as completed')}}
                                                 @endif
                                             </a></li>
 

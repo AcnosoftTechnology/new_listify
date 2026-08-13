@@ -63,11 +63,6 @@ Route::controller(AgentController::class)->middleware('auth', 'agent')->group(fu
     Route::post('/agent/blog/update/{id}', [BlogController::class, 'blog_update'])->name('agent.blog.update');
     Route::get('/agent/blog/delete/{id}', [BlogController::class, 'user_blog_delete'])->name('agent.blog.delete');
 
-
-   
-
-
-
-
+    
 
 });
