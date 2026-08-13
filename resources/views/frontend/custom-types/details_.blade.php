@@ -172,8 +172,6 @@
                     </div>
 
                         {{-- Shop Addon --}}
-                        @if (addon_status('shop') == 1 && $show_whatsapp)
-
                             @php 
                                 $shopItems = App\Models\Inventory::where('type', $listing->type)
                                     ->where('listing_id', $listing->id)
@@ -185,11 +183,7 @@
                                     ->get();
                             @endphp
 
-                            @if($shopItems->count() > 0)
-                                @include('frontend.shop')
-                            @endif
-
-                        @endif
+                            @include('frontend.shop')
                         {{-- Shop Addon --}}
               
                     <!-- Amenities -->
@@ -311,7 +305,7 @@
             @endif
 
 
-{{-- Invoice Policy Section Addon --}}                 
+            {{-- Invoice Policy Section Addon --}}                 
               
               
                      {{-- Custom Field --}}
@@ -630,61 +624,61 @@
                 </div>
                 <!-- Sidebar -->
 
- @if($show_whatsapp)
-    <div class="col-xl-4 col-lg-5">       
-        <div class="beauty-details-sidebar">
-            <h1 class="title mb-20">{{ get_phrase('Book a Meeting') }}</h1>
+                @if($show_whatsapp)
+                    <div class="col-xl-4 col-lg-5">       
+                        <div class="beauty-details-sidebar">
+                            <h1 class="title mb-20">{{ get_phrase('Book a Meeting') }}</h1>
 
-            @if (addon_status('form_builder') == 1 && get_settings('form_builder') == 1)
-                @include('frontend.form_builder.form')  
-            @else
-                <form action="{{ route('customerBookAppointment') }}" method="post">
-                    @csrf
-                    <input type="hidden" name="type" value="person">
-                    <input type="hidden" name="listing_type" value="{{ $type }}">
-                    <input type="hidden" name="listing_id" value="{{ $listing->id }}">
-                    <input type="hidden" name="agent_id" value="{{ $listing->user_id }}">
+                            @if (addon_status('form_builder') == 1 && get_settings('form_builder') == 1)
+                                @include('frontend.form_builder.form')  
+                            @else
+                                <form action="{{ route('customerBookAppointment') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="type" value="person">
+                                    <input type="hidden" name="listing_type" value="{{ $type }}">
+                                    <input type="hidden" name="listing_id" value="{{ $listing->id }}">
+                                    <input type="hidden" name="agent_id" value="{{ $listing->user_id }}">
 
-                    <div class="beautydetails-meeting-form">
-                        <div class="mb-14">
-                            <label for="datetime" class="form-label mform-label mb-14">{{ get_phrase('Select Date and Time') }}</label>
-                            <input type="text" name="date" placeholder="{{ get_phrase('Select date') }}" class="form-control mform-control flat-input-picker3 input-calendar-icon" id="datetime" required />
-                        </div>
-                        @php $enquiryUser = auth_enquiry_defaults(); @endphp
-                        <input type="text" class="form-control mform-control mb-14" name="name" placeholder="Name" value="{{ $enquiryUser['name'] }}" required>
-                        <input type="number" class="form-control mform-control mb-14" name="phone" placeholder="Phone" value="{{ $enquiryUser['phone'] }}" required>
-                        <input type="email" class="form-control mform-control mb-14" name="email" placeholder="Email" value="{{ $enquiryUser['email'] }}" required>
-                        <textarea class="form-control mform-control review-textarea mb-14" name="message" placeholder="Message" required></textarea>
-                        <button type="submit" class="submit-fluid-btn2 mb-2">{{ get_phrase('Submit Now') }}</button>
+                                    <div class="beautydetails-meeting-form">
+                                        <div class="mb-14">
+                                            <label for="datetime" class="form-label mform-label mb-14">{{ get_phrase('Select Date and Time') }}</label>
+                                            <input type="text" name="date" placeholder="{{ get_phrase('Select date') }}" class="form-control mform-control flat-input-picker3 input-calendar-icon" id="datetime" required />
+                                        </div>
+                                        @php $enquiryUser = auth_enquiry_defaults(); @endphp
+                                        <input type="text" class="form-control mform-control mb-14" name="name" placeholder="Name" value="{{ $enquiryUser['name'] }}" required>
+                                        <input type="number" class="form-control mform-control mb-14" name="phone" placeholder="Phone" value="{{ $enquiryUser['phone'] }}" required>
+                                        <input type="email" class="form-control mform-control mb-14" name="email" placeholder="Email" value="{{ $enquiryUser['email'] }}" required>
+                                        <textarea class="form-control mform-control review-textarea mb-14" name="message" placeholder="Message" required></textarea>
+                                        <button type="submit" class="submit-fluid-btn2 mb-2">{{ get_phrase('Submit Now') }}</button>
+                                    </div>
+                                </form>
+                            @endif                     
+
+                            @if (Auth::check())  
+                                @if (isset(auth()->user()->id) && auth()->user()->id != $listing->user_id)
+                                    @php
+                                        $existingClaim = \App\Models\ClaimedListing::where('listing_id', $listing->id)
+                                            ->where('listing_type', $listing->type)
+                                            ->where('user_id', auth()->user()->id)
+                                            ->exists();
+                                    @endphp
+
+                                    @if (!$existingClaim)                                                  
+                                        <a href="javascript:;" 
+                                        onclick="edit_modal('modal-md','{{ route('claimListingForm', ['type' => $listing->type, 'id' => $listing->id]) }}','{{ get_phrase('Claim Listing') }}')" 
+                                        class="submit-fluid-btn2 claim-btn">
+                                        {{ get_phrase('Claim Listing') }}
+                                        </a>
+                                    @else
+                                        <button type="button" class="submit-fluid-btn2" disabled>
+                                            {{ get_phrase('Already Claimed') }}
+                                        </button>
+                                    @endif
+                                @endif
+                            @endif
+                        </div>     
                     </div>
-                </form>
-            @endif                     
-
-            @if (Auth::check())  
-                @if (isset(auth()->user()->id) && auth()->user()->id != $listing->user_id)
-                    @php
-                        $existingClaim = \App\Models\ClaimedListing::where('listing_id', $listing->id)
-                            ->where('listing_type', $listing->type)
-                            ->where('user_id', auth()->user()->id)
-                            ->exists();
-                    @endphp
-
-                    @if (!$existingClaim)                                                  
-                        <a href="javascript:;" 
-                           onclick="edit_modal('modal-md','{{ route('claimListingForm', ['type' => $listing->type, 'id' => $listing->id]) }}','{{ get_phrase('Claim Listing') }}')" 
-                           class="submit-fluid-btn2 claim-btn">
-                          {{ get_phrase('Claim Listing') }}
-                        </a>
-                    @else
-                        <button type="button" class="submit-fluid-btn2" disabled>
-                            {{ get_phrase('Already Claimed') }}
-                        </button>
-                    @endif
                 @endif
-            @endif
-        </div>     
-    </div>
-  @endif
 
         </div>
     </section>
