@@ -813,11 +813,7 @@ if (!function_exists('can_create_new_listing')) {
         $user_id = auth()->id();
 
         // Active package
-        $subscription = DB::table('subscriptions')
-            ->where('user_id', $user_id)
-            ->where('status', 1)
-            ->latest('id')
-            ->first();
+        $subscription = DB::table('subscriptions')->where('user_id', $user_id)->where('status', 1)->latest('id')->first();
 
         if (!$subscription) {
             return [
@@ -832,6 +828,7 @@ if (!function_exists('can_create_new_listing')) {
             + DB::table('car_listings')->where('user_id',$user_id)->count()
             + DB::table('hotel_listings')->where('user_id',$user_id)->count()
             + DB::table('restaurant_listings')->where('user_id',$user_id)->count()
+            + DB::table('beauty_listings')->where('user_id',$user_id)->count()
             + DB::table('real_estate_listings')->where('user_id',$user_id)->count();
 
         // FREE PACKAGE
