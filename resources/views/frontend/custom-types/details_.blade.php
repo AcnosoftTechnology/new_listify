@@ -458,7 +458,12 @@
                                         <div class="commentator-name-dropdown d-flex justify-content-between">
                                             <div class="commentator-name-date">
                                                 <h3 class="name">{{ $users->name }}</h3>
-                                                <p class="date">{{ \Carbon\Carbon::parse($review->created_at)->format('F j, Y . g:i a') }}</p>
+                                                
+                                                <p class="date">
+                                                    {{ \Carbon\Carbon::parse($review->created_at)
+                                                        ->timezone('Asia/Kolkata')
+                                                        ->format('F j, Y . g:i a') }}
+                                                </p>
                                             </div>
 
                                         </div>

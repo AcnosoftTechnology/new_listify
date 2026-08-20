@@ -805,7 +805,6 @@ if (!function_exists('can_add_listing')) {
 
 
 
-
 if (!function_exists('can_create_new_listing')) {
 
     function can_create_new_listing(){
