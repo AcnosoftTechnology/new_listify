@@ -37,30 +37,35 @@ class SubscriptionController extends Controller{
     //     return view('user.agent.subscription.index', $page_data);
     // }
 
-     public function user_subscription(){
+public function user_subscription()
+{
+    $subscriptions = Subscription::where('user_id', user('id'))
+        ->orderBy('id', 'DESC')
+        ->get();
 
-        $subscription = Subscription::where('user_id', user('id'))->orderBy('id', 'DESC')->first();
-        $page_data['active'] = 'subscription';
-        $page_data['current_subscription'] = $subscription;
-        $page_data['all_subscription'] = Subscription::where('user_id', user('id'))->get();
+    $subscription = $subscriptions->first();
 
-        if ($subscription) {
+    $page_data['active'] = 'subscription';
+    $page_data['current_subscription'] = $subscription;
+    $page_data['all_subscription'] = $subscriptions;
 
-            $page_data['current_package'] = Pricing::find($subscription->package_id);
+    if ($subscription) {
 
-            if (is_null($subscription->expire_date)) {
-                $page_data['expiry_status'] = 1;
-            } else {
-                $page_data['expiry_status'] = (time() < $subscription->expire_date) ? 1 : 0;
-            }
+        $page_data['current_package'] = Pricing::find($subscription->package_id);
 
+        if (is_null($subscription->expire_date)) {
+            $page_data['expiry_status'] = 1;
         } else {
-            $page_data['current_package'] = null;
-            $page_data['expiry_status'] = 0;
+            $page_data['expiry_status'] = (time() < $subscription->expire_date) ? 1 : 0;
         }
 
-        return view('user.agent.subscription.index', $page_data);
+    } else {
+        $page_data['current_package'] = null;
+        $page_data['expiry_status'] = 0;
     }
+
+    return view('user.agent.subscription.index', $page_data);
+}
     
 
     public function modifyBilling(){
