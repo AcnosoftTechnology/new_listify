@@ -51,30 +51,42 @@
 
 @if($period == 'monthly' || $period == 'annually')
 
+
     {{-- Razorpay Auto Subscription --}}
-    <form action="{{ route('razorpay.subscription', $payment_gateway->identifier) }}" method="post">
+    <form
+        action="{{ route('razorpay.subscription', $payment_gateway->identifier) }}"
+        method="post"
+        class="billing-payment-form"
+        id="razorpaySubscriptionForm"
+    >
         @csrf
 
-        <input type="hidden" name="price" value="{{ $payment_details['payable_amount'] }}">
+        <input
+            type="hidden"
+            name="price"
+            value="{{ $payment_details['payable_amount'] }}"
+        >
 
         <button type="submit" class="btn btn-primary">
             {{ get_phrase('Subscribe with Razorpay') }}
         </button>
-
     </form>
 
 @else
 
     {{-- Existing One Time Payment --}}
-    <form action="{{ route('razorpay.order', $payment_gateway->identifier) }}" method="post">
+    <form action="{{ route('razorpay.order', $payment_gateway->identifier) }}"
+          method="post"
+          class="billing-payment-form">
         @csrf
 
-        <input type="hidden" name="price" value="{{ $payment_details['payable_amount'] }}">
+        <input type="hidden"
+               name="price"
+               value="{{ $payment_details['payable_amount'] }}">
 
         <button type="submit" class="btn btn-primary">
             {{ get_phrase('Pay by Razorpay') }}
         </button>
-
     </form>
 
 @endif
@@ -96,3 +108,395 @@
         </div>
     </div>
 @endif
+
+
+
+<script>
+    function saveBillingDetails(callback, errorCallback) {
+
+        let hasGst = $('#has_gst').is(':checked') ? 1 : 0;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | LATEST GST VALUES
+        |--------------------------------------------------------------------------
+        */
+
+        let packageAmount = Number(BASE_AMOUNT) || 0;
+
+        let igstAmount = 0;
+        let cgstAmount = 0;
+        let sgstAmount = 0;
+        let totalTaxAmount = 0;
+        let grandTotal = packageAmount;
+
+
+        if (currentTaxType === 'igst') {
+
+            igstAmount = Number(currentTaxAmount) || 0;
+            totalTaxAmount = igstAmount;
+            grandTotal = packageAmount + totalTaxAmount;
+
+        } else if (currentTaxType === 'cgst_sgst') {
+
+            cgstAmount = (packageAmount * Number(CGST_RATE)) / 100;
+            sgstAmount = (packageAmount * Number(SGST_RATE)) / 100;
+
+            totalTaxAmount = cgstAmount + sgstAmount;
+            grandTotal = packageAmount + totalTaxAmount;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | GLOBAL FINAL AMOUNT UPDATE
+        |--------------------------------------------------------------------------
+        */
+
+        currentGrandTotal = grandTotal;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AJAX DATA
+        |--------------------------------------------------------------------------
+        */
+
+        let billingData = {
+
+            // =========================
+            // BILLING DETAILS
+            // =========================
+
+            billing_name: $('#billing_name').val(),
+            billing_email: $('#billing_email').val(),
+            billing_phone: $('#billing_phone').val(),
+            billing_address: $('#billing_address').val(),
+            billing_city: $('#billing_city').val(),
+            billing_state: $('#billing_state').val(),
+            billing_country: $('#billing_country').val(),
+            billing_pincode: $('#billing_pincode').val(),
+
+
+            // =========================
+            // GST DETAILS
+            // =========================
+
+            has_gst: hasGst,
+            gst_number: $('#gst_number').val(),
+
+
+            // =========================
+            // PACKAGE AMOUNT
+            // =========================
+
+            package_amount: packageAmount.toFixed(2),
+
+
+            // =========================
+            // IGST / CGST / SGST
+            // =========================
+
+            igst_amount: igstAmount.toFixed(2),
+
+            cgst_amount: cgstAmount.toFixed(2),
+
+            sgst_amount: sgstAmount.toFixed(2),
+
+
+            // =========================
+            // TOTAL TAX
+            // =========================
+
+            total_tax_amount: totalTaxAmount.toFixed(2),
+
+
+            // =========================
+            // FINAL AMOUNT WITH GST
+            // Example: 500 + 90 = 590
+            // =========================
+
+            grand_total: grandTotal.toFixed(2),
+
+
+            // =========================
+            // CSRF TOKEN
+            // =========================
+
+            _token: $('meta[name="csrf_token"]').attr('content')
+        };
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DEBUG - TEMPORARY
+        |--------------------------------------------------------------------------
+        |
+        | Browser console mein check kar sakte ho
+        |
+        */
+
+        console.log('Billing Payment Data:', billingData);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AJAX REQUEST
+        |--------------------------------------------------------------------------
+        */
+
+        $.ajax({
+
+            url: "{{ route('payment.save.billing.details') }}",
+
+            type: "POST",
+
+            data: billingData,
+
+
+            success: function(response) {
+
+                if (response.status) {
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | SERVER KA FINAL AMOUNT
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        response.grand_total !== undefined &&
+                        response.grand_total !== null
+                    ) {
+
+                        currentGrandTotal = parseFloat(
+                            response.grand_total
+                        );
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | SABHI PAYMENT FORMS KA PRICE UPDATE
+                        |--------------------------------------------------------------------------
+                        */
+
+                        $('.billing-payment-form input[name="price"]').val(
+                            currentGrandTotal.toFixed(2)
+                        );
+
+                    } else {
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | AGAR SERVER RESPONSE MEIN GRAND TOTAL NA AAYE
+                        |--------------------------------------------------------------------------
+                        */
+
+                        $('.billing-payment-form input[name="price"]').val(
+                            grandTotal.toFixed(2)
+                        );
+                    }
+
+
+                    if (typeof callback === 'function') {
+                        callback(response);
+                    }
+
+                } else {
+
+                    if (typeof errorCallback === 'function') {
+                        errorCallback();
+                    }
+
+                }
+
+            },
+
+
+            error: function(xhr) {
+
+                let message =
+                    'Please fill all required billing details.';
+
+
+                if (
+                    xhr.responseJSON &&
+                    xhr.responseJSON.errors
+                ) {
+
+                    let errors = xhr.responseJSON.errors;
+
+                    message = Object.values(errors)
+                        .map(function(error) {
+                            return error[0];
+                        })
+                        .join('<br>');
+                }
+
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Billing Details Required',
+                    html: message
+                });
+
+
+                if (typeof errorCallback === 'function') {
+                    errorCallback();
+                }
+
+            }
+
+        });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PAYMENT FORM SUBMIT
+    |--------------------------------------------------------------------------
+    */
+
+    $(document).on(
+        'submit',
+        '.billing-payment-form',
+        function(e) {
+
+            e.preventDefault();
+
+
+            let paymentForm = this;
+
+            let submitButton = $(paymentForm)
+                .find('button[type="submit"]');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | DOUBLE CLICK ROKO
+            |--------------------------------------------------------------------------
+            */
+
+            if (submitButton.prop('disabled')) {
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | SUBMIT SE PEHLE LATEST GST CALCULATE KARO
+            |--------------------------------------------------------------------------
+            */
+
+            if (typeof calculateGST === 'function') {
+                calculateGST();
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | LATEST AMOUNT PAYMENT INPUT MEIN SET KARO
+            |--------------------------------------------------------------------------
+            */
+
+            if (typeof currentGrandTotal !== 'undefined') {
+
+                $(paymentForm)
+                    .find('input[name="price"]')
+                    .val(
+                        Number(currentGrandTotal).toFixed(2)
+                    );
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | BUTTON DISABLE
+            |--------------------------------------------------------------------------
+            */
+
+            submitButton.prop('disabled', true);
+
+            submitButton.text('Processing...');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PEHLE BILLING + GST AMOUNTS SAVE KARO
+            |--------------------------------------------------------------------------
+            */
+
+            saveBillingDetails(
+
+                function(response) {
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | SERVER KA FINAL AMOUNT
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        response.grand_total !== undefined &&
+                        response.grand_total !== null
+                    ) {
+
+                        currentGrandTotal = parseFloat(
+                            response.grand_total
+                        );
+
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | FINAL AMOUNT HIDDEN PRICE INPUT MEIN
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $(paymentForm)
+                        .find('input[name="price"]')
+                        .val(
+                            Number(currentGrandTotal).toFixed(2)
+                        );
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | AB ACTUAL RAZORPAY FORM SUBMIT HOGA
+                    |--------------------------------------------------------------------------
+                    */
+
+                    HTMLFormElement.prototype.submit.call(
+                        paymentForm
+                    );
+
+                },
+
+
+                function() {
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | VALIDATION / AJAX ERROR
+                    |--------------------------------------------------------------------------
+                    */
+
+                    submitButton.prop('disabled', false);
+
+                    submitButton.text(
+                        'Subscribe with Razorpay'
+                    );
+
+                }
+
+            );
+
+        }
+    );
+</script>

@@ -69,6 +69,7 @@ public function user_subscription()
     
 
     public function modifyBilling(){
+
         $user = User::find(user('id'));
         $page_data['user_details']=$user;
         $page_data['address']=json_decode($user->address);
@@ -77,6 +78,7 @@ public function user_subscription()
         $page_data['navigation_name'] = 'Modify Billing Information';
         return view('user.agent.subscription.modify_billing_information', $page_data);
     }
+
     public function subscriptionInvoice($id=''){
       
         $subscriptionDetails = Subscription::find($id);
@@ -99,8 +101,7 @@ public function user_subscription()
     }
     
 
-    public function subscription_delete($id)
-    {
+    public function subscription_delete($id){        
         Subscription::where('id', $id)->delete();
         Session::flash('success', get_phrase('Subscription delete successfully!'));
         return redirect()->back();

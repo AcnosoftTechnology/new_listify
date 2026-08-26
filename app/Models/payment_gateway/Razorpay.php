@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Razorpay\Api\Api;
 
-class Razorpay extends Model
-{
+class Razorpay extends Model {
     use HasFactory;
 
     public static function payment_status($identifier, $transaction_keys = [])
@@ -91,63 +90,60 @@ class Razorpay extends Model
         return $data;
     }
 
-public static function subscription_create($identifier, $plan_id){
+    public static function subscription_create($identifier, $plan_id){
 
-    $payment_details = session('payment_details');
+        $payment_details = session('payment_details');
 
-    $user = DB::table('users')
-        ->where('id', auth()->user()->id)
-        ->first();
+        $user = DB::table('users')
+            ->where('id', auth()->user()->id)
+            ->first();
 
-    $payment_gateway = DB::table('payment_geteways')
-        ->where('identifier', $identifier)
-        ->first();
+        $payment_gateway = DB::table('payment_geteways')
+            ->where('identifier', $identifier)
+            ->first();
 
-    $keys = json_decode($payment_gateway->keys, true);
+        $keys = json_decode($payment_gateway->keys, true);
 
-    $public_key = $keys['public_key'];
-    $secret_key = $keys['secret_key'];
+        $public_key = $keys['public_key'];
+        $secret_key = $keys['secret_key'];
 
-    // ADD THIS (Missing tha)
-    $api = new Api($public_key, $secret_key);
+        // ADD THIS (Missing tha)
+        $api = new Api($public_key, $secret_key);
 
-    // Package Period
-    $period = strtolower(trim($payment_details['items'][0]['period']));
+        // Package Period
+        $period = strtolower(trim($payment_details['items'][0]['period']));
 
-    if ($period == 'monthly') {
-        $totalCount = 120; // 120 months
-    } elseif ($period == 'annually') {
-        $totalCount = 10; // 10 years
-    } else {
-        throw new \Exception('Invalid package period : ' . $period);
+        if ($period == 'monthly') {
+            $totalCount = 120; // 120 months
+        } elseif ($period == 'annually') {
+            $totalCount = 10; // 10 years
+        } else {
+            throw new \Exception('Invalid package period : ' . $period);
+        }
+
+        $subscription = $api->subscription->create([
+            'plan_id'         => $plan_id,
+            'customer_notify' => 1,
+            'quantity'        => 1,
+            'total_count'     => $totalCount,
+        ]);
+
+        $page_data = [
+            'subscription_id' => $subscription['id'],
+            'razorpay_id'     => $public_key,
+
+            'name'            => $user->name,
+            'email'           => $user->email,
+            'phone'           => $user->phone,
+
+            'description'     => 'Premium Subscription',
+        ];
+
+        return [
+            'page_data'       => $page_data,
+            'payment_details' => $payment_details,
+            'color'           => null,
+        ];
     }
-
-    $subscription = $api->subscription->create([
-        'plan_id'         => $plan_id,
-        'customer_notify' => 1,
-        'quantity'        => 1,
-        'total_count'     => $totalCount,
-    ]);
-
-    $page_data = [
-        'subscription_id' => $subscription['id'],
-        'razorpay_id'     => $public_key,
-
-        'name'            => $user->name,
-        'email'           => $user->email,
-        'phone'           => $user->phone,
-
-        'description'     => 'Premium Subscription',
-    ];
-
-    return [
-        'page_data'       => $page_data,
-        'payment_details' => $payment_details,
-        'color'           => null,
-    ];
-}
-
-
-
 
 }

@@ -23,48 +23,461 @@ use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class PaymentController extends Controller
-{
+class PaymentController extends Controller{
 
-    public function index($id)
-    {
-        $package = Pricing::where('id',$id)->first();
-        $items[] = [
-            'id'             => $package->id,
-            'title'          => sanitize($package->name),
-            'subtitle'       => sanitize($package->sub_title),
-            'price'          => sanitize($package->price),
-            'period'          => $package->period,
-            'discount_price' =>   0,
-        ];
-        
-        $payment_details = [
-            'items'          => $items,
-            'custom_field'   => [
-                'item_type'       => 'Package',
-                'pay_for'         => 'Package payment',
-                'user_id'         => auth()->user()->id,
-                'user_photo'      => auth()->user()->photo,
-            ],
-            'success_method' => [
-                'model_name'    => 'PurchasePackage',
-                'function_name' => 'purchase_package',
-            ],
-            'tax'            => '',
-            'coupon'         => '',
-            'payable_amount' => round($package->price, 2),
-            'cancel_url'     => route('pricing'),
-            'success_url'    => route('payment.success', ''),
-        ];
-    
-         Session::put('payment_details', $payment_details);
-         $payment_details = session('payment_details');
-       
-        $page_data['payment_details']  = $payment_details;
-        $page_data['package']  = $package;
-        $page_data['payment_gateways'] = DB::table('payment_geteways')->where('status', 1)->get();
-        return view('payment.index', $page_data);
+
+   public function index($id) {
+    $package = Pricing::where('id', $id)->firstOrFail();
+
+    /*
+    |--------------------------------------------------------------------------
+    | OLD PAYMENT SESSION
+    |--------------------------------------------------------------------------
+    |
+    | Agar user payment gateway se back aaya hai to purani billing
+    | aur GST details yahin se milengi.
+    |
+    */
+
+    $old_payment_details = session('payment_details', []);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PACKAGE ITEMS
+    |--------------------------------------------------------------------------
+    */
+
+    $items = [];
+
+    $items[] = [
+        'id'             => $package->id,
+        'title'          => sanitize($package->name),
+        'subtitle'       => sanitize($package->sub_title),
+        'price'          => sanitize($package->price),
+        'period'         => $package->period,
+        'discount_price' => 0,
+    ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DEFAULT PAYMENT DETAILS
+    |--------------------------------------------------------------------------
+    */
+
+    $payment_details = [
+        'items' => $items,
+
+        'custom_field' => [
+            'item_type'  => 'Package',
+            'pay_for'    => 'Package payment',
+            'user_id'    => auth()->user()->id,
+            'user_photo' => auth()->user()->photo,
+        ],
+
+        'success_method' => [
+            'model_name'    => 'PurchasePackage',
+            'function_name' => 'purchase_package',
+        ],
+
+        'tax' => '',
+        'coupon' => '',
+
+        /*
+        |--------------------------------------------------------------------------
+        | DEFAULT PACKAGE PRICE
+        |--------------------------------------------------------------------------
+        */
+
+        'payable_amount' => round($package->price, 2),
+
+        'cancel_url' => route('pricing'),
+
+        'success_url' => route('payment.success', ''),
+    ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESTORE OLD BILLING + TAX DETAILS
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !empty($old_payment_details) &&
+        isset($old_payment_details['items'][0]['id']) &&
+        $old_payment_details['items'][0]['id'] == $package->id
+    ) {
+
+        /*
+        | Billing details restore
+        */
+
+        if (isset($old_payment_details['billing_details'])) {
+
+            $payment_details['billing_details'] =
+                $old_payment_details['billing_details'];
+        }
+
+
+        /*
+        | Updated amount with GST restore
+        */
+
+        if (isset($old_payment_details['payable_amount'])) {
+
+            $payment_details['payable_amount'] =
+                $old_payment_details['payable_amount'];
+        }
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SAVE BACK TO SESSION
+    |--------------------------------------------------------------------------
+    */
+
+    Session::put('payment_details', $payment_details);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PAGE DATA
+    |--------------------------------------------------------------------------
+    */
+
+    $page_data['payment_details'] =
+        session('payment_details');
+
+    $page_data['package'] =
+        $package;
+
+    $page_data['payment_gateways'] =
+        DB::table('payment_geteways')
+            ->where('status', 1)
+            ->get();
+
+
+    return view('payment.index', $page_data);
+}
+
+
+public function saveBillingDetails(Request $request)
+{
+    $validated = $request->validate([
+
+        /*
+        |--------------------------------------------------------------------------
+        | BILLING DETAILS
+        |--------------------------------------------------------------------------
+        */
+
+        'billing_name'    => 'required|string|max:255',
+        'billing_email'   => 'required|email|max:255',
+        'billing_phone'   => 'required|string|max:20',
+        'billing_address' => 'required|string',
+        'billing_city'    => 'required|string|max:100',
+        'billing_state'   => 'required|string|max:100',
+        'billing_country' => 'required|string|max:100',
+        'billing_pincode' => 'required|string|max:20',
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TAX AMOUNTS FROM FRONTEND
+        |--------------------------------------------------------------------------
+        */
+
+        'package_amount'   => 'nullable|numeric|min:0',
+        'igst_amount'      => 'nullable|numeric|min:0',
+        'cgst_amount'      => 'nullable|numeric|min:0',
+        'sgst_amount'      => 'nullable|numeric|min:0',
+        'total_tax_amount' => 'nullable|numeric|min:0',
+        'grand_total'      => 'nullable|numeric|min:0',
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | GST NUMBER
+        |--------------------------------------------------------------------------
+        */
+
+        'has_gst' => 'required|boolean',
+
+        'gst_number' => [
+            'nullable',
+            'required_if:has_gst,1',
+            'string',
+            'max:50',
+        ],
+    ]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GET PAYMENT DETAILS FROM SESSION
+    |--------------------------------------------------------------------------
+    */
+
+    $payment_details = session('payment_details');
+
+    if (!$payment_details) {
+
+        return response()->json([
+            'status'  => false,
+            'message' => 'Payment session not found. Please refresh the page.',
+        ], 422);
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GET ORIGINAL PACKAGE AMOUNT
+    |--------------------------------------------------------------------------
+    |
+    | Package ki original price session se lenge.
+    | Frontend ki package_amount ko final calculation ke liye trust nahi karenge.
+    |
+    */
+
+    $baseAmount = 0;
+
+    if (isset($payment_details['items'][0]['price'])) {
+
+        $baseAmount = (float) $payment_details['items'][0]['price'];
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DEFAULT TAX VALUES
+    |--------------------------------------------------------------------------
+    */
+
+    $igstAmount = 0;
+    $cgstAmount = 0;
+    $sgstAmount = 0;
+    $totalTax   = 0;
+    $taxType    = '';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GST CALCULATION
+    |--------------------------------------------------------------------------
+    */
+
+    $state = strtolower(
+        trim($validated['billing_state'])
+    );
+
+    $gstRate  = 18;
+    $cgstRate = 9;
+    $sgstRate = 9;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HARYANA = CGST 9% + SGST 9%
+    |--------------------------------------------------------------------------
+    */
+
+    if ($state === 'haryana' || $state === 'hr') {
+
+        $cgstAmount = round(
+            ($baseAmount * $cgstRate) / 100,
+            2
+        );
+
+        $sgstAmount = round(
+            ($baseAmount * $sgstRate) / 100,
+            2
+        );
+
+        $totalTax = round(
+            $cgstAmount + $sgstAmount,
+            2
+        );
+
+        $taxType = 'cgst_sgst';
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HARYANA KE BAHAR = IGST 18%
+    |--------------------------------------------------------------------------
+    */
+
+    else {
+
+        $igstAmount = round(
+            ($baseAmount * $gstRate) / 100,
+            2
+        );
+
+        $totalTax = $igstAmount;
+
+        $taxType = 'igst';
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FINAL GRAND TOTAL
+    |--------------------------------------------------------------------------
+    |
+    | Example:
+    | Package = 500
+    | GST     = 90
+    | Total   = 590
+    |
+    */
+
+    $grandTotal = round(
+        $baseAmount + $totalTax,
+        2
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SAVE BILLING DETAILS
+    |--------------------------------------------------------------------------
+    */
+
+    $payment_details['billing_details'] = [
+
+        'billing_name'    => $validated['billing_name'],
+        'billing_email'   => $validated['billing_email'],
+        'billing_phone'   => $validated['billing_phone'],
+        'billing_address' => $validated['billing_address'],
+        'billing_city'    => $validated['billing_city'],
+        'billing_state'   => $validated['billing_state'],
+        'billing_country' => $validated['billing_country'],
+        'billing_pincode' => $validated['billing_pincode'],
+
+        'has_gst' => $validated['has_gst'],
+
+        'gst_number' => $validated['has_gst']
+            ? ($validated['gst_number'] ?? null)
+            : null,
+    ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TAX DETAILS
+    |--------------------------------------------------------------------------
+    |
+    | Ye saari values ab payment_details session mein save hongi.
+    | purchase_package() isi data ko subscription table mein insert karega.
+    |
+    */
+
+    $payment_details['tax_details'] = [
+
+        // Original Package Amount
+        'package_amount' => (float) $baseAmount,
+
+        // IGST
+        'igst_amount' => (float) $igstAmount,
+
+        // CGST
+        'cgst_amount' => (float) $cgstAmount,
+
+        // SGST
+        'sgst_amount' => (float) $sgstAmount,
+
+        // Total GST
+        'total_tax_amount' => (float) $totalTax,
+
+        // Final Amount With GST
+        'grand_total' => (float) $grandTotal,
+    ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | OLD TAX KEYS BHI SAVE KAR RAHE HAIN
+    |--------------------------------------------------------------------------
+    |
+    | Agar project ke kisi aur code mein ye keys use ho rahi hain
+    | to backward compatibility bani rahegi.
+    |
+    */
+
+    $payment_details['tax_type'] = $taxType;
+
+    $payment_details['tax_amount'] = $totalTax;
+
+    $payment_details['base_amount'] = $baseAmount;
+
+    $payment_details['payable_amount'] = $grandTotal;
+
+    $payment_details['igst_amount'] = $igstAmount;
+
+    $payment_details['cgst_amount'] = $cgstAmount;
+
+    $payment_details['sgst_amount'] = $sgstAmount;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE SESSION
+    |--------------------------------------------------------------------------
+    */
+
+    Session::put(
+        'payment_details',
+        $payment_details
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RETURN FINAL DATA TO JAVASCRIPT
+    |--------------------------------------------------------------------------
+    */
+
+    return response()->json([
+
+        'status'  => true,
+
+        'message' => 'Billing details and GST details saved successfully.',
+
+
+        // Package Amount
+        'base_amount' => $baseAmount,
+
+
+        // Tax Type
+        'tax_type' => $taxType,
+
+
+        // Tax Amounts
+        'igst_amount' => $igstAmount,
+
+        'cgst_amount' => $cgstAmount,
+
+        'sgst_amount' => $sgstAmount,
+
+        'total_tax_amount' => $totalTax,
+
+
+        // Final Amount
+        'grand_total' => $grandTotal,
+    ]);
+}
+
+
+
 
     public function payment_index($id) {
         
@@ -72,8 +485,8 @@ class PaymentController extends Controller
     }
 
 
-    public function show_payment_gateway_by_ajax($identifier)
-        {
+    public function show_payment_gateway_by_ajax($identifier){
+
         $page_data['payment_details'] = session('payment_details');
 
     $payment_details = session('payment_details');
@@ -225,14 +638,15 @@ public function phonepeRedirect(Request $request)
 
 
      public function payment_razorpay($identifier){
-            $payment_details = session('payment_details');
-            $payment_gateway = DB::table('payment_geteways')->where('identifier', $identifier)->first();
-            $model_name      = $payment_gateway->model_name;
-            $model_full_path = str_replace(' ', '', 'App\Models\payment_gateway\ ' . $model_name);
-            $data            = $model_full_path::payment_create($identifier);
 
-            return view('payment.razorpay.payment', compact('data'));
-        }
+        $payment_details = session('payment_details');
+        $payment_gateway = DB::table('payment_geteways')->where('identifier', $identifier)->first();
+        $model_name      = $payment_gateway->model_name;
+        $model_full_path = str_replace(' ', '', 'App\Models\payment_gateway\ ' . $model_name);
+        $data            = $model_full_path::payment_create($identifier);
+
+        return view('payment.razorpay.payment', compact('data'));
+    }
 
      
     public function payment_razorpay_subscription(Request $request, $identifier){
@@ -245,13 +659,23 @@ public function phonepeRedirect(Request $request)
 
         $period = strtolower(trim($payment_details['items'][0]['period']));
 
+        // if ($period == 'monthly') {
+        //     $planId = 'plan_TON6QkhsMZDaVk';
+        // } elseif ($period == 'annually') {
+        //     $planId = 'plan_TONAKHsJtkYlmH';
+        // } else {
+        //     return back()->with('error', 'Invalid package period.');
+        // }
+
+
         if ($period == 'monthly') {
-            $planId = 'plan_TON6QkhsMZDaVk';
+            $planId = 'plan_TU0G5TtwrfMf5F';
         } elseif ($period == 'annually') {
-            $planId = 'plan_TONAKHsJtkYlmH';
+            $planId = 'plan_TU0EJQ4z4xlBdG';
         } else {
             return back()->with('error', 'Invalid package period.');
         }
+
 
         $payment_gateway = DB::table('payment_geteways')
             ->where('identifier', $identifier)
@@ -293,55 +717,55 @@ public function phonepeRedirect(Request $request)
 
     }
 
-public function phonepeCallback(Request $request)
-{
-    $payment_gateway = DB::table('payment_geteways')->where('identifier', 'phonepe')->first();
-    $keys = json_decode($payment_gateway->keys, true);
-    
-    try {
-        $client = StandardCheckoutClient::getInstance(
-            $keys['client_id'],
-            (int) $keys['client_version'],
-            $keys['client_secret'],
-            $keys['env'] ?? 'PRODUCTION'
-        );
-
-        // Build headers array
-        $headers = [];
-        foreach ($request->headers->all() as $key => $values) {
-            $headers[$key] = is_array($values) ? implode(',', $values) : $values;
-        }
-
-        $payload = json_decode($request->getContent(), true);
+    public function phonepeCallback(Request $request)
+    {
+        $payment_gateway = DB::table('payment_geteways')->where('identifier', 'phonepe')->first();
+        $keys = json_decode($payment_gateway->keys, true);
         
-        $resp = $client->verifyCallbackResponse(
-            $headers,
-            $payload,
-            $keys['callback_username'],
-            $keys['callback_password']
-        );
+        try {
+            $client = StandardCheckoutClient::getInstance(
+                $keys['client_id'],
+                (int) $keys['client_version'],
+                $keys['client_secret'],
+                $keys['env'] ?? 'PRODUCTION'
+            );
 
-        // Handle the callback based on type
-        $type = method_exists($resp, 'getType') ? $resp->getType() : null;
-        $payload = method_exists($resp, 'getPayload') ? $resp->getPayload() : null;
-        
-        if ($type === 'CHECKOUT_ORDER_COMPLETED' && $payload['state'] === 'PAID') {
-            // Store payment details in session
-            session()->put('phonepe_payment_id', $payload['orderId']);
-            session()->put('phonepe_merchant_order_id', $payload['originalMerchantOrderId']);
+            // Build headers array
+            $headers = [];
+            foreach ($request->headers->all() as $key => $values) {
+                $headers[$key] = is_array($values) ? implode(',', $values) : $values;
+            }
+
+            $payload = json_decode($request->getContent(), true);
             
-            // Process the payment
-            $this->process_payment_success('phonepe');
+            $resp = $client->verifyCallbackResponse(
+                $headers,
+                $payload,
+                $keys['callback_username'],
+                $keys['callback_password']
+            );
+
+            // Handle the callback based on type
+            $type = method_exists($resp, 'getType') ? $resp->getType() : null;
+            $payload = method_exists($resp, 'getPayload') ? $resp->getPayload() : null;
             
+            if ($type === 'CHECKOUT_ORDER_COMPLETED' && $payload['state'] === 'PAID') {
+                // Store payment details in session
+                session()->put('phonepe_payment_id', $payload['orderId']);
+                session()->put('phonepe_merchant_order_id', $payload['originalMerchantOrderId']);
+                
+                // Process the payment
+                $this->process_payment_success('phonepe');
+                
+                return response('OK', 200);
+            }
+
             return response('OK', 200);
+        } catch (\Exception $e) {
+            Log::error('PhonePe callback error: ' . $e->getMessage());
+            return response('Error', 400);
         }
-
-        return response('OK', 200);
-    } catch (\Exception $e) {
-        Log::error('PhonePe callback error: ' . $e->getMessage());
-        return response('Error', 400);
     }
-}
 
 // public function subscribeFreePackage($id)
 // {
@@ -377,81 +801,74 @@ public function phonepeCallback(Request $request)
 //     return redirect()->route('customer.wishlist');
 // }
 
-public function subscribeFreePackage($id)
-{
-    $package = Pricing::findOrFail($id);
+    public function subscribeFreePackage($id){
 
-    if ((int) $package->id !== 11) {
-        abort(403, 'This package is not a free package.');
-    }
+        $package = Pricing::findOrFail($id);
 
-    // Purani active subscription deactivate
-    deactivate_user_subscriptions(user('id'));
-
-$sub = [
-    'user_id'           => user('id'),
-    'package_id'        => $package->id,
-    'paid_amount'       => 0,
-    'payment_method'    => 'COD',
-    'status'            => 1,
-    'auto_subscription' => 0,
-    'expire_date'       => null,
-    'date_added'        => time(),
-    'created_at'        => now(),
-    'updated_at'        => now(),
-];
-
-    Subscription::insert($sub);
-
-    User::where('id', user('id'))->update([
-        'is_agent' => 1,
-        'type'     => 'agent',
-    ]);
-
-    Session::flash('success', 'Free lifetime subscription activated successfully!');
-
-    return redirect()->route('customer.wishlist');
-}
-
-public function webRedirectToPayFee(Request $request) {
-      
-        // Check if the 'auth' query parameter is present
-        if (!$request->has('auth')) {
-            return redirect()->route('login')->withErrors([
-                'email' => 'Authentication token is missing.',
-            ]);
+        if ((int) $package->id !== 11) {
+            abort(403, 'This package is not a free package.');
         }
 
-        // Remove the 'Basic ' prefix
-        // $base64Credentials = $request->query('auth');
-        // Remove the 'Basic ' prefix
-        $base64Credentials = substr($request->query('auth'), 6);
+        // Purani active subscription deactivate
+        deactivate_user_subscriptions(user('id'));
 
-        // Decode the base64-encoded string
-        $credentials = base64_decode($base64Credentials);
+        $sub = [
+            'user_id'           => user('id'),
+            'package_id'        => $package->id,
+            'paid_amount'       => 0,
+            'payment_method'    => 'COD',
+            'status'            => 1,
+            'auto_subscription' => 0,
+            'expire_date'       => null,
+            'date_added'        => time(),
+            'created_at'        => now(),
+            'updated_at'        => now(),
+        ];
 
-        // Split the decoded string into email, password, and timestamp
-        list($email, $password, $timestamp) = explode(':', $credentials);
+        Subscription::insert($sub);
 
-        // Get the current timestamp
-        $timestamp1 = strtotime(date('Y-m-d'));
+        User::where('id', user('id'))->update([
+            'is_agent' => 1,
+            'type'     => 'agent',
+        ]);
 
-        // Calculate the difference
-        $difference = $timestamp1 - $timestamp;
+        Session::flash('success', 'Free lifetime subscription activated successfully!');
 
-        if ($difference < 86400) {
-            if (auth()->attempt(['email' => $email, 'password' => $password])) {
-                // Authentication passed...
-                return redirect(route('cart'));
+        return redirect()->route('customer.wishlist');
+    }
+
+    public function webRedirectToPayFee(Request $request) {
+        
+            // Check if the 'auth' query parameter is present
+            if (!$request->has('auth')) {
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Authentication token is missing.',
+                ]);
             }
 
-            return redirect()->route('login')->withErrors([
-                'email' => 'Invalid email or password',
-            ]);
-        } else {
-            return redirect()->route('login')->withErrors([
-                'email' => 'Token expired!',
-            ]);
+            $base64Credentials = substr($request->query('auth'), 6);
+
+            $credentials = base64_decode($base64Credentials);
+
+            list($email, $password, $timestamp) = explode(':', $credentials);
+
+            $timestamp1 = strtotime(date('Y-m-d'));
+
+            $difference = $timestamp1 - $timestamp;
+
+            if ($difference < 86400) {
+                if (auth()->attempt(['email' => $email, 'password' => $password])) {
+                    // Authentication passed...
+                    return redirect(route('cart'));
+                }
+
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Invalid email or password',
+                ]);
+            } else {
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Token expired!',
+                ]);
+            }
         }
     }
-}
