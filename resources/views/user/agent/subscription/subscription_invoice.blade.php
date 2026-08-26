@@ -735,7 +735,7 @@
             <td class="header-logo-cell">
                 <div class="company-logo">
                     <img
-                        src="{{ asset('public/images/logo.png') }}"
+                        src="https://www.listify.asia/public/image/logo.png"
                         alt="Company Logo"
                     >
                 </div>
