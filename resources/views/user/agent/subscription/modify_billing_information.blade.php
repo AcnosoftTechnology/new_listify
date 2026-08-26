@@ -98,6 +98,30 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- GST Number -->
+
+                                <div class="row justify-content-between align-items-center mt-4">
+
+                                    <label for="gst_number" class="col-sm-3 col-eForm-label">
+                                        {{ get_phrase('GST Number') }}
+                                    </label>
+
+                                    <div class="col-sm-9 col-md-9 col-lg-9">
+
+                                        <input
+                                            type="text"
+                                            placeholder="Enter GST Number"
+                                            class="form-control eForm-control2"
+                                            id="gst_number"
+                                            name="gst_number"
+                                            value="{{ $user_details->gst_number ?? '' }}"
+                                        />
+
+                                    </div>
+
+                                </div>
+
                                 <!-- Button -->
                                 <div class="dl_form_btn d-flex justify-content-end g-20 pt-40">
                                     <button type="submit" class=" cap2-btn-primary cap-btn-sm gap-1 mt-3">{{ get_phrase('Save Changes') }}</button>

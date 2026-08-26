@@ -32,6 +32,7 @@ class User extends Authenticatable
         'apple_id',
         'avatar',
         'fcm_token',
+        'gst_number',
     ];
 
     /**

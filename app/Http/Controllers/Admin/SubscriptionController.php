@@ -37,8 +37,8 @@ class SubscriptionController extends Controller{
     //     return view('user.agent.subscription.index', $page_data);
     // }
 
-public function user_subscription()
-{
+public function user_subscription(){
+    
     $subscriptions = Subscription::where('user_id', user('id'))
         ->orderBy('id', 'DESC')
         ->get();

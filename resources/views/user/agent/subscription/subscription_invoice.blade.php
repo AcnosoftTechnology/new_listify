@@ -716,10 +716,10 @@
 
 
 <!-- ================================================================
-     PAGE 1
+     INVOICE - SINGLE PAGE
 ================================================================ -->
 
-<div class="invoice-page page-break">
+<div class="invoice-page">
 
 
     <!-- ============================================================
@@ -790,7 +790,7 @@
 
                     <p>Haryana-131023, India</p>
 
-                    <p>Mobile: 9599917988</p>
+                    <p>Mobile: 7404917988</p>
 
                     <p>www.corpmarvel.com</p>
 
@@ -948,7 +948,7 @@
                 <!-- RATE / BASE AMOUNT -->
 
                 <td class="text-right">
-                     Rs.{{ number_format($packagePrice, 2) }}
+                    Rs.{{ number_format($packagePrice, 2) }}
                 </td>
 
 
@@ -974,7 +974,7 @@
                 <!-- ACTUAL GRAND AMOUNT -->
 
                 <td class="text-right">
-                     Rs.{{ number_format($grandTotal, 2) }}
+                    Rs.{{ number_format($grandTotal, 2) }}
                 </td>
 
 
@@ -985,12 +985,6 @@
     </table>
 
 
-
-    <!-- ============================================================
-         EMPTY SPACE BEFORE TOTAL
-    ============================================================ -->
-
-    <div class="summary-space"></div>
 
     <!-- ============================================================
          TOTALS
@@ -1008,17 +1002,14 @@
             </td>
 
             <td class="summary-amount">
-                 Rs.{{ number_format($subtotalAmount, 2) }}
+                Rs.{{ number_format($subtotalAmount, 2) }}
             </td>
 
         </tr>
 
 
 
-        <!-- ========================================================
-             HARYANA GST
-             CGST + SGST
-        ========================================================= -->
+        <!-- HARYANA GST - CGST -->
 
         @if($cgstAmount > 0)
 
@@ -1029,13 +1020,15 @@
                 </td>
 
                 <td class="summary-amount">
-                     Rs.{{ number_format($cgstAmount, 2) }}
+                    Rs.{{ number_format($cgstAmount, 2) }}
                 </td>
 
             </tr>
 
         @endif
 
+
+        <!-- HARYANA GST - SGST -->
 
         @if($sgstAmount > 0)
 
@@ -1046,7 +1039,7 @@
                 </td>
 
                 <td class="summary-amount">
-                     Rs.{{ number_format($sgstAmount, 2) }}
+                    Rs.{{ number_format($sgstAmount, 2) }}
                 </td>
 
             </tr>
@@ -1055,10 +1048,7 @@
 
 
 
-        <!-- ========================================================
-             OTHER STATES GST
-             IGST
-        ========================================================= -->
+        <!-- OTHER STATES GST - IGST -->
 
         @if($igstAmount > 0)
 
@@ -1069,7 +1059,7 @@
                 </td>
 
                 <td class="summary-amount">
-                     Rs.{{ number_format($igstAmount, 2) }}
+                    Rs.{{ number_format($igstAmount, 2) }}
                 </td>
 
             </tr>
@@ -1089,7 +1079,7 @@
                 </td>
 
                 <td class="summary-amount">
-                     Rs.{{ number_format($totalTaxAmount, 2) }}
+                    Rs.{{ number_format($totalTaxAmount, 2) }}
                 </td>
 
             </tr>
@@ -1107,7 +1097,7 @@
             </td>
 
             <td class="summary-amount">
-                 Rs.{{ number_format($grandTotal, 2) }}
+                Rs.{{ number_format($grandTotal, 2) }}
             </td>
 
         </tr>
@@ -1115,57 +1105,6 @@
 
     </table>
 
-
-    <!-- ============================================================
-         NOTE
-    ============================================================ -->
-
-    <div class="note-section">
-
-        <h4>Note:</h4>
-
-        <p>Bank Account Details</p>
-
-        <p>
-            Account Name: Corp Marvel Infotech
-        </p>
-
-        <p>
-            Account Number: 925020008355812
-        </p>
-
-        <p>
-            Bank: Axis Bank Ltd.
-        </p>
-
-        <p>
-            IFSC Code: UTIB0004754
-        </p>
-
-        <p>
-            Branch: Rodeo Mall, HR, Sonipat-131001
-        </p>
-
-    </div>
-
-
-
-    <!-- PAGE NUMBER -->
-
-    <div class="page-number">
-        1/2
-    </div>
-
-
-</div>
-
-
-
-<!-- ================================================================
-     PAGE 2
-================================================================ -->
-
-<div class="invoice-page">
 
 
     <!-- ============================================================
@@ -1210,14 +1149,6 @@
             class="signature-image"
         >
 
-    </div>
-
-
-
-    <!-- PAGE NUMBER -->
-
-    <div class="page-number">
-        2/2
     </div>
 
 

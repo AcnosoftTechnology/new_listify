@@ -153,15 +153,41 @@ class AgentController extends Controller{
     }
   
 
-    public function updateUserInfo(Request $request){
+    // public function updateUserInfo(Request $request){
       
-        $updateUserInfo['name'] = $request->name;
-        $updateUserInfo['addressline'] = $request->addressline;
-        $updateUserInfo['address'] = json_encode(['country'=>$request->country_code, 'city'=>$request->city]);
-        User::where('id', user('id'))->update($updateUserInfo);
-        Session::flash('success', get_phrase('User information been updated successfully'));
-        return redirect()->back();
-    } 
+    //     $updateUserInfo['name'] = $request->name;
+    //     $updateUserInfo['addressline'] = $request->addressline;
+    //     $updateUserInfo['address'] = json_encode(['country'=>$request->country_code, 'city'=>$request->city]);
+    //     User::where('id', user('id'))->update($updateUserInfo);
+    //     Session::flash('success', get_phrase('User information been updated successfully'));
+    //     return redirect()->back();
+    // } 
+
+            public function updateUserInfo(Request $request) {
+                
+                $updateUserInfo['name'] = $request->name;
+
+                $updateUserInfo['addressline'] = $request->addressline;
+
+                $updateUserInfo['gst_number'] = $request->gst_number;
+
+                $updateUserInfo['address'] = json_encode([
+                    'country' => $request->country_code,
+                    'city'    => $request->city
+                ]);
+
+                User::where('id', user('id'))->update($updateUserInfo);
+
+                Session::flash(
+                    'success',
+                    get_phrase('User information been updated successfully')
+                );
+
+                return redirect()->back();
+            }
+
+
+
 
     public function agent_account(){
         $page_data['active'] = 'account';

@@ -148,6 +148,20 @@
                 >{{ $billing['billing_address'] ?? '' }}</textarea>
             </div>
 
+           {{-- STATE --}}
+            <div class="col-md-4 mb-3">
+                <label>
+                    State <span class="text-danger">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="billing_state"
+                    value="{{ $billing['billing_state'] ?? '' }}"
+                >
+            </div>
+
 
             {{-- CITY --}}
             <div class="col-md-4 mb-3">
@@ -163,20 +177,6 @@
                 >
             </div>
 
-
-            {{-- STATE --}}
-            <div class="col-md-4 mb-3">
-                <label>
-                    State <span class="text-danger">*</span>
-                </label>
-
-                <input
-                    type="text"
-                    class="form-control"
-                    id="billing_state"
-                    value="{{ $billing['billing_state'] ?? '' }}"
-                >
-            </div>
 
 
             {{-- PINCODE --}}
