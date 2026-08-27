@@ -35,6 +35,11 @@
 
 @endif
 
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K7ZC3G7F"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
     <!-- Start Header Top -->
     <section class="header-top-section">
         <div class="container">
