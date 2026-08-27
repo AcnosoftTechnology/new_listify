@@ -148,19 +148,68 @@
                 >{{ $billing['billing_address'] ?? '' }}</textarea>
             </div>
 
-           {{-- STATE --}}
-            <div class="col-md-4 mb-3">
-                <label>
-                    State <span class="text-danger">*</span>
-                </label>
+{{-- STATE --}}
+<div class="col-md-4 mb-3">
+    <label>
+        State <span class="text-danger">*</span>
+    </label>
 
-                <input
-                    type="text"
-                    class="form-control"
-                    id="billing_state"
-                    value="{{ $billing['billing_state'] ?? '' }}"
-                >
-            </div>
+    <select
+        class="form-control"
+        id="billing_state"
+        name="billing_state"
+        required
+    >
+        <option value="">Select State</option>
+
+        @php
+            $selectedState = $billing['billing_state'] ?? '';
+        @endphp
+
+        <optgroup label="States">
+            <option value="Andhra Pradesh" {{ $selectedState == 'Andhra Pradesh' ? 'selected' : '' }}>Andhra Pradesh</option>
+            <option value="Arunachal Pradesh" {{ $selectedState == 'Arunachal Pradesh' ? 'selected' : '' }}>Arunachal Pradesh</option>
+            <option value="Assam" {{ $selectedState == 'Assam' ? 'selected' : '' }}>Assam</option>
+            <option value="Bihar" {{ $selectedState == 'Bihar' ? 'selected' : '' }}>Bihar</option>
+            <option value="Chhattisgarh" {{ $selectedState == 'Chhattisgarh' ? 'selected' : '' }}>Chhattisgarh</option>
+            <option value="Goa" {{ $selectedState == 'Goa' ? 'selected' : '' }}>Goa</option>
+            <option value="Gujarat" {{ $selectedState == 'Gujarat' ? 'selected' : '' }}>Gujarat</option>
+            <option value="Haryana" {{ $selectedState == 'Haryana' ? 'selected' : '' }}>Haryana</option>
+            <option value="Himachal Pradesh" {{ $selectedState == 'Himachal Pradesh' ? 'selected' : '' }}>Himachal Pradesh</option>
+            <option value="Jharkhand" {{ $selectedState == 'Jharkhand' ? 'selected' : '' }}>Jharkhand</option>
+            <option value="Karnataka" {{ $selectedState == 'Karnataka' ? 'selected' : '' }}>Karnataka</option>
+            <option value="Kerala" {{ $selectedState == 'Kerala' ? 'selected' : '' }}>Kerala</option>
+            <option value="Madhya Pradesh" {{ $selectedState == 'Madhya Pradesh' ? 'selected' : '' }}>Madhya Pradesh</option>
+            <option value="Maharashtra" {{ $selectedState == 'Maharashtra' ? 'selected' : '' }}>Maharashtra</option>
+            <option value="Manipur" {{ $selectedState == 'Manipur' ? 'selected' : '' }}>Manipur</option>
+            <option value="Meghalaya" {{ $selectedState == 'Meghalaya' ? 'selected' : '' }}>Meghalaya</option>
+            <option value="Mizoram" {{ $selectedState == 'Mizoram' ? 'selected' : '' }}>Mizoram</option>
+            <option value="Nagaland" {{ $selectedState == 'Nagaland' ? 'selected' : '' }}>Nagaland</option>
+            <option value="Odisha" {{ $selectedState == 'Odisha' ? 'selected' : '' }}>Odisha</option>
+            <option value="Punjab" {{ $selectedState == 'Punjab' ? 'selected' : '' }}>Punjab</option>
+            <option value="Rajasthan" {{ $selectedState == 'Rajasthan' ? 'selected' : '' }}>Rajasthan</option>
+            <option value="Sikkim" {{ $selectedState == 'Sikkim' ? 'selected' : '' }}>Sikkim</option>
+            <option value="Tamil Nadu" {{ $selectedState == 'Tamil Nadu' ? 'selected' : '' }}>Tamil Nadu</option>
+            <option value="Telangana" {{ $selectedState == 'Telangana' ? 'selected' : '' }}>Telangana</option>
+            <option value="Tripura" {{ $selectedState == 'Tripura' ? 'selected' : '' }}>Tripura</option>
+            <option value="Uttar Pradesh" {{ $selectedState == 'Uttar Pradesh' ? 'selected' : '' }}>Uttar Pradesh</option>
+            <option value="Uttarakhand" {{ $selectedState == 'Uttarakhand' ? 'selected' : '' }}>Uttarakhand</option>
+            <option value="West Bengal" {{ $selectedState == 'West Bengal' ? 'selected' : '' }}>West Bengal</option>
+        </optgroup>
+
+        <optgroup label="Union Territories">
+            <option value="Andaman and Nicobar Islands" {{ $selectedState == 'Andaman and Nicobar Islands' ? 'selected' : '' }}>Andaman and Nicobar Islands</option>
+            <option value="Chandigarh" {{ $selectedState == 'Chandigarh' ? 'selected' : '' }}>Chandigarh</option>
+            <option value="Dadra and Nagar Haveli and Daman and Diu" {{ $selectedState == 'Dadra and Nagar Haveli and Daman and Diu' ? 'selected' : '' }}>Dadra and Nagar Haveli and Daman and Diu</option>
+            <option value="Delhi" {{ $selectedState == 'Delhi' ? 'selected' : '' }}>Delhi</option>
+            <option value="Jammu and Kashmir" {{ $selectedState == 'Jammu and Kashmir' ? 'selected' : '' }}>Jammu and Kashmir</option>
+            <option value="Ladakh" {{ $selectedState == 'Ladakh' ? 'selected' : '' }}>Ladakh</option>
+            <option value="Lakshadweep" {{ $selectedState == 'Lakshadweep' ? 'selected' : '' }}>Lakshadweep</option>
+            <option value="Puducherry" {{ $selectedState == 'Puducherry' ? 'selected' : '' }}>Puducherry</option>
+        </optgroup>
+
+    </select>
+</div>
 
 
             {{-- CITY --}}
@@ -194,6 +243,15 @@
             </div>
 
 
+            @php
+                $gstNumber = $billing['gst_number']
+                    ?? auth()->user()->gst_number
+                    ?? '';
+
+                 $hasGst = !empty($billing['has_gst']) || !empty($gstNumber);
+            @endphp
+
+
             {{-- GST CHECKBOX --}}
             <div class="col-12 mt-2">
 
@@ -203,7 +261,9 @@
                         class="form-check-input"
                         type="checkbox"
                         id="has_gst"
-                        {{ !empty($billing['has_gst']) ? 'checked' : '' }}
+                        name="has_gst"
+                        value="1"
+                        {{ $hasGst ? 'checked' : '' }}
                     >
 
                     <label
@@ -222,7 +282,7 @@
             <div
                 class="col-md-6 mt-3"
                 id="gst_number_wrapper"
-                style="{{ !empty($billing['has_gst']) ? '' : 'display:none;' }}"
+                style="{{ $hasGst ? '' : 'display: none;' }}"
             >
 
                 <label>
@@ -234,8 +294,9 @@
                     type="text"
                     class="form-control"
                     id="gst_number"
+                    name="gst_number"
                     placeholder="Enter GST Number"
-                    value="{{ $billing['gst_number'] ?? '' }}"
+                    value="{{ $gstNumber }}"
                 >
 
             </div>
@@ -256,21 +317,20 @@
     <!-- toster file -->
    
     <script>
-    $(document).ready(function() {
-
-        $('#has_gst').on('change', function() {
+        $(document).on('change', '#has_gst', function () {
 
             if ($(this).is(':checked')) {
-                $('#gst_number_wrapper').slideDown();
+
+                $('#gst_number_wrapper').slideDown(200);
+
             } else {
-                $('#gst_number_wrapper').slideUp();
-                $('#gst_number').val('');
+
+                $('#gst_number_wrapper').slideUp(200);
+
             }
 
         });
-
-    });
-</script>
+    </script>
 
 
 </body>
