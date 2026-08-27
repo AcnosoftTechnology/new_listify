@@ -38,7 +38,7 @@
                             <div class="tableTitle-2 pb-30">
                                 <h4 class="fz-17-sb-black pb-8">{{ get_phrase('Billing Information') }}</h4>
                                 <p class="fz-15-r-gray">
-                                    {{ get_phrase('Lorem Ipsum available but the majority have suffered alteration') }}
+                                    {{ get_phrase('') }}
                                 </p>
                             </div>
                             <!-- Form -->

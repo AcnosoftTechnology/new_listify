@@ -1145,7 +1145,7 @@
 
         <img
             src="{{ asset('assets/images/signature.png') }}"
-            alt="Authorized Signature"
+            alt="Authorized Signaturegit "
             class="signature-image"
         >
 
