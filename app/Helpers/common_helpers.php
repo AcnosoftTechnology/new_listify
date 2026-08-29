@@ -847,7 +847,7 @@ if (!function_exists('can_create_new_listing')) {
         }
 
         // Paid Packages
-        if($currentListings >= 3){
+        if($currentListings >= 20){
 
             return [
                 'status'=>false,
