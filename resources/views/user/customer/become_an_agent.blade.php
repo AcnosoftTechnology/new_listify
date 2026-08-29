@@ -22,285 +22,846 @@
     }
 </style>
 
-    <!-- Start Main Area -->
-    <section class="ca-wraper-main mb-90px mt-4">
-        <div class="container">
-            <div class="row gx-20px">
-                <div class="col-lg-4 col-xl-3">
-                    @include('user.navigation')
-                </div>
-                <div class="col-lg-8 col-xl-9">
-                    <!-- Header -->
-                    <div class="d-flex align-items-start justify-content-between gap-2 mb-20px">
-                        <div class="d-flex justify-content-between align-items-start gap-12px flex-column flex-lg-row w-100">
-                            <h1 class="in-title-16px">{{get_phrase('Become An Agent')}}</h1>
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb cap-breadcrumb">
-                                  <li class="breadcrumb-item cap-breadcrumb-item"><a href="{{route('home')}}">{{get_phrase('Home')}}</a></li>
-                                  <li class="breadcrumb-item cap-breadcrumb-item active" aria-current="page">{{get_phrase('Become An Agent')}}</li>
-                                </ol>
-                            </nav>
-                        </div>
-                        <button class="btn ca-menu-btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#user-sidebar-offcanvas" aria-controls="user-sidebar-offcanvas">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 5.25H3C2.59 5.25 2.25 4.91 2.25 4.5C2.25 4.09 2.59 3.75 3 3.75H21C21.41 3.75 21.75 4.09 21.75 4.5C21.75 4.91 21.41 5.25 21 5.25Z" fill="#242D47"/>
-                                <path d="M21 10.25H3C2.59 10.25 2.25 9.91 2.25 9.5C2.25 9.09 2.59 8.75 3 8.75H21C21.41 8.75 21.75 9.09 21.75 9.5C21.75 9.91 21.41 10.25 21 10.25Z" fill="#242D47"/>
-                                <path d="M21 15.25H3C2.59 15.25 2.25 14.91 2.25 14.5C2.25 14.09 2.59 13.75 3 13.75H21C21.41 13.75 21.75 14.09 21.75 14.5C21.75 14.91 21.41 15.25 21 15.25Z" fill="#242D47"/>
-                                <path d="M21 20.25H3C2.59 20.25 2.25 19.91 2.25 19.5C2.25 19.09 2.59 18.75 3 18.75H21C21.41 18.75 21.75 19.09 21.75 19.5C21.75 19.91 21.41 20.25 21 20.25Z" fill="#242D47"/>
-                            </svg>
-                        </button>
+<!-- Start Main Area -->
+<section class="ca-wraper-main mb-90px mt-4">
+    <div class="container">
+        <div class="row gx-20px">
+
+            <div class="col-lg-4 col-xl-3">
+                @include('user.navigation')
+            </div>
+
+            <div class="col-lg-8 col-xl-9">
+
+                <!-- Header -->
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-20px">
+
+                    <div class="d-flex justify-content-between align-items-start gap-12px flex-column flex-lg-row w-100">
+
+                        <h1 class="in-title-16px">
+                            {{ get_phrase('Become An Agent') }}
+                        </h1>
+
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb cap-breadcrumb">
+
+                                <li class="breadcrumb-item cap-breadcrumb-item">
+                                    <a href="{{ route('home') }}">
+                                        {{ get_phrase('Home') }}
+                                    </a>
+                                </li>
+
+                                <li class="breadcrumb-item cap-breadcrumb-item active"
+                                    aria-current="page">
+                                    {{ get_phrase('Become An Agent') }}
+                                </li>
+
+                            </ol>
+                        </nav>
+
                     </div>
-                  
-                  
-                    <div class="row row-28 mb-90 justify-content-center">
 
-            @foreach ($packages as $key => $package)
 
-                @if($package->price == 5000)
-                    @continue
-                @endif
+                    <button
+                        class="btn ca-menu-btn-primary d-lg-none"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#user-sidebar-offcanvas"
+                        aria-controls="user-sidebar-offcanvas">
 
-                <div class="col-lg-4 col-md-6">
-                    <div @class([
-                        'at-shadow-card','eShadow',
-                        'active' => $package->choice == 1,
-                        'activate_package' => isset($subscription->package_id) && $subscription->package_id == $package->id
-                    ])>
+                        <svg width="24"
+                             height="24"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
 
-                        <div class="d-flex flex-column h-100 justify-content-between">
-                            <div>
+                            <path d="M21 5.25H3C2.59 5.25 2.25 4.91 2.25 4.5C2.25 4.09 2.59 3.75 3 3.75H21C21.41 3.75 21.75 4.09 21.75 4.5C21.75 4.91 21.41 5.25 21 5.25Z"
+                                  fill="#242D47"/>
 
-                                <div class="sml-radio-iconbox mb-3">
-                                    <i class="{{$package->icon}} fs-30px icon-color"></i>
-                                </div>
+                            <path d="M21 10.25H3C2.59 10.25 2.25 9.91 2.25 9.5C2.25 9.09 2.59 8.75 3 8.75H21C21.41 8.75 21.75 9.09 21.75 9.5C21.75 9.91 21.41 10.25 21 10.25Z"
+                                  fill="#242D47"/>
 
-                                <h4 class="in-title-4 mb-1 {{$package->choice == 1?'text-white':''}}">
-                                    {{$package->name}}
-                                </h4>
+                            <path d="M21 15.25H3C2.59 15.25 2.25 14.91 2.25 14.5C2.25 14.09 2.59 13.75 2.25 14.5C2.25 14.91 2.59 15.25 3 15.25H21C21.41 15.25 21.75 14.91 21.75 14.5 21.75 14.09 21.41 13.75 21 13.75Z"
+                                  fill="#242D47"/>
 
-                                <p class="in-subtitle-1 fw-medium mb-2 {{$package->choice == 1?'text-white':''}}">
-                                    {{$package->sub_title}}
-                                </p>
+                            <path d="M21 20.25H3C2.59 20.25 2.25 19.91 2.25 19.5C2.25 19.09 2.59 18.75 3 18.75H21C21.41 18.75 21.75 19.09 21.75 19.5 21.75 20.25Z"
+                                  fill="#242D47"/>
 
-                                {{-- ✅ Toggle only for 500 plan --}}
-                                @if($package->price == 500)
-                                <div class="pricing-toggle mb-3 text-center">
-                                    <button type="button" class="toggle-btn active" onclick="switchPlan('monthly')">Monthly</button>
-                                    <button type="button" class="toggle-btn" onclick="switchPlan('yearly')">Yearly</button>
-                                </div>
-                                @endif
+                        </svg>
 
-                                {{-- ✅ Dynamic Price --}}
-                                <div class="d-flex align-items-center pb-3 mb-3 at-border-bottom">
+                    </button>
+
+                </div>
+
+
+                <div class="row row-28 mb-90 justify-content-center">
+
+                    @foreach ($packages as $key => $package)
+
+                        @if($package->price == 5000)
+                            @continue
+                        @endif
+
+
+                        <div class="col-lg-4 col-md-6">
+
+                            <div @class([
+                                'at-shadow-card',
+                                'eShadow',
+                                'active' => $package->choice == 1,
+                                'activate_package' =>
+                                    isset($subscription->package_id) &&
+                                    $subscription->package_id == $package->id
+                            ])>
+
+                                <div class="d-flex flex-column h-100 justify-content-between">
+
+                                    <div>
+
+                                        <!-- ICON -->
+                                        <div class="sml-radio-iconbox mb-3">
+                                            <i class="{{ $package->icon }} fs-30px icon-color"></i>
+                                        </div>
+
+
+                                        <!-- PACKAGE NAME -->
+                                        <h4 class="in-title-4 mb-1 {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                            {{ $package->name }}
+                                        </h4>
+
+
+                                        <!-- SUB TITLE -->
+                                        <p class="in-subtitle-1 fw-medium mb-2 {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                            {{ $package->sub_title }}
+                                        </p>
+
+
+                                        <!-- MONTHLY / YEARLY TOGGLE -->
+                                        @if($package->price == 500)
+
+                                            <div class="pricing-toggle mb-3 text-center">
+
+                                                <button
+                                                    type="button"
+                                                    class="toggle-btn active"
+                                                    onclick="switchPlan('monthly')">
+                                                    Monthly
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="toggle-btn"
+                                                    onclick="switchPlan('yearly')">
+                                                    Yearly
+                                                </button>
+
+                                            </div>
+
+                                        @endif
+
+
+                                        <!-- DYNAMIC PRICE -->
+                                        <div class="d-grid align-items-center pb-3 mb-3 at-border-bottom">
+                              <div class="card-abc">
+                                        @if($package->price == 500)
+
+                                                <h1 class="in-title-1 {{ $package->choice == 1 ? 'text-white' : '' }}">
+
+                                                    <span class="price-amount">
+                                                        ₹500
+                                                    </span>
+
+                                                </h1>
+
+                                                <p class="in-subtitle-1 fw-medium {{ $package->choice == 1 ? 'text-white' : '' }}">
+
+                                                    /
+                                                    <span class="price-period">
+                                                        Monthly
+                                                    </span>
+
+                                                </p>
+
+
+                                            @elseif(!empty($package->price) && (int)$package->price > 0)
+
+                                                <h1 class="in-title-1 {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ currency($package->price) }}
+                                                </h1>
+
+                                                <p class="in-subtitle-1 fw-medium {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    / {{ ucwords($package->period) }}
+                                                </p>
+
+
+                                            @else
+
+                                                <h1 class="in-title-1 {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ get_phrase('Free') }}
+                                                </h1>
+
+                                                <p class="in-subtitle-1 fw-medium {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    / {{ ucwords($package->period) }}
+                                                </p>
+
+                                            @endif
+                                          
+
+                                        @if($package->price == 500)
+
+                                            <div
+                                                id="yearlyOffer">
+
+                                                Free 2 Months When You Paid Yearly
+
+                                            </div>
+
+                                        @endif
+</div>
+
+
+                                        </div>
+
+
+
+
+                                        <!-- VERIFIED -->
+                                        @php
+
+                                            $activeSubscription =
+                                                \App\Models\Subscription::where(
+                                                    'user_id',
+                                                    user('id')
+                                                )
+                                                ->where('status', 1)
+                                                ->latest('id')
+                                                ->first();
+
+                                        @endphp
+
+
+                                        @if($activeSubscription)
+
+                                            <div class="verified_package">
+
+                                                <img
+                                                    src="https://www.listify.asia/public/image/verified.png"
+                                                    class="w-50"
+                                                    alt="Verified">
+
+                                            </div>
+
+                                        @endif
+
+
+                                        <!-- FEATURES -->
+                                        <ul class="d-flex flex-column gap-12px mb-4">
+
+                                            <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                {{ get_phrase('Listing Feature').' '.ucwords($package->feature) }}
+                                            </li>
+
+                                            <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                {{ $package->listing.' '.get_phrase('Directory Listings') }}
+                                            </li>
+
+                                            <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                {{ $package->category }} Categories Per Listings
+                                            </li>
+
+
+                                            @if(
+                                                !empty($package->contact) &&
+                                                strtolower($package->contact) != 'unavailable' &&
+                                                strtolower($package->contact) != 'y'
+                                            )
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ ucwords($package->contact).' '.get_phrase('Contact Form') }}
+                                                </li>
+
+                                            @endif
+
+
+                                            @if(
+                                                !empty($package->video) &&
+                                                strtolower($package->video) != 'unavailable' &&
+                                                strtolower($package->video) != 'y'
+                                            )
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ ucwords($package->video).' '.get_phrase('Listing Video') }}
+                                                </li>
+
+                                            @endif
+
+
+                                            @if(!empty($package->Shop_feature))
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ $package->Shop_feature }}
+                                                </li>
+
+                                            @endif
+
+
+                                            @if(!empty($package->order_manage))
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ $package->order_manage }}
+                                                </li>
+
+                                            @endif
+
+
+                                            @if(!empty($package->c_whats))
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ $package->c_whats }}
+                                                </li>
+
+                                            @endif
+
+
+                                            @if(!empty($package->crm))
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ $package->crm }}
+                                                </li>
+
+                                            @endif
+
+
+                                            @if(!empty($package->chatbot))
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ $package->chatbot }}
+                                                </li>
+
+                                            @endif
+
+
+                                            @if(!empty($package->oneyerseo))
+
+                                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">
+                                                    {{ $package->oneyerseo }}
+                                                </li>
+
+                                            @endif
+
+                                        </ul>
+
+                                    </div>
+
+
+                                    <!-- BUTTON -->
 
                                     @if($package->price == 500)
 
-                                        <h1 class="in-title-1 {{$package->choice == 1 ? 'text-white' : ''}}">
-                                            <span class="price-amount">₹500</span>
-                                        </h1>
+                                        @php
+                                            $currentPackage = $subscription->package_id ?? 0;
+                                        @endphp
 
-                                        <p class="in-subtitle-1 fw-medium {{$package->choice == 1 ? 'text-white' : ''}}">
-                                            / <span class="price-period">Monthly</span>
-                                        </p>
 
-                                    @elseif(!empty($package->price) && (int)$package->price > 0)
+                                        <a
+                                            id="planBtn"
+                                            data-package-id="12"
+                                            data-current="{{ $currentPackage }}"
+                                            href="{{ ($currentPackage == 12) ? 'javascript:void(0)' : route('payment',['id'=>12]) }}"
+                                            class="{{ $package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1' }} w-100 text-center">
 
-                                        <h1 class="in-title-1 {{$package->choice == 1 ? 'text-white' : ''}}">
-                                            {{ currency($package->price) }}
-                                        </h1>
+                                            @if(!$hasSubscription)
 
-                                        <p class="in-subtitle-1 fw-medium {{$package->choice == 1 ? 'text-white' : ''}}">
-                                            / {{ ucwords($package->period) }}
-                                        </p>
+                                                Try Now
+
+                                            @elseif($currentPackage == 12)
+
+                                                Activated
+
+                                            @else
+
+                                                Upgrade Plan
+
+                                            @endif
+
+                                        </a>
+
 
                                     @else
 
-                                        <h1 class="in-title-1 {{$package->choice == 1 ? 'text-white' : ''}}">
-                                            {{ get_phrase('Free') }}
-                                        </h1>
+                                        @if(!$hasSubscription)
 
-                                        <p class="in-subtitle-1 fw-medium {{$package->choice == 1 ? 'text-white' : ''}}">
-                                            / {{ ucwords($package->period) }}
-                                        </p>
+                                            <a
+                                                href="{{ route('payment',['id'=>$package->id]) }}"
+                                                class="{{ $package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1' }} w-100 text-center">
+
+                                                Try Now
+
+                                            </a>
+
+                                        @else
+
+                                            @if(isset($subscription->package_id) && $subscription->package_id == $package->id)
+
+                                                <a
+                                                    href="javascript:void(0)"
+                                                    class="{{ $package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1' }} w-100 text-center">
+
+                                                    Activated
+
+                                                </a>
+
+                                            @else
+
+                                                <a
+                                                    href="{{ route('payment',['id'=>$package->id]) }}"
+                                                    class="{{ $package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1' }} w-100 text-center">
+
+                                                    Upgrade Plan
+
+                                                </a>
+
+                                            @endif
+
+                                        @endif
 
                                     @endif
+
                                 </div>
 
-                                {{-- verified --}}
-                                @php
-                                    $activeSubscription = \App\Models\Subscription::where('user_id', user('id'))
-                                        ->where('status', 1)
-                                        ->latest('id')
-                                        ->first();
-                                @endphp
-                                @if($activeSubscription)
-                                <div class="verified_package">
-                                    <img src="https://www.listify.asia/public/image/verified.png" class="w-50">
-                                </div>
-                                @endif
-                          
-
-                            <ul class="d-flex flex-column gap-12px mb-4">
-                                <li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{get_phrase('Listing Feature').' '.ucwords($package->feature)}} </li>
-                                <li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{$package->listing.' '.get_phrase('Directory Listings')}} </li>
-                                <li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{$package->category}} Categories Per Listings </li>
-                                @if(!empty($package->contact) && strtolower($package->contact) != 'unavailable' && strtolower($package->contact) != 'y')
-                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">{{ ucwords($package->contact).' '.get_phrase('Contact Form') }}</li>
-                                @endif
-                                @if(!empty($package->video) && strtolower($package->video) != 'unavailable' && strtolower($package->video) != 'y')
-                                <li class="at-check-listitem {{ $package->choice == 1 ? 'text-white' : '' }}">{{ ucwords($package->video).' '.get_phrase('Listing Video') }}</li>
-                                @endif
-                                @if(!empty($package->Shop_feature))<li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{$package->Shop_feature}} </li>@endif
-                                @if(!empty($package->order_manage))<li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{$package->order_manage}} </li>@endif
-                                @if(!empty($package->c_whats))<li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{$package->c_whats}} </li>@endif
-                                @if(!empty($package->crm))<li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{$package->crm}} </li>@endif
-                                @if(!empty($package->chatbot))<li class="at-check-listitem {{$package->choice == 1?'text-white':''}}"> {{$package->chatbot}} </li>@endif
-                                @if(!empty($package->oneyerseo))<li class="at-check-listitem {{$package->choice == 1 ? 'text-white' : ''}}">{{ $package->oneyerseo }}</li>@endif
-                            </ul>
-                              
                             </div>
 
-                            
-                            {{-- ✅ Button --}}
-                            @if($package->price == 500)
-
-                                @php
-                                    $currentPackage = $subscription->package_id ?? 0;
-                                @endphp
-
-                                <a id="planBtn"
-                                data-package-id="12"
-                                data-current="{{ $currentPackage }}"
-                                href="{{ ($currentPackage == 12) ? 'javascript:void(0)' : route('payment',['id'=>12]) }}"
-                                class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
-
-                                    @if(!$hasSubscription)
-                                        Try Now
-                                    @elseif($currentPackage == 12)
-                                        Activated
-                                    @else
-                                        Upgrade Plan
-                                    @endif
-
-                                </a>
-
-                            @else
-
-                                @if(!$hasSubscription)
-
-                                    <a href="{{ route('payment',['id'=>$package->id]) }}"
-                                    class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
-                                        Try Now
-                                    </a>
-
-                                @else
-
-                                    @if(isset($subscription->package_id) && $subscription->package_id == $package->id)
-
-                                        <a href="javascript:void(0)"
-                                        class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
-                                            Activated
-                                        </a>
-
-                                    @else
-
-                                        <a href="{{ route('payment',['id'=>$package->id]) }}"
-                                        class="{{$package->choice == 1 ? 'btn at-btn-white' : 'theme-btn1'}} w-100 text-center">
-                                            Upgrade Plan
-                                        </a>
-
-                                    @endif
-
-                                @endif
-
-                            @endif
-
                         </div>
-                    </div>
+
+                    @endforeach
+
                 </div>
 
-            @endforeach
-
-        </div>
-                  
-                  
-                </div>
             </div>
+
         </div>
-    </section>
+    </div>
+</section>
+
 
 <script>
+
     const paymentUrl = "{{ route('payment', ['id' => ':id']) }}";
+
 
     function switchPlan(type) {
 
         const price = document.querySelector('.price-amount');
+
         const period = document.querySelector('.price-period');
+
         const btn = document.getElementById('planBtn');
+
         const buttons = document.querySelectorAll('.toggle-btn');
+
+        const yearlyOffer = document.getElementById('yearlyOffer');
+
+
+        if (!price || !period || !btn) {
+            return;
+        }
+
 
         const currentPackage = btn.dataset.current;
 
-        buttons.forEach(b => b.classList.remove('active'));
 
-        if(type === 'monthly'){
+        /*
+        |--------------------------------------------------------------------------
+        | Remove active from toggle buttons
+        |--------------------------------------------------------------------------
+        */
+
+        buttons.forEach(function(button) {
+
+            button.classList.remove('active');
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MONTHLY
+        |--------------------------------------------------------------------------
+        */
+
+        if (type === 'monthly') {
+
 
             price.innerText = '₹500';
+
             period.innerText = 'Monthly';
 
             btn.dataset.packageId = '12';
 
-            buttons[0].classList.add('active');
 
-            if(currentPackage == '12'){
-                btn.innerText = 'Activated';
-                btn.href = 'javascript:void(0)';
-            }else if(currentPackage == '17'){
-                btn.innerText = 'Upgrade Plan';
-                btn.href = paymentUrl.replace(':id','12');
-            }else{
-                btn.innerText = 'Try Now';
-                btn.href = paymentUrl.replace(':id','12');
+            /*
+            |----------------------------------------------------------------------
+            | Active Monthly
+            |----------------------------------------------------------------------
+            */
+
+            if (buttons[0]) {
+                buttons[0].classList.add('active');
             }
 
-        }else{
+
+            /*
+            |----------------------------------------------------------------------
+            | Hide Yearly Offer
+            |----------------------------------------------------------------------
+            */
+
+            if (yearlyOffer) {
+
+                yearlyOffer.style.display = 'none';
+
+            }
+
+
+            /*
+            |----------------------------------------------------------------------
+            | Button
+            |----------------------------------------------------------------------
+            */
+
+            if (currentPackage == '12') {
+
+                btn.innerText = 'Activated';
+
+                btn.href = 'javascript:void(0)';
+
+            } else if (currentPackage == '17') {
+
+                btn.innerText = 'Upgrade Plan';
+
+                btn.href = paymentUrl.replace(':id', '12');
+
+            } else {
+
+                btn.innerText = 'Try Now';
+
+                btn.href = paymentUrl.replace(':id', '12');
+
+            }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | YEARLY
+        |--------------------------------------------------------------------------
+        */
+
+        } else if (type === 'yearly') {
+
 
             price.innerText = '₹5000';
-            period.innerText = 'Annually';
+
+            period.innerText = 'Yearly';
 
             btn.dataset.packageId = '17';
 
-            buttons[1].classList.add('active');
 
-            if(currentPackage == '17'){
-                btn.innerText = 'Activated';
-                btn.href = 'javascript:void(0)';
-            }else if(currentPackage == '12'){
-                btn.innerText = 'Upgrade Plan';
-                btn.href = paymentUrl.replace(':id','17');
-            }else{
-                btn.innerText = 'Try Now';
-                btn.href = paymentUrl.replace(':id','17');
+            /*
+            |----------------------------------------------------------------------
+            | Active Yearly
+            |----------------------------------------------------------------------
+            */
+
+            if (buttons[1]) {
+                buttons[1].classList.add('active');
             }
+
+
+            /*
+            |----------------------------------------------------------------------
+            | SHOW YEARLY OFFER
+            |----------------------------------------------------------------------
+            */
+
+            if (yearlyOffer) {
+
+                yearlyOffer.style.display = 'block';
+
+            }
+
+
+            /*
+            |----------------------------------------------------------------------
+            | Button
+            |----------------------------------------------------------------------
+            */
+
+            if (currentPackage == '17') {
+
+                btn.innerText = 'Activated';
+
+                btn.href = 'javascript:void(0)';
+
+            } else if (currentPackage == '12') {
+
+                btn.innerText = 'Upgrade Plan';
+
+                btn.href = paymentUrl.replace(':id', '17');
+
+            } else {
+
+                btn.innerText = 'Try Now';
+
+                btn.href = paymentUrl.replace(':id', '17');
+
+            }
+
         }
+
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PLAN BUTTON
+    |--------------------------------------------------------------------------
+    */
 
     const btn = document.getElementById('planBtn');
 
-    if(btn){
 
-        btn.addEventListener('click',function(e){
+    if (btn) {
 
-            if(this.innerText.trim() === 'Activated'){
+        btn.addEventListener('click', function(e) {
+
+            if (this.innerText.trim() === 'Activated') {
+
                 e.preventDefault();
+
                 return false;
+
             }
 
-            this.href = paymentUrl.replace(':id', this.dataset.packageId);
+
+            this.href = paymentUrl.replace(
+                ':id',
+                this.dataset.packageId
+            );
 
         });
 
     }
+
+</script>
+
+<script>
+
+    const paymentUrl = "{{ route('payment', ['id' => ':id']) }}";
+
+
+    function switchPlan(type) {
+
+        const price = document.querySelector('.price-amount');
+
+        const period = document.querySelector('.price-period');
+
+        const btn = document.getElementById('planBtn');
+
+        const buttons = document.querySelectorAll('.toggle-btn');
+
+        const yearlyOffer = document.getElementById('yearlyOffer');
+
+
+        if (!price || !period || !btn) {
+            return;
+        }
+
+
+        const currentPackage = btn.dataset.current;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remove active from toggle buttons
+        |--------------------------------------------------------------------------
+        */
+
+        buttons.forEach(function(button) {
+
+            button.classList.remove('active');
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MONTHLY
+        |--------------------------------------------------------------------------
+        */
+
+        if (type === 'monthly') {
+
+
+            price.innerText = '₹500';
+
+            period.innerText = 'Monthly';
+
+            btn.dataset.packageId = '12';
+
+
+            /*
+            |----------------------------------------------------------------------
+            | Active Monthly
+            |----------------------------------------------------------------------
+            */
+
+            if (buttons[0]) {
+                buttons[0].classList.add('active');
+            }
+
+
+            /*
+            |----------------------------------------------------------------------
+            | Hide Yearly Offer
+            |----------------------------------------------------------------------
+            */
+
+            if (yearlyOffer) {
+
+                yearlyOffer.style.display = 'none';
+
+            }
+
+
+            /*
+            |----------------------------------------------------------------------
+            | Button
+            |----------------------------------------------------------------------
+            */
+
+            if (currentPackage == '12') {
+
+                btn.innerText = 'Activated';
+
+                btn.href = 'javascript:void(0)';
+
+            } else if (currentPackage == '17') {
+
+                btn.innerText = 'Upgrade Plan';
+
+                btn.href = paymentUrl.replace(':id', '12');
+
+            } else {
+
+                btn.innerText = 'Try Now';
+
+                btn.href = paymentUrl.replace(':id', '12');
+
+            }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | YEARLY
+        |--------------------------------------------------------------------------
+        */
+
+        } else if (type === 'yearly') {
+
+
+            price.innerText = '₹5000';
+
+            period.innerText = 'Yearly';
+
+            btn.dataset.packageId = '17';
+
+
+            /*
+            |----------------------------------------------------------------------
+            | Active Yearly
+            |----------------------------------------------------------------------
+            */
+
+            if (buttons[1]) {
+                buttons[1].classList.add('active');
+            }
+
+
+            /*
+            |----------------------------------------------------------------------
+            | SHOW YEARLY OFFER
+            |----------------------------------------------------------------------
+            */
+
+            if (yearlyOffer) {
+
+                yearlyOffer.style.display = 'block';
+
+            }
+
+
+            /*
+            |----------------------------------------------------------------------
+            | Button
+            |----------------------------------------------------------------------
+            */
+
+            if (currentPackage == '17') {
+
+                btn.innerText = 'Activated';
+
+                btn.href = 'javascript:void(0)';
+
+            } else if (currentPackage == '12') {
+
+                btn.innerText = 'Upgrade Plan';
+
+                btn.href = paymentUrl.replace(':id', '17');
+
+            } else {
+
+                btn.innerText = 'Try Now';
+
+                btn.href = paymentUrl.replace(':id', '17');
+
+            }
+
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PLAN BUTTON
+    |--------------------------------------------------------------------------
+    */
+
+    const btn = document.getElementById('planBtn');
+
+
+    if (btn) {
+
+        btn.addEventListener('click', function(e) {
+
+            if (this.innerText.trim() === 'Activated') {
+
+                e.preventDefault();
+
+                return false;
+
+            }
+
+
+            this.href = paymentUrl.replace(
+                ':id',
+                this.dataset.packageId
+            );
+
+        });
+
+    }
+
 </script>
 
 {{-- ✅ CSS --}}
@@ -321,6 +882,13 @@
 .toggle-btn.active {
     background: #6c2bd9;
     color: #fff;
+}
+.card-abc{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    flex-wrap:wrap;
 }
 </style>
 

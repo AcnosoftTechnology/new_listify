@@ -146,16 +146,16 @@ class ListingController extends Controller{
                 if ($hadFreePackage) {
 
                     // Free -> Paid
-                    if ($totalListings >= 3) {
-                        Session::flash('error', get_phrase('Your package allows a maximum of 3 listings.'));
+                    if ($totalListings >= 20) {
+                        Session::flash('error', get_phrase('Your package allows a maximum of 20 listings.'));
                         return redirect()->back();
                     }
 
                 } else {
 
                     // Direct Paid User
-                    if ($totalListings >= 3) {
-                        Session::flash('error', get_phrase('Your package allows a maximum of 3 listings.'));
+                    if ($totalListings >= 20) {
+                        Session::flash('error', get_phrase('Your package allows a maximum of 20 listings.'));
                         return redirect()->back();
                     }
 
