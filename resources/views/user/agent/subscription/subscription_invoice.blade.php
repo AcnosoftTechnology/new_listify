@@ -94,21 +94,21 @@
         text-align: right;
     }
 
-    .company-logo {
-        width: 28mm;
-        height: 28mm;
-        max-width: 100%;
-        display: inline-block;
-        overflow: hidden;
-    }
+.company-logo {
+    width: 35mm;
+    height: 28mm;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden;
+}
 
-    .company-logo img {
-        width: 100%;
-        height: 100%;
-        max-width: 100%;
-        display: block;
-        object-fit: contain;
-    }
+.company-logo img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
 
     .invoice-title {
         margin: 0;
@@ -734,10 +734,7 @@
 
             <td class="header-logo-cell">
                 <div class="company-logo">
-                    <img
-                        src="https://www.listify.asia/public/image/logo.png"
-                        alt="Company Logo"
-                    >
+                    <img src="{{ asset('image/logo.png') }}" alt="Company Logo" class="company-logo-image">
                 </div>
             </td>
 
