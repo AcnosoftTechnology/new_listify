@@ -748,7 +748,7 @@
                 </h1>
 
                 <div class="invoice-no">
-                    # INV-CM-{{ $subscriptionDetails->id }}
+                    # INV-LI-IND/CMI-{{ $subscriptionDetails->id }}
                 </div>
 
                 <div class="invoice-status {{ $isPaid ? 'paid' : '' }}">
@@ -1140,11 +1140,7 @@
             Authorized Signature
         </div>
 
-        <img
-            src="{{ asset('assets/images/signature.png') }}"
-            alt="Authorized Signaturegit "
-            class="signature-image"
-        >
+        <img src="{{ asset('image/signature.png') }}" alt="Authorized Signature "  class="signature-image">
 
     </div>
 

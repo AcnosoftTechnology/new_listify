@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Block unnecessary folders (optional)
+Disallow: /admin/
+Disallow: /storage/
+Disallow: /vendor/
+Disallow: /node_modules/
+
+# Sitemap
+Sitemap: https://www.listify.asia/sitemap.xml

@@ -111,70 +111,83 @@ class CustomerController extends Controller{
         return bin2hex($bytes);
     }
 
-    function user_messages($prefix = "", $id = "", $code = "")
-    {
-        $page_data['active'] = 'message';
-        $page_data['messages'] = collect();
-        $page_data['thread_details'] = null;
-        $uid = user('id');
+function user_messages($prefix = "", $id = "", $code = "")
+{
+    $page_data['active'] = 'message';
+    $page_data['messages'] = collect();
+    $page_data['thread_details'] = null;
+    $uid = user('id');
 
-        if ($id) {
-            if ($code) {
-                $thread = Message_thread::where('message_thread_code', $code)
-                    ->where(function ($q) use ($uid) {
-                        $q->where('sender', $uid)->orWhere('receiver', $uid);
-                    })
-                    ->first();
-            } else {
-                $thread = Message_thread::where(function ($q) use ($uid, $id) {
-                    $q->where(function ($q2) use ($uid, $id) {
-                        $q2->where('sender', $uid)->where('receiver', $id);
-                    })->orWhere(function ($q2) use ($uid, $id) {
-                        $q2->where('sender', $id)->where('receiver', $uid);
-                    });
-                })->first();
+    /*
+    |--------------------------------------------------------------------------
+    | ASIA/KOLKATA TIMEZONE
+    |--------------------------------------------------------------------------
+    */
 
-                if (!$thread) {
-                    $thread = new Message_thread();
-                    $thread->message_thread_code = $this->generateUniqueCode();
-                    $thread->sender = $uid;
-                    $thread->receiver = $id;
-                    $thread->created_at = Carbon::now();
-                    $thread->updated_at = Carbon::now();
-                    $thread->save();
-                }
-            }
+    $kolkataNow = Carbon::now('Asia/Kolkata');
 
-            $page_data['thread_details'] = $thread;
-            $page_data['code'] = $thread ? $thread->message_thread_code : '';
-            $page_data['messages'] = $thread
-                ? Message::where('message_thread_code', $thread->message_thread_code)->orderBy('message_id')->get()
-                : collect();
+    if ($id) {
+        if ($code) {
+            $thread = Message_thread::where('message_thread_code', $code)
+                ->where(function ($q) use ($uid) {
+                    $q->where('sender', $uid)->orWhere('receiver', $uid);
+                })
+                ->first();
         } else {
-            $page_data['code'] = '';
+            $thread = Message_thread::where(function ($q) use ($uid, $id) {
+                $q->where(function ($q2) use ($uid, $id) {
+                    $q2->where('sender', $uid)->where('receiver', $id);
+                })->orWhere(function ($q2) use ($uid, $id) {
+                    $q2->where('sender', $id)->where('receiver', $uid);
+                });
+            })->first();
+
+            if (!$thread) {
+                $thread = new Message_thread();
+                $thread->message_thread_code = $this->generateUniqueCode();
+                $thread->sender = $uid;
+                $thread->receiver = $id;
+
+                // Save thread time in Asia/Kolkata timezone
+                $thread->created_at = $kolkataNow;
+                $thread->updated_at = $kolkataNow;
+
+                $thread->save();
+            }
         }
 
-        // Opening Messages tab marks all received unread as read (clears counter)
-        $threadCodes = Message_thread::where('sender', $uid)
-            ->orWhere('receiver', $uid)
-            ->pluck('message_thread_code');
-
-        if ($threadCodes->isNotEmpty()) {
-            Message::whereIn('message_thread_code', $threadCodes)
-                ->where('sender', '!=', $uid)
-                ->where('read_status', 0)
-                ->update(['read_status' => 1]);
-        }
-
-        $page_data['all_threads'] = Message_thread::where('sender', $uid)
-            ->orWhere('receiver', $uid)
-            ->orderByDesc('updated_at')
-            ->get();
-
-        return view('user.message.index', $page_data);
+        $page_data['thread_details'] = $thread;
+        $page_data['code'] = $thread ? $thread->message_thread_code : '';
+        $page_data['messages'] = $thread
+            ? Message::where('message_thread_code', $thread->message_thread_code)
+                ->orderBy('message_id')
+                ->get()
+            : collect();
+    } else {
+        $page_data['code'] = '';
     }
 
-    public function send_message(Request $request, $prefix, $code)
+    // Opening Messages tab marks all received unread as read (clears counter)
+    $threadCodes = Message_thread::where('sender', $uid)
+        ->orWhere('receiver', $uid)
+        ->pluck('message_thread_code');
+
+    if ($threadCodes->isNotEmpty()) {
+        Message::whereIn('message_thread_code', $threadCodes)
+            ->where('sender', '!=', $uid)
+            ->where('read_status', 0)
+            ->update(['read_status' => 1]);
+    }
+
+    $page_data['all_threads'] = Message_thread::where('sender', $uid)
+        ->orWhere('receiver', $uid)
+        ->orderByDesc('updated_at')
+        ->get();
+
+    return view('user.message.index', $page_data);
+}
+
+public function send_message(Request $request, $prefix, $code)
 {
     $request->validate([
         'message' => 'nullable|string|max:5000',
@@ -227,16 +240,24 @@ class CustomerController extends Controller{
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | ASIA/KOLKATA TIMEZONE
+    |--------------------------------------------------------------------------
+    */
+
+    $kolkataNow = Carbon::now('Asia/Kolkata');
+
     Message::insert([
         'message_thread_code' => $code,
         'message' => !empty($imagePath) ? $imagePath : $messageText,
         'sender' => $uid,
         'read_status' => 0,
-        'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now(),
+        'created_at' => $kolkataNow,
+        'updated_at' => $kolkataNow,
     ]);
 
-    $thread->updated_at = Carbon::now();
+    $thread->updated_at = $kolkataNow;
     $thread->save();
 
     // Push to the other party (vendor ↔ customer)
@@ -270,7 +291,6 @@ class CustomerController extends Controller{
 
     return redirect()->back();
 }
-
     public function remove_wishlist($id) {
         Wishlist::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Wishlist delete successfully');

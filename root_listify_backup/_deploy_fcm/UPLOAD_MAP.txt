@@ -1,0 +1,21 @@
+﻿UPLOAD MAP (FTP / cPanel File Manager)
+=====================================
+FROM zip                    → LIVE path (site root = listify.asia folder)
+---------------------------------------------------------------
+firebase-messaging-sw.js    → /firebase-messaging-sw.js   (OVERWRITE)
+fcm-notification-icon.png   → /fcm-notification-icon.png  (NEW - same folder as SW)
+fcm.js                      → /public/js/fcm.js           (OVERWRITE)
+fcm.blade.php               → /resources/views/layouts/fcm.blade.php
+FirebaseNotificationService.php → /app/Services/FirebaseNotificationService.php
+FcmTokenController.php      → /app/Http/Controllers/FcmTokenController.php
+AppointmentObserver.php     → /app/Observers/AppointmentObserver.php
+FcmStatusCommand.php        → /app/Console/Commands/FcmStatusCommand.php
+FcmTestPushCommand.php      → /app/Console/Commands/FcmTestPushCommand.php
+FcmToken.php                → /app/Models/FcmToken.php
+
+AFTER UPLOAD:
+1) SSH/cPanel: php artisan config:clear
+2) Chrome → F12 → Application → Service Workers → Unregister
+3) Hard refresh Ctrl+Shift+R
+4) Vendor login → console must show: [FCM] Registering SW  (NOT old \"Registering service worker\")
+5) php artisan fcm:test YOUR_VENDOR_USER_ID

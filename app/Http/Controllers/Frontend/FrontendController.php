@@ -889,8 +889,7 @@ public function listing_details($type, $id, $slug){
     
     
 
-public function customerMessage(Request $request)
-{
+public function customerMessage(Request $request){
     if (!Auth::check()) {
         return response()->json([
             'status' => 'error',
@@ -958,6 +957,14 @@ public function customerMessage(Request $request)
         ], 422);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | ASIA/KOLKATA TIMEZONE
+    |--------------------------------------------------------------------------
+    */
+
+    $kolkataNow = Carbon::now('Asia/Kolkata');
+
     $thread = Message_thread::where(function ($q) use ($sender, $receiver) {
         $q->where('sender', $sender)->where('receiver', $receiver);
     })->orWhere(function ($q) use ($sender, $receiver) {
@@ -969,6 +976,11 @@ public function customerMessage(Request $request)
         $thread->message_thread_code = substr(md5((string) rand(100000000, 20000000000)), 0, 15);
         $thread->sender = $sender;
         $thread->receiver = $receiver;
+
+        // Save created_at in Asia/Kolkata timezone
+        $thread->created_at = $kolkataNow;
+        $thread->updated_at = $kolkataNow;
+
         $thread->save();
     }
 
@@ -989,9 +1001,15 @@ public function customerMessage(Request $request)
 
     $dataMessage->sender = $sender;
     $dataMessage->read_status = 0;
+
+    // Save message created_at in Asia/Kolkata timezone
+    $dataMessage->created_at = $kolkataNow;
+    $dataMessage->updated_at = $kolkataNow;
+
     $dataMessage->save();
 
-    $thread->updated_at = Carbon::now();
+    // Update thread time in Asia/Kolkata timezone
+    $thread->updated_at = $kolkataNow;
     $thread->save();
 
     try {
