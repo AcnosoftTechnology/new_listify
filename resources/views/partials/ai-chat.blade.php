@@ -350,6 +350,53 @@
     box-sizing:border-box;
 }
 
+/* AI Typing Loader */
+.ai-typing-loader{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    min-width:58px;
+    width:max-content;
+    padding:16px 18px;
+    color:#111;
+    background:#fff;
+    border-radius:20px 20px 20px 5px;
+    box-shadow:0 8px 22px rgba(0,0,0,.13);
+}
+
+.ai-typing-loader span{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#6c1cff;
+    animation:aiTyping 1.4s infinite ease-in-out;
+}
+
+.ai-typing-loader span:nth-child(1){
+    animation-delay:0s;
+}
+
+.ai-typing-loader span:nth-child(2){
+    animation-delay:.2s;
+}
+
+.ai-typing-loader span:nth-child(3){
+    animation-delay:.4s;
+}
+
+@keyframes aiTyping{
+    0%, 60%, 100%{
+        transform:translateY(0);
+        opacity:.4;
+    }
+
+    30%{
+        transform:translateY(-6px);
+        opacity:1;
+    }
+}
+
+
 </style>
 
 <button id="ai-chat-toggle" aria-label="Open AI Concierge">
@@ -452,6 +499,34 @@ function addMessage(text, type) {
     scrollChat();
 
     return message;
+}
+
+function addTypingLoader() {
+    const row = document.createElement("div");
+    row.className = "message-row";
+    row.id = "ai-typing-row";
+
+    const avatar = document.createElement("div");
+    avatar.className = "bot-mini-avatar";
+    avatar.innerHTML = `<img src="${botIcon}" alt="">`;
+
+    const loader = document.createElement("div");
+    loader.className = "ai-typing-loader";
+
+    loader.innerHTML = `
+        <span></span>
+        <span></span>
+        <span></span>
+    `;
+
+    row.appendChild(avatar);
+    row.appendChild(loader);
+
+    chatBody.appendChild(row);
+
+    scrollChat();
+
+    return row;
 }
 
 function formatBotMessage(text = "") {
@@ -587,10 +662,12 @@ async function sendMessage() {
 }
 
 async function callChatApi(message) {
-    const typing = addMessage("Typing...", "bot");
+
+    // User ke message ke turant baad loader show hoga
+    const typingRow = addTypingLoader();
 
     try {
-        // Same-origin proxy → api.listify.asia (avoids browser SSL/CORS failures)
+
         const res = await fetch("{{ url('/api/chat/concierge') }}", {
             method: "POST",
             headers: {
@@ -608,31 +685,38 @@ async function callChatApi(message) {
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
-            throw new Error(data.message || ("API Error: " + res.status));
+            throw new Error(
+                data.message || ("API Error: " + res.status)
+            );
         }
 
-        typing.closest(".message-row").remove();
+        // Response aate hi loader remove
+        if (typingRow) {
+            typingRow.remove();
+        }
 
         const listings = data?.metadata?.listing_links || [];
         const fullText = data.response_text || "";
 
         /*
-        Example:
-        "Here are some travel agencies you might find interesting:
-        1. **Kailash Mansarovar Yatra** ..."
+         * Response heading
+         */
+        let heading = fullText
+            .split(/:\s*(?=\d+\.|\*\*)/)[0]
+            .trim();
 
-        Isse sirf colon se pehle wali heading li jayegi.
-        */
-        let heading = fullText.split(/:\s*(?=\d+\.|\*\*)/)[0].trim();
-
-        /* Fallback heading */
+        /*
+         * Fallback heading
+         */
         if (!heading) {
             heading = listings.length
                 ? "Here are some listings you might find interesting:"
                 : "Sorry, I could not understand that.";
         }
 
-       /* Heading aur listing cards ek hi bot group mein show honge */
+        /*
+         * Heading + listing cards
+         */
         const resultRow = document.createElement("div");
         resultRow.className = "message-row";
 
@@ -649,22 +733,38 @@ async function callChatApi(message) {
 
         resultContent.appendChild(headingMessage);
 
-        /* Listing cards: inke side mein separate bot icon nahi hoga */
+        /*
+         * Listing cards
+         */
         if (listings.length) {
             listings.forEach((listing) => {
-                addListingCard(listing, false, resultContent);
+                addListingCard(
+                    listing,
+                    false,
+                    resultContent
+                );
             });
         }
 
         resultRow.appendChild(avatar);
         resultRow.appendChild(resultContent);
+
         chatBody.appendChild(resultRow);
 
-        /* Sab render hone ke baad scroll */
         scrollChat();
 
     } catch (error) {
-        typing.textContent = "Connection error. Please try again.";
+
+        // Error hone par bhi loader remove
+        if (typingRow) {
+            typingRow.remove();
+        }
+
+        addMessage(
+            "Connection error. Please try again.",
+            "bot"
+        );
+
         console.error(error);
     }
 }
