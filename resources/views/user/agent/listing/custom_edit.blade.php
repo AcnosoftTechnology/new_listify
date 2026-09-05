@@ -310,16 +310,259 @@
                         {{-- Shop   --}}
                         @if (addon_status('shop') == 1)
                         <div class="tab-pane fade" id="shop" role="tabpanel" aria-labelledby="shop-tab">
-                            <div class="d-flex align-items-center justify-content-between mb-5">
-                                <h5 class="in-title-16px mb-3 capitalize"> {{ get_phrase('Your  Shop Inventory') }} </h5>
-                                <div>
-                                    <a href="{{ route('inventory.export', ['listing_id' => $listing->id, 'type' => $type]) }}" class="btn btn-success"> Export Excel</a>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal"> Import Excel</button>
-                                    <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.create', ['prefix' => 'agent', 'type' => $type,'listing_id' => $listing->id]) }}', '{{ get_phrase('Add Product') }}')" class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add New Product') }} </a>
-                                    <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.category.create', ['prefix' => 'agent', 'type' => $type, 'listing_id' => $listing->id]) }}', '{{ get_phrase('Add Category') }}')"class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add Product Category') }} </a>
+                            <div class="mb-5">
+                                
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div><h5 class="in-title-16px mb-3 capitalize"> {{ get_phrase('Your  Shop Inventory') }} </h5></div> 
+                                    <div>
+                                      <a href="{{ route('inventory.export', ['listing_id' => $listing->id, 'type' => $type]) }}" class="btn btn-success"> Export Excel</a>
+                                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal"> Import Excel</button>
+                                      <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.create', ['prefix' => 'agent', 'type' => $type,'listing_id' => $listing->id]) }}', '{{ get_phrase('Add Product') }}')" class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add New Product') }} </a>
+                                      <a href="javascript:void(0);" onclick="modal('modal-md', '{{ route('agent.inventory.category.create', ['prefix' => 'agent', 'type' => $type, 'listing_id' => $listing->id]) }}', '{{ get_phrase('Add Category') }}')"class="btn ol-btn-primary fs-14px"> {{ get_phrase('Add Product Category') }} </a>
+                                    </div> 
+                                </div>
+                                <div class="dummy data table">
+                                    {{-- ================= IMPORT EXCEL GUIDE ================= --}}
+                                    <div class="inventory-import-guide mt-3">
 
+                                        <div class="import-guide-header">
+
+                                            <div>
+                                                <h4 class="import-guide-title">
+                                                    Import Products
+                                                </h4>
+
+                                                <p class="import-guide-subtitle">
+                                                    Please ensure your Excel/CSV file follows the format below.
+                                                    Use the exact column headers and follow the field requirements.
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- ================= TABLE ================= --}}
+                                        <div class="import-table-wrapper">
+
+                                            <table class="import-product-table">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            Product Name
+                                                            <span>*</span>
+                                                        </th>
+
+                                                        <th>
+                                                            Category
+                                                            <span>*</span>
+                                                        </th>
+
+                                                        <th>
+                                                            Price
+                                                            <span>*</span>
+                                                        </th>
+
+                                                        <th>
+                                                            Discount
+                                                        </th>
+
+                                                        <th>
+                                                            Description
+                                                            <span>*</span>
+                                                        </th>
+
+                                                        <th>
+                                                            Additional Information
+                                                            <span>*</span>
+                                                        </th>
+
+                                                        <th>
+                                                            Availability
+                                                            <span>*</span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody>
+
+                                                    {{-- Instructions Row --}}
+                                                    <tr class="instruction-row">
+
+                                                        <td>
+                                                            Enter product name
+                                                        </td>
+
+                                                        <td>
+                                                            Enter category
+                                                        </td>
+
+                                                        <td>
+                                                            Enter price
+                                                        </td>
+
+                                                        <td>
+                                                            Enter discount
+                                                        </td>
+
+                                                        <td>
+                                                            Max 73 characters
+                                                        </td>
+
+                                                        <td>
+                                                            Max 73 characters
+                                                        </td>
+
+                                                        <td>
+                                                            1 = Yes<br>
+                                                            0 = No
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                    {{-- Sample Row --}}
+                                                    <tr class="sample-row">
+
+                                                        <td>
+                                                            Sample Data
+                                                        </td>
+
+                                                        <td>
+                                                            Sample Data
+                                                        </td>
+
+                                                        <td>
+                                                            499.00
+                                                        </td>
+
+                                                        <td>
+                                                            50.00
+                                                        </td>
+
+                                                        <td>
+                                                            High quality product for best results.
+                                                        </td>
+
+                                                        <td>
+                                                            For daily use. Store in a cool and dry place.
+                                                        </td>
+
+                                                        <td>
+                                                            1
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+
+                                        {{-- ================= IMPORTANT REQUIREMENTS ================= --}}
+                                        <div class="important-requirements">
+
+                                            <h4>
+                                                Important Requirements:
+                                            </h4>
+
+
+                                            <div class="requirements-grid">
+
+                                                <div class="requirement-item">
+                                                    <span class="requirement-icon">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <strong>Product Name</strong>
+                                                        <span> – Enter the product name.</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="requirement-item">
+                                                    <span class="requirement-icon">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <strong>Description</strong>
+                                                        <span> – Maximum 73 characters.</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="requirement-item">
+                                                    <span class="requirement-icon">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <strong>Category</strong>
+                                                        <span> – Enter the appropriate category.</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="requirement-item">
+                                                    <span class="requirement-icon">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <strong>Additional Information</strong>
+                                                        <span> – Maximum 73 characters.</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="requirement-item">
+                                                    <span class="requirement-icon">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <strong>Price</strong>
+                                                        <span> – Enter the product price.</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="requirement-item">
+                                                    <span class="requirement-icon">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <strong>Availability</strong>
+                                                        <span> – Enter 1 for Yes/Available or 0 for No/Not Available.</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="requirement-item">
+                                                    <span class="requirement-icon">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <strong>Discount</strong>
+                                                        <span> – Enter the applicable discount.</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
+                            
 
                             @include('user.shop.inventory_list')
                         </div>
@@ -397,6 +640,295 @@
                                 </div>
 
                             </div>
+
+    <style>
+
+    /* =========================================
+       IMPORT EXCEL GUIDE
+    ========================================= */
+
+    .inventory-import-guide {
+        width: 100%;
+        background: #ffffff;
+        border: 1px solid #e8e8f5;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 3px 15px rgba(73, 56, 137, 0.05);
+    }
+
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
+    .import-guide-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 22px;
+    }
+
+    .import-guide-title {
+        margin: 0 0 6px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #25233a;
+    }
+
+    .import-guide-subtitle {
+        margin: 0;
+        color: #68677a;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       DOWNLOAD BUTTON
+    ========================================= */
+
+    .sample-download-btn {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 18px;
+        border: 1px solid #7654e8;
+        border-radius: 8px;
+        color: #6846d9;
+        background: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .sample-download-btn:hover {
+        background: #7654e8;
+        color: #ffffff;
+        border-color: #7654e8;
+    }
+
+    .sample-download-btn i {
+        font-size: 14px;
+    }
+
+
+    /* =========================================
+       TABLE
+    ========================================= */
+
+    .import-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid #e1e3ef;
+        border-radius: 8px;
+    }
+
+    .import-product-table {
+        width: 100%;
+        min-width: 950px;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+    }
+
+    .import-product-table th {
+        background: #f1f3fb;
+        color: #29283a;
+        padding: 15px 16px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 700;
+        border-right: 1px solid #e1e3ef;
+        border-bottom: 1px solid #e1e3ef;
+        white-space: nowrap;
+    }
+
+    .import-product-table th:last-child {
+        border-right: 0;
+    }
+
+    .import-product-table th span {
+        color: #e5484d;
+        font-weight: 700;
+    }
+
+    .import-product-table td {
+        padding: 15px 16px;
+        color: #4e4d5f;
+        font-size: 13px;
+        line-height: 1.5;
+        vertical-align: middle;
+        border-right: 1px solid #e7e8f0;
+        border-bottom: 1px solid #e7e8f0;
+    }
+
+    .import-product-table td:last-child {
+        border-right: 0;
+    }
+
+    .import-product-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+
+    /* Instructions */
+
+    .instruction-row td {
+        background: #ffffff;
+        color: #5d5c6d;
+    }
+
+
+    /* Sample */
+
+    .sample-row td {
+        background: #fcfcff;
+        color: #555468;
+    }
+
+
+    /* =========================================
+       IMPORTANT REQUIREMENTS
+    ========================================= */
+
+    .important-requirements {
+        margin-top: 26px;
+    }
+
+    .important-requirements h4 {
+        margin: 0 0 18px;
+        color: #6846d9;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+
+    .requirements-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 55px;
+        row-gap: 16px;
+    }
+
+
+    .requirement-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: #444352;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+
+    .requirement-icon {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        border: 2px solid #7654e8;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #7654e8;
+        margin-top: 1px;
+    }
+
+    .requirement-icon i {
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    .requirement-item strong {
+        color: #29283a;
+        font-weight: 700;
+    }
+
+
+    /* =========================================
+       TABLET
+    ========================================= */
+
+    @media (max-width: 991px) {
+
+        .inventory-import-guide {
+            padding: 20px;
+        }
+
+        .requirements-grid {
+            column-gap: 25px;
+        }
+
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media (max-width: 767px) {
+
+        .inventory-import-guide {
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+        .import-guide-header {
+            flex-direction: column;
+            align-items: stretch;
+            margin-bottom: 18px;
+        }
+
+        .import-guide-title {
+            font-size: 19px;
+        }
+
+        .import-guide-subtitle {
+            font-size: 13px;
+        }
+
+        .sample-download-btn {
+            width: 100%;
+        }
+
+        .requirements-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .important-requirements h4 {
+            font-size: 17px;
+        }
+
+    }
+
+
+    /* =========================================
+       SMALL MOBILE
+    ========================================= */
+
+    @media (max-width: 480px) {
+
+        .inventory-import-guide {
+            padding: 14px;
+        }
+
+        .import-guide-title {
+            font-size: 18px;
+        }
+
+        .requirement-item {
+            font-size: 13px;
+        }
+
+    }
+
+</style>
+
 
 @include('user.agent.listing.script')
 {{-- @include('layouts.modal') --}}
