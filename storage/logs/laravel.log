@@ -60114,3 +60114,14 @@ meta:type=chat;screen=chat;sender_id=43;receiver_id=50;entity_id=412ae86fb6202f6
 #55 C:/xampp/htdocs/listify/index.php(17): Illuminate/Foundation/Application->handleRequest(Object(Illuminate/Http/Request))
 #56 {main}
 "} 
+[2026-09-05 07:33:09] local.INFO: FCM chat notify {"sender_id":43,"receiver_id":28,"thread":"0463e316d7350c6","receiver_is_agent":true,"click":"/agent/messages/43/0463e316d7350c6"} 
+[2026-09-05 07:33:09] local.INFO: FCM skip: firebase disabled {"user_id":28} 
+[2026-09-05 07:33:09] local.WARNING: FCM chat notify: no delivery (missing token or FCM error) {"receiver_id":28} 
+[2026-09-05 07:33:24] local.INFO: FCM chat notify {"sender_id":28,"receiver_id":43,"thread":"0463e316d7350c6","receiver_is_agent":true,"click":"/agent/messages/28/0463e316d7350c6"} 
+[2026-09-05 07:33:24] local.INFO: FCM skip: firebase disabled {"user_id":43} 
+[2026-09-05 07:33:24] local.WARNING: FCM chat notify: no delivery (missing token or FCM error) {"receiver_id":43} 
+[2026-09-05 07:33:24] local.INFO: Chat push after send_message {"from":28,"to":43,"thread":"0463e316d7350c6","sent":false} 
+[2026-09-05 07:33:50] local.INFO: FCM chat notify {"sender_id":43,"receiver_id":28,"thread":"0463e316d7350c6","receiver_is_agent":true,"click":"/agent/messages/43/0463e316d7350c6"} 
+[2026-09-05 07:33:50] local.INFO: FCM skip: firebase disabled {"user_id":28} 
+[2026-09-05 07:33:50] local.WARNING: FCM chat notify: no delivery (missing token or FCM error) {"receiver_id":28} 
+[2026-09-05 07:33:50] local.INFO: Chat push after send_message {"from":43,"to":28,"thread":"0463e316d7350c6","sent":false} 

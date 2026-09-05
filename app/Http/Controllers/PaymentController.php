@@ -659,19 +659,10 @@ public function phonepeRedirect(Request $request)
 
         $period = strtolower(trim($payment_details['items'][0]['period']));
 
-        // if ($period == 'monthly') {
-        //     $planId = 'plan_TON6QkhsMZDaVk';
-        // } elseif ($period == 'annually') {
-        //     $planId = 'plan_TONAKHsJtkYlmH';
-        // } else {
-        //     return back()->with('error', 'Invalid package period.');
-        // }
-
-
         if ($period == 'monthly') {
-            $planId = 'plan_TU0G5TtwrfMf5F';
+            $planId = 'plan_TYJd66zNCBrJp8';
         } elseif ($period == 'annually') {
-            $planId = 'plan_TU0EJQ4z4xlBdG';
+            $planId = 'plan_TYJbvlSQT5X0ES';
         } else {
             return back()->with('error', 'Invalid package period.');
         }
